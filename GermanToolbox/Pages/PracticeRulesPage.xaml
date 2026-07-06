@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.PracticeRulesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#FAFAF8"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+        <Grid
+            Padding="20,18,20,12"
+            ColumnDefinitions="40,*"
+            ColumnSpacing="10">
+            <Border
+                BackgroundColor="#FFFFFF"
+                HeightRequest="40"
+                Stroke="#E8E8E4"
+                StrokeThickness="1"
+                WidthRequest="40">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Path
+                    Aspect="Uniform"
+                    Data="M 19 8 L 11 16 L 19 24"
+                    Fill="Transparent"
+                    HeightRequest="22"
+                    HorizontalOptions="Center"
+                    SemanticProperties.Description="Back"
+                    Stroke="#171717"
+                    StrokeLineCap="Round"
+                    StrokeLineJoin="Round"
+                    StrokeThickness="2.4"
+                    VerticalOptions="Center"
+                    WidthRequest="22" />
+            </Border>
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="1"
+                VerticalOptions="Center">
+                <Label
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="24"
+                    Text="Regeln"
+                    TextColor="#171717" />
+                <Label
+                    FontSize="12"
+                    Text="Short explanations for each practice mode"
+                    TextColor="#777777" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <ScrollView
+            Grid.Row="1"
+            Orientation="Horizontal"
+            HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout
+                Padding="20,0,20,14"
+                Spacing="8">
+                <Border
+                    x:Name="ArticlesTab"
+                    Padding="13,9"
+                    BackgroundColor="#EAF1FF"
+                    Stroke="#2563EB"
+                    StrokeThickness="2">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnArticlesTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Label
+                        x:Name="ArticlesTabLabel"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        Text="Artikel"
+                        TextColor="#2563EB" />
+                </Border>
+
+                <Border
+                    x:Name="PluralsTab"
+                    Padding="13,9"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#E4E4DE"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPluralsTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Label
+                        x:Name="PluralsTabLabel"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        Text="Plural"
+                        TextColor="#171717" />
+                </Border>
+
+                <Border
+                    x:Name="IrregularTab"
+                    Padding="13,9"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#E4E4DE"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnIrregularTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Label
+                        x:Name="IrregularTabLabel"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        Text="Verben"
+                        TextColor="#171717" />
+                </Border>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout
+                Padding="20,4,20,24"
+                Spacing="14">
+                <Label
+                    x:Name="RuleTitleLabel"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="26"
+                    Text="Artikel"
+                    TextColor="#171717" />
+
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#E4E8F4"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#16000000"
+                            Offset="0,6"
+                            Opacity="0.18"
+                            Radius="14" />
+                    </Border.Shadow>
+                    <Label
+                        x:Name="RuleBodyLabel"
+                        FontSize="14"
+                        LineBreakMode="WordWrap"
+                        Text="Dummy article rule text. Explain der, die, das patterns and examples here later."
+                        TextColor="#555555" />
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="GermanToolbox.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox"
+    FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarBackgroundColor="#FFFFFF"
+    Shell.TabBarForegroundColor="#2563EB"
+    Shell.TabBarTitleColor="#2563EB"
+    Shell.TabBarUnselectedColor="#777777"
+    Title="GermanToolbox">
+
+    <ShellContent
+        ContentTemplate="{DataTemplate local:MainTabsPage}"
+        Route="MainTabsPage" />
+
+</Shell>

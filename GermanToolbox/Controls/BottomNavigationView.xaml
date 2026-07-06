@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="GermanToolbox.BottomNavigationView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Border
+        Margin="24,8,24,10"
+        Padding="4"
+        BackgroundColor="#FFFFFF"
+        Stroke="#E8E8E4"
+        StrokeThickness="1">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="8" />
+        </Border.StrokeShape>
+        <Border.Shadow>
+            <Shadow
+                Brush="#22000000"
+                Offset="0,6"
+                Opacity="0.2"
+                Radius="14" />
+        </Border.Shadow>
+
+        <Grid
+            ColumnDefinitions="*,*,*,*"
+            ColumnSpacing="4"
+            HeightRequest="46">
+            <Border
+                x:Name="HomeTabBackground"
+                BackgroundColor="#EAF1FF"
+                StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnHomeTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid
+                    Padding="0,4"
+                    RowDefinitions="21,11"
+                    RowSpacing="0"
+                    VerticalOptions="Center">
+                    <Path
+                        x:Name="HomeIcon"
+                        Aspect="Uniform"
+                        Data="M 5 14.5 L 16 5 L 27 14.5 V 27 H 20 V 19 H 12 V 27 H 5 Z"
+                        Fill="Transparent"
+                        HeightRequest="21"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Home"
+                        Stroke="#2563EB"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.1"
+                        VerticalOptions="Center"
+                        WidthRequest="21" />
+                    <Label
+                        x:Name="HomeLabel"
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="9"
+                        HorizontalTextAlignment="Center"
+                        Text="Start"
+                        TextColor="#2563EB" />
+                </Grid>
+            </Border>
+
+            <Border
+                x:Name="PracticeTabBackground"
+                Grid.Column="1"
+                BackgroundColor="Transparent"
+                StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPracticeTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid
+                    Padding="0,4"
+                    RowDefinitions="21,11"
+                    RowSpacing="0"
+                    VerticalOptions="Center">
+                    <Path
+                        x:Name="PracticeIcon"
+                        Aspect="Uniform"
+                        Data="M 8 6 H 24 C 25.1 6 26 6.9 26 8 V 24 C 26 25.1 25.1 26 24 26 H 8 C 6.9 26 6 25.1 6 24 V 8 C 6 6.9 6.9 6 8 6 Z M 10.5 12 H 21.5 M 10.5 17 H 19"
+                        Fill="Transparent"
+                        HeightRequest="21"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Practice"
+                        Stroke="#777777"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.1"
+                        VerticalOptions="Center"
+                        WidthRequest="21" />
+                    <Label
+                        x:Name="PracticeLabel"
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="9"
+                        HorizontalTextAlignment="Center"
+                        Text="Üben"
+                        TextColor="#777777" />
+                </Grid>
+            </Border>
+
+            <Border
+                x:Name="SearchTabBackground"
+                Grid.Column="2"
+                BackgroundColor="Transparent"
+                StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSearchTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid
+                    Padding="0,4"
+                    RowDefinitions="21,11"
+                    RowSpacing="0"
+                    VerticalOptions="Center">
+                    <Path
+                        x:Name="SearchIcon"
+                        Aspect="Uniform"
+                        Data="M 13 4 A 9 9 0 1 0 13 22 A 9 9 0 1 0 13 4 M 20 20 L 27 27"
+                        Fill="Transparent"
+                        HeightRequest="21"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Search"
+                        Stroke="#777777"
+                        StrokeLineCap="Round"
+                        StrokeThickness="2.1"
+                        VerticalOptions="Center"
+                        WidthRequest="21" />
+                    <Label
+                        x:Name="SearchLabel"
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="9"
+                        HorizontalTextAlignment="Center"
+                        Text="Suche"
+                        TextColor="#777777" />
+                </Grid>
+            </Border>
+
+            <Border
+                x:Name="SettingsTabBackground"
+                Grid.Column="3"
+                BackgroundColor="Transparent"
+                StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSettingsTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid
+                    Padding="0,4"
+                    RowDefinitions="21,11"
+                    RowSpacing="0"
+                    VerticalOptions="Center">
+                    <Path
+                        x:Name="SettingsIcon"
+                        Aspect="Uniform"
+                        Data="M 13.8 4 H 18.2 L 19 7.1 C 19.8 7.4 20.5 7.8 21.1 8.3 L 24.1 7.2 L 26.3 11 L 23.8 13 C 23.95 13.8 24 14.8 24 16 C 24 17.2 23.95 18.2 23.8 19 L 26.3 21 L 24.1 24.8 L 21.1 23.7 C 20.5 24.2 19.8 24.6 19 24.9 L 18.2 28 H 13.8 L 13 24.9 C 12.2 24.6 11.5 24.2 10.9 23.7 L 7.9 24.8 L 5.7 21 L 8.2 19 C 8.05 18.2 8 17.2 8 16 C 8 14.8 8.05 13.8 8.2 13 L 5.7 11 L 7.9 7.2 L 10.9 8.3 C 11.5 7.8 12.2 7.4 13 7.1 Z M 16 12 A 4 4 0 1 0 16 20 A 4 4 0 1 0 16 12"
+                        Fill="Transparent"
+                        HeightRequest="21"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Settings"
+                        Stroke="#777777"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.1"
+                        VerticalOptions="Center"
+                        WidthRequest="21" />
+                    <Label
+                        x:Name="SettingsLabel"
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="9"
+                        HorizontalTextAlignment="Center"
+                        Text="Einstellungen"
+                        TextColor="#777777" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+
+</ContentView>

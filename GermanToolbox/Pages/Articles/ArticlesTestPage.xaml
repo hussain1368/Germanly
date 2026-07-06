@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.ArticlesTestPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <Style x:Key="ArticleButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#FFFFFF" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="HeightRequest" Value="96" />
+            <Setter Property="MinimumWidthRequest" Value="0" />
+            <Setter Property="Padding" Value="4,8" />
+            <Setter Property="Shadow">
+                <Shadow
+                    Brush="#22000000"
+                    Offset="0,8"
+                    Opacity="0.24"
+                    Radius="18" />
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#FAFAF8" />
+            <GradientStop Offset="0.45" Color="#EEF4F2" />
+            <GradientStop Offset="1.0" Color="#F6EFE9" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
+        <ScrollView>
+            <Grid
+                Padding="24"
+                RowDefinitions="Auto,Auto,Auto"
+                RowSpacing="18">
+            <Grid
+                ColumnDefinitions="*,Auto,40"
+                ColumnSpacing="8">
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="28"
+                        SemanticProperties.HeadingLevel="Level1"
+                        Text="Artikeltest"
+                        TextColor="#171717" />
+
+                    <Grid
+                        ColumnDefinitions="42,42,42"
+                        ColumnSpacing="7"
+                        HorizontalOptions="Start">
+                        <BoxView
+                            BackgroundColor="#2563EB"
+                            CornerRadius="3"
+                            HeightRequest="5" />
+                        <BoxView
+                            Grid.Column="1"
+                            BackgroundColor="#D43D35"
+                            CornerRadius="3"
+                            HeightRequest="5" />
+                        <BoxView
+                            Grid.Column="2"
+                            BackgroundColor="#2E7D32"
+                            CornerRadius="3"
+                            HeightRequest="5" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <Border
+                    Grid.Column="1"
+                    Padding="12,7"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#E4E4DE"
+                    StrokeThickness="1"
+                    VerticalOptions="Center">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Label
+                        x:Name="ProgressLabel"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        Text="7 / 10"
+                        TextColor="#2563EB" />
+                </Border>
+
+                <Border
+                    Grid.Column="2"
+                    BackgroundColor="#FFFFFF"
+                    HeightRequest="40"
+                    Stroke="#E4E4DE"
+                    StrokeThickness="1"
+                    ToolTipProperties.Text="Quit test"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnQuitTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Path
+                        Aspect="Uniform"
+                        Data="M 9 9 L 23 23 M 23 9 L 9 23"
+                        Fill="Transparent"
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Quit test"
+                        Stroke="#171717"
+                        StrokeLineCap="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="22" />
+                </Border>
+            </Grid>
+
+            <Border
+                x:Name="WordCard"
+                Grid.Row="1"
+                Padding="24"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#33000000"
+                        Offset="0,16"
+                        Opacity="0.28"
+                        Radius="28" />
+                </Border.Shadow>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#202020" />
+                        <GradientStop Offset="0.58" Color="#2A2D2E" />
+                        <GradientStop Offset="1.0" Color="#181818" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid
+                    MinimumHeightRequest="280"
+                    RowDefinitions="Auto,*,Auto">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Border
+                            Padding="12,6"
+                            BackgroundColor="#28FFFFFF"
+                            HorizontalOptions="Start"
+                            Stroke="#22FFFFFF">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="13"
+                                Text="NOMEN"
+                                TextColor="#F2C94C" />
+                        </Border>
+
+                        <Border
+                            Grid.Column="1"
+                            Padding="10,6"
+                            BackgroundColor="#18FFFFFF"
+                            Stroke="#22FFFFFF">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                x:Name="LevelLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="12"
+                                Text="A1"
+                                TextColor="#F2C94C" />
+                        </Border>
+                    </Grid>
+
+                    <VerticalStackLayout
+                        x:Name="WordContent"
+                        Grid.Row="1"
+                        HorizontalOptions="Fill"
+                        MinimumHeightRequest="190"
+                        Spacing="6"
+                        VerticalOptions="Center">
+                        <Grid HorizontalOptions="Fill">
+                            <Label
+                                x:Name="NounOutlineLeftLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="62"
+                                HorizontalOptions="Fill"
+                                HorizontalTextAlignment="Center"
+                                InputTransparent="True"
+                                IsVisible="False"
+                                LineBreakMode="WordWrap"
+                                Text="Apfel"
+                                TextColor="#90FFFFFF"
+                                TranslationX="-1" />
+                            <Label
+                                x:Name="NounOutlineRightLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="62"
+                                HorizontalOptions="Fill"
+                                HorizontalTextAlignment="Center"
+                                InputTransparent="True"
+                                IsVisible="False"
+                                LineBreakMode="WordWrap"
+                                Text="Apfel"
+                                TextColor="#90FFFFFF"
+                                TranslationX="1" />
+                            <Label
+                                x:Name="NounOutlineTopLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="62"
+                                HorizontalOptions="Fill"
+                                HorizontalTextAlignment="Center"
+                                InputTransparent="True"
+                                IsVisible="False"
+                                LineBreakMode="WordWrap"
+                                Text="Apfel"
+                                TextColor="#90FFFFFF"
+                                TranslationY="-1" />
+                            <Label
+                                x:Name="NounOutlineBottomLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="62"
+                                HorizontalOptions="Fill"
+                                HorizontalTextAlignment="Center"
+                                InputTransparent="True"
+                                IsVisible="False"
+                                LineBreakMode="WordWrap"
+                                Text="Apfel"
+                                TextColor="#90FFFFFF"
+                                TranslationY="1" />
+                            <Label
+                                x:Name="NounLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="62"
+                                HorizontalOptions="Fill"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="WordWrap"
+                                SemanticProperties.HeadingLevel="Level2"
+                                Text="Apfel"
+                                TextColor="#FFFFFF" />
+                        </Grid>
+                        <BoxView
+                            BackgroundColor="#F2C94C"
+                            CornerRadius="3"
+                            HeightRequest="5"
+                            HorizontalOptions="Center"
+                            WidthRequest="104" />
+                        <Label
+                            x:Name="MeaningLabel"
+                            Margin="0,8,0,0"
+                            FontSize="18"
+                            HorizontalOptions="Fill"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="WordWrap"
+                            MaxLines="2"
+                            Text="apple"
+                            TextColor="#D7D7D0" />
+                    </VerticalStackLayout>
+
+                    <Label
+                        x:Name="ArticleCaseLabel"
+                        Grid.Row="2"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="14"
+                        HorizontalOptions="End"
+                        Text="Nominativ"
+                        TextColor="#F2C94C"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+            <Grid
+                Grid.Row="2"
+                ColumnDefinitions="*,*,*"
+                ColumnSpacing="12">
+                <Button
+                    x:Name="MasculineArticleButton"
+                    BorderColor="#2563EB"
+                    Clicked="OnArticleClicked"
+                    CommandParameter="m"
+                    SemanticProperties.Description="Article option der"
+                    Style="{StaticResource ArticleButtonStyle}"
+                    Text="der"
+                    TextColor="#2563EB" />
+
+                <Button
+                    x:Name="FeminineArticleButton"
+                    Grid.Column="1"
+                    BorderColor="#D43D35"
+                    Clicked="OnArticleClicked"
+                    CommandParameter="f"
+                    SemanticProperties.Description="Article option die"
+                    Style="{StaticResource ArticleButtonStyle}"
+                    Text="die"
+                    TextColor="#D43D35" />
+
+                <Button
+                    x:Name="NeuterArticleButton"
+                    Grid.Column="2"
+                    BorderColor="#2E7D32"
+                    Clicked="OnArticleClicked"
+                    CommandParameter="n"
+                    SemanticProperties.Description="Article option das"
+                    Style="{StaticResource ArticleButtonStyle}"
+                    Text="das"
+                    TextColor="#2E7D32" />
+            </Grid>
+            </Grid>
+        </ScrollView>
+
+        <Grid
+            x:Name="QuitConfirmationOverlay"
+            BackgroundColor="#99000000"
+            IsVisible="False">
+            <Border
+                Margin="28"
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                HorizontalOptions="Fill"
+                Stroke="#F2DEDC"
+                StrokeThickness="1"
+                VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#33000000"
+                        Offset="0,14"
+                        Opacity="0.3"
+                        Radius="26" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="22"
+                            Text="Test beenden?"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="Scores and mistakes will not be updated. These words will stay in your learning pool."
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="10">
+                        <Border
+                            BackgroundColor="#FFFFFF"
+                            HeightRequest="46"
+                            Stroke="#E4E4DE"
+                            StrokeThickness="1">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCancelQuitTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="Weiterüben"
+                                TextColor="#171717"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="#D43D35"
+                            HeightRequest="46"
+                            Stroke="#D43D35"
+                            StrokeThickness="1">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnConfirmQuitTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="Beenden"
+                                TextColor="#FFFFFF"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="GermanToolbox.PracticeTab"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="24,24,24,18"
+            Spacing="16">
+            <Grid ColumnDefinitions="*,44">
+                <Label
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="32"
+                    Text="Üben"
+                    TextColor="#171717"
+                    VerticalTextAlignment="Center" />
+
+                <Border
+                    Grid.Column="1"
+                    BackgroundColor="#FFFFFF"
+                    HeightRequest="44"
+                    Stroke="#E4E8F4"
+                    StrokeThickness="1"
+                    WidthRequest="44">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRulesTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Path
+                        Aspect="Uniform"
+                        Data="M 16 5 C 9.9 5 5 9.9 5 16 C 5 22.1 9.9 27 16 27 C 22.1 27 27 22.1 27 16 C 27 9.9 22.1 5 16 5 Z M 13.5 12.4 C 13.7 10.8 14.8 9.9 16.4 9.9 C 18.2 9.9 19.5 11 19.5 12.6 C 19.5 14 18.7 14.8 17.3 15.7 C 16.2 16.5 15.8 17.2 15.8 18.5 M 16 22.1 V 22.3"
+                        Fill="Transparent"
+                        HeightRequest="25"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Practice rules"
+                        Stroke="#2563EB"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.2"
+                        VerticalOptions="Center"
+                        WidthRequest="25" />
+                </Border>
+            </Grid>
+
+            <Border
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                Stroke="#E4E8F4"
+                StrokeThickness="1">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnVocabularyModuleTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#16000000" Offset="0,6" Opacity="0.18" Radius="14" />
+                </Border.Shadow>
+                <Grid
+                    ColumnDefinitions="44,*,24"
+                    ColumnSpacing="14"
+                    RowDefinitions="Auto,Auto,Auto"
+                    RowSpacing="8">
+                    <Border
+                        BackgroundColor="#EAF1FF"
+                        HeightRequest="44"
+                        StrokeThickness="0"
+                        VerticalOptions="Start"
+                        WidthRequest="44">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Path
+                            Aspect="Uniform"
+                            Data="M 9 7 H 22 C 24 7 25 8 25 10 V 25 H 10 C 8 25 7 24 7 22 V 9 C 7 8 8 7 9 7 Z M 11 7 V 25 M 14 13 H 22"
+                            Fill="Transparent"
+                            HeightRequest="24"
+                            HorizontalOptions="Center"
+                            Stroke="#2563EB"
+                            StrokeLineCap="Round"
+                            StrokeLineJoin="Round"
+                            StrokeThickness="2"
+                            VerticalOptions="Center"
+                            WidthRequest="24" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Wortschatz"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="Flash cards, recall, spaced review"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Path
+                        Grid.Column="2"
+                        Aspect="Uniform"
+                        Data="M 10 6 L 18 16 L 10 26"
+                        Fill="Transparent"
+                        HeightRequest="20"
+                        HorizontalOptions="End"
+                        Stroke="#A0A0A0"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="16" />
+
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        ColumnDefinitions="*,Auto">
+                        <Label FontSize="12" Text="Fortschritt" TextColor="#777777" />
+                        <Label
+                            x:Name="VocabularyProgressLabel"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="0%"
+                            TextColor="#2563EB" />
+                    </Grid>
+
+                    <ProgressBar
+                        x:Name="VocabularyProgressBar"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="#EAF1FF"
+                        Progress="0"
+                        ProgressColor="#2563EB" />
+                </Grid>
+            </Border>
+
+            <Border
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                Stroke="#F2DEDC"
+                StrokeThickness="1">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnArticlesModuleTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#16000000" Offset="0,6" Opacity="0.18" Radius="14" />
+                </Border.Shadow>
+                <Grid
+                    ColumnDefinitions="44,*,24"
+                    ColumnSpacing="14"
+                    RowDefinitions="Auto,Auto,Auto"
+                    RowSpacing="8">
+                    <Border
+                        BackgroundColor="#FCEBEA"
+                        HeightRequest="44"
+                        StrokeThickness="0"
+                        VerticalOptions="Start"
+                        WidthRequest="44">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Path
+                            Aspect="Uniform"
+                            Data="M 6 17 H 26 M 10 11 H 18 C 21 11 23 13 23 16 C 23 19 21 21 18 21 H 10 Z"
+                            Fill="Transparent"
+                            HeightRequest="24"
+                            HorizontalOptions="Center"
+                            Stroke="#D43D35"
+                            StrokeLineCap="Round"
+                            StrokeLineJoin="Round"
+                            StrokeThickness="2"
+                            VerticalOptions="Center"
+                            WidthRequest="24" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Artikel"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="der / die / das noun practice"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Path
+                        Grid.Column="2"
+                        Aspect="Uniform"
+                        Data="M 10 6 L 18 16 L 10 26"
+                        Fill="Transparent"
+                        HeightRequest="20"
+                        HorizontalOptions="End"
+                        Stroke="#A0A0A0"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="16" />
+
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        ColumnDefinitions="*,Auto">
+                        <Label FontSize="12" Text="Fortschritt" TextColor="#777777" />
+                        <Label
+                            x:Name="ArticlesProgressLabel"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="0%"
+                            TextColor="#D43D35" />
+                    </Grid>
+
+                    <ProgressBar
+                        x:Name="ArticlesProgressBar"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="#FCEBEA"
+                        Progress="0"
+                        ProgressColor="#D43D35" />
+                </Grid>
+            </Border>
+
+            <Border
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                Stroke="#E4DDF2"
+                StrokeThickness="1">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPluralsModuleTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#16000000" Offset="0,6" Opacity="0.18" Radius="14" />
+                </Border.Shadow>
+                <Grid
+                    ColumnDefinitions="44,*,24"
+                    ColumnSpacing="14"
+                    RowDefinitions="Auto,Auto,Auto"
+                    RowSpacing="8">
+                    <Border
+                        BackgroundColor="#F1ECFA"
+                        HeightRequest="44"
+                        StrokeThickness="0"
+                        VerticalOptions="Start"
+                        WidthRequest="44">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="16"
+                            HorizontalOptions="Center"
+                            SemanticProperties.Description="Plural"
+                            Text="1→n"
+                            TextColor="#6D4AA2"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Plural"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="German noun plural forms"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Path
+                        Grid.Column="2"
+                        Aspect="Uniform"
+                        Data="M 10 6 L 18 16 L 10 26"
+                        Fill="Transparent"
+                        HeightRequest="20"
+                        HorizontalOptions="End"
+                        Stroke="#A0A0A0"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="16" />
+
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        ColumnDefinitions="*,Auto">
+                        <Label FontSize="12" Text="Fortschritt" TextColor="#777777" />
+                        <Label
+                            x:Name="PluralsProgressLabel"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="0%"
+                            TextColor="#6D4AA2" />
+                    </Grid>
+
+                    <ProgressBar
+                        x:Name="PluralsProgressBar"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="#F1ECFA"
+                        Progress="0"
+                        ProgressColor="#6D4AA2" />
+                </Grid>
+            </Border>
+
+            <Border
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                Stroke="#DCEBDD"
+                StrokeThickness="1">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnIrregularVerbsModuleTapped" />
+                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#16000000" Offset="0,6" Opacity="0.18" Radius="14" />
+                </Border.Shadow>
+                <Grid
+                    ColumnDefinitions="44,*,24"
+                    ColumnSpacing="14"
+                    RowDefinitions="Auto,Auto,Auto"
+                    RowSpacing="8">
+                    <Border
+                        BackgroundColor="#EAF6EA"
+                        HeightRequest="44"
+                        StrokeThickness="0"
+                        VerticalOptions="Start"
+                        WidthRequest="44">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Path
+                            Aspect="Uniform"
+                            Data="M 8 9 H 24 M 8 16 H 20 M 8 23 H 17 M 23 19 L 26 22 L 23 25"
+                            Fill="Transparent"
+                            HeightRequest="24"
+                            HorizontalOptions="Center"
+                            Stroke="#2E7D32"
+                            StrokeLineCap="Round"
+                            StrokeLineJoin="Round"
+                            StrokeThickness="2"
+                            VerticalOptions="Center"
+                            WidthRequest="24" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Unregelmäßige Verben"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="Präteritum and perfect"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Path
+                        Grid.Column="2"
+                        Aspect="Uniform"
+                        Data="M 10 6 L 18 16 L 10 26"
+                        Fill="Transparent"
+                        HeightRequest="20"
+                        HorizontalOptions="End"
+                        Stroke="#A0A0A0"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="16" />
+
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        ColumnDefinitions="*,Auto">
+                        <Label FontSize="12" Text="Fortschritt" TextColor="#777777" />
+                        <Label
+                            x:Name="IrregularProgressLabel"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="0%"
+                            TextColor="#2E7D32" />
+                    </Grid>
+
+                    <ProgressBar
+                        x:Name="IrregularProgressBar"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        BackgroundColor="#EAF6EA"
+                        Progress="0"
+                        ProgressColor="#2E7D32" />
+                </Grid>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentView>

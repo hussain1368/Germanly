@@ -1,0 +1,2 @@
+cmd /c "adb exec-out run-as com.hussain.germanly cat files/german_toolbox.db3 > seeder.db3"
+

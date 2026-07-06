@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="GermanToolbox.SearchTab"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox">
+
+    <Grid
+        Padding="24,24,24,18"
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="14">
+        <VerticalStackLayout Spacing="3">
+            <Label
+                FontAttributes="Bold"
+                FontFamily="OpenSansSemibold"
+                FontSize="32"
+                Text="Suche"
+                TextColor="#171717" />
+            <Label
+                FontSize="13"
+                Text="Find any German word or English translation"
+                TextColor="#777777" />
+        </VerticalStackLayout>
+
+        <Border
+            Grid.Row="1"
+            Padding="14,0"
+            BackgroundColor="#FFFFFF"
+            HeightRequest="54"
+            Stroke="#DDE8F5"
+            StrokeThickness="1">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow
+                    Brush="#16000000"
+                    Offset="0,6"
+                    Opacity="0.16"
+                    Radius="14" />
+            </Border.Shadow>
+            <Grid
+                ColumnDefinitions="24,*"
+                ColumnSpacing="10">
+                <Path
+                    Aspect="Uniform"
+                    Data="M 14 4 A 10 10 0 1 0 14 24 A 10 10 0 1 0 14 4 M 21 21 L 28 28"
+                    Fill="Transparent"
+                    HeightRequest="22"
+                    HorizontalOptions="Center"
+                    Stroke="#777777"
+                    StrokeLineCap="Round"
+                    StrokeThickness="2.2"
+                    VerticalOptions="Center"
+                    WidthRequest="22" />
+                <local:BorderlessEntry
+                    x:Name="SearchEntry"
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    ClearButtonVisibility="WhileEditing"
+                    FontSize="16"
+                    Placeholder="Type at least 2 letters"
+                    PlaceholderColor="#A0A0A0"
+                    ReturnType="Search"
+                    TextChanged="OnSearchTextChanged"
+                    TextColor="#171717" />
+            </Grid>
+        </Border>
+
+        <Grid
+            Grid.Row="2"
+            ColumnDefinitions="*,Auto">
+            <Label
+                x:Name="StatusLabel"
+                FontSize="12"
+                Text="Type at least 2 letters to start searching."
+                TextColor="#777777" />
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                Grid.Column="1"
+                Color="#2563EB"
+                HeightRequest="20"
+                IsRunning="False"
+                IsVisible="False"
+                WidthRequest="20" />
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <CollectionView
+                x:Name="ResultsCollection"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                        ItemSpacing="0"
+                        Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:SearchResultItem">
+                        <Grid
+                            Padding="2,0"
+                            RowDefinitions="Auto,1">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    CommandParameter="{Binding .}"
+                                    Tapped="OnResultTapped" />
+                            </Grid.GestureRecognizers>
+                            <Grid
+                                Padding="7,8"
+                                ColumnDefinitions="*,Auto"
+                                ColumnSpacing="8"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="1">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="17"
+                                    Text="{Binding Word}"
+                                    TextColor="{Binding AccentColor}" />
+
+                                <HorizontalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="4"
+                                    VerticalOptions="Start">
+                                    <Border
+                                        Padding="7,2"
+                                        BackgroundColor="#F3F3EF"
+                                        Stroke="#E4E4DE"
+                                        StrokeThickness="1">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="9"
+                                            Text="{Binding Type}"
+                                            TextColor="#555555" />
+                                    </Border>
+                                    <Border
+                                        Padding="7,2"
+                                        BackgroundColor="#F7FAFF"
+                                        Stroke="#DDE8F5"
+                                        StrokeThickness="1">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="9"
+                                            Text="{Binding Level}"
+                                            TextColor="#2563EB" />
+                                    </Border>
+                                </HorizontalStackLayout>
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="2"
+                                    FontSize="12"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1"
+                                    Text="{Binding Translation}"
+                                    TextColor="#666666" />
+                            </Grid>
+
+                            <BoxView
+                                Grid.Row="1"
+                                BackgroundColor="#E8E8E4"
+                                HeightRequest="1" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <VerticalStackLayout
+                x:Name="EmptyState"
+                HorizontalOptions="Center"
+                Spacing="12"
+                VerticalOptions="Center">
+                <Border
+                    BackgroundColor="#EAF1FF"
+                    HeightRequest="64"
+                    StrokeThickness="0"
+                    WidthRequest="64">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Path
+                        Aspect="Uniform"
+                        Data="M 14 4 A 10 10 0 1 0 14 24 A 10 10 0 1 0 14 4 M 21 21 L 28 28"
+                        Fill="Transparent"
+                        HeightRequest="28"
+                        HorizontalOptions="Center"
+                        Stroke="#2563EB"
+                        StrokeLineCap="Round"
+                        StrokeThickness="2.2"
+                        VerticalOptions="Center"
+                        WidthRequest="28" />
+                </Border>
+                <VerticalStackLayout Spacing="3">
+                    <Label
+                        x:Name="EmptyTitleLabel"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="17"
+                        HorizontalTextAlignment="Center"
+                        Text="Wortliste durchsuchen"
+                        TextColor="#171717" />
+                    <Label
+                        x:Name="EmptySubtitleLabel"
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        LineBreakMode="WordWrap"
+                        MaximumWidthRequest="260"
+                        Text="Results will appear here as soon as you enter two letters."
+                        TextColor="#777777" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+
+</ContentView>

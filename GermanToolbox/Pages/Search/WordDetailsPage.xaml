@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.WordDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox"
+    BackgroundColor="#FAFAF8"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView>
+            <VerticalStackLayout
+                x:Name="ContentContainer"
+                Padding="20,18"
+                Spacing="14">
+                <Grid
+                    ColumnDefinitions="40,*"
+                    ColumnSpacing="10">
+                    <Border
+                        BackgroundColor="#FFFFFF"
+                        HeightRequest="40"
+                        Stroke="#E8E8E4"
+                        StrokeThickness="1"
+                        WidthRequest="40">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBackTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Path
+                            Aspect="Uniform"
+                            Data="M 19 8 L 11 16 L 19 24"
+                            Fill="Transparent"
+                            HeightRequest="22"
+                            HorizontalOptions="Center"
+                            Stroke="#171717"
+                            StrokeLineCap="Round"
+                            StrokeLineJoin="Round"
+                            StrokeThickness="2.4"
+                            VerticalOptions="Center"
+                            WidthRequest="22" />
+                    </Border>
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="0"
+                        VerticalOptions="Center">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="22"
+                            Text="Wortdetails"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="11"
+                            Text="Vocabulary reference"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Border
+                    x:Name="WordHeroCard"
+                    Padding="20"
+                    Stroke="#9DB2C2"
+                    StrokeThickness="1.5">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#30000000"
+                            Offset="0,14"
+                            Opacity="0.26"
+                            Radius="24" />
+                    </Border.Shadow>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#293844" />
+                            <GradientStop Offset="0.55" Color="#3E4E5A" />
+                            <GradientStop Offset="1.0" Color="#52616D" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="13">
+                        <HorizontalStackLayout
+                            HorizontalOptions="Start"
+                            Spacing="6">
+                            <Border
+                                x:Name="LevelBadgeBorder"
+                                Padding="9,5"
+                                BackgroundColor="#FFFFFF"
+                                Stroke="#E4E4DE"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="LevelBadgeLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="10"
+                                    Text="A1"
+                                    TextColor="#555555" />
+                            </Border>
+                            <Border
+                                x:Name="TypeBadgeBorder"
+                                Padding="9,5"
+                                BackgroundColor="#F3F3EF"
+                                Stroke="#E4E4DE"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="TypeBadgeLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="10"
+                                    Text="Nomen"
+                                    TextColor="#555555" />
+                            </Border>
+                            <Border
+                                x:Name="LearningBadge"
+                                Padding="9,5"
+                                BackgroundColor="#FFF4E8"
+                                IsVisible="False"
+                                Stroke="#E8BF91"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="LearningBadgeLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="10"
+                                    Text="Lernen"
+                                    TextColor="#9A4D00" />
+                            </Border>
+                        </HorizontalStackLayout>
+                        <VerticalStackLayout
+                            Grid.Row="1"
+                            Spacing="4">
+                            <Label
+                                x:Name="WordLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="32"
+                                LineBreakMode="WordWrap"
+                                TextColor="#171717">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span
+                                            x:Name="WordTextSpan"
+                                            FontAttributes="Bold"
+                                            Text="Wort"
+                                            TextColor="#171717" />
+                                        <Span
+                                            x:Name="ArticleTextSpan"
+                                            Text=""
+                                            TextColor="#666666" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <HorizontalStackLayout
+                                x:Name="PluralHeroPanel"
+                                IsVisible="False">
+                                <Label
+                                    x:Name="PluralHeroValueLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="13"
+                                    Text="-"
+                                    TextColor="#D97706" />
+                            </HorizontalStackLayout>
+                            <Label
+                                x:Name="TranslationLabel"
+                                FontSize="15"
+                                LineBreakMode="WordWrap"
+                                Text="translation"
+                                TextColor="#666666" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border
+                    x:Name="VerbDetailsCard"
+                    Padding="15"
+                    BackgroundColor="#FFFFFF"
+                    IsVisible="False"
+                    Stroke="#E4E8F4"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="18"
+                                Text="Verbformen"
+                                TextColor="#171717" />
+                            <HorizontalStackLayout
+                                Grid.Column="1"
+                                Spacing="5">
+                                <Border
+                                    x:Name="VerbStrengthBadge"
+                                    Padding="8,4"
+                                    BackgroundColor="#FFFFFF"
+                                    Stroke="#E4E4DE"
+                                    StrokeThickness="1">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="VerbStrengthLabel"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="9"
+                                        Text="Schwach"
+                                        TextColor="#555555" />
+                                </Border>
+                                <Border
+                                    x:Name="GeneratedFormsBadge"
+                                    Padding="8,4"
+                                    BackgroundColor="#EAF6EA"
+                                    IsVisible="False"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="GeneratedFormsBadgeLabel"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="9"
+                                        Text="ERZEUGT"
+                                        TextColor="#2E7D32" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <Grid RowDefinitions="Auto,1,Auto">
+                            <Grid
+                                Padding="2,7"
+                                ColumnDefinitions="112,*,Auto"
+                                ColumnSpacing="8">
+                                <Label
+                                    FontSize="10"
+                                    Text="PRÄTERITUM"
+                                    TextColor="#777777"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    x:Name="PrateritumValueLabel"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="13"
+                                    LineBreakMode="WordWrap"
+                                    Text="-"
+                                    TextColor="#2E7D32" />
+                                <Border
+                                    x:Name="PrateritumFormScoreBadge"
+                                    Grid.Column="2"
+                                    Padding="8,3"
+                                    BackgroundColor="#F7F7F5"
+                                    IsVisible="False"
+                                    Stroke="#E4E4DE"
+                                    StrokeThickness="1"
+                                    VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="PrateritumFormScoreLabel"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="11"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Border>
+                            </Grid>
+                            <BoxView
+                                Grid.Row="1"
+                                BackgroundColor="#E8E8E4"
+                                HeightRequest="1" />
+                            <Grid
+                                Grid.Row="2"
+                                Padding="2,7"
+                                ColumnDefinitions="112,*,Auto"
+                                ColumnSpacing="8">
+                                <Label
+                                    FontSize="10"
+                                    Text="PERFEKT"
+                                    TextColor="#777777"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    x:Name="PerfectValueLabel"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="13"
+                                    LineBreakMode="WordWrap"
+                                    Text="-"
+                                    TextColor="#2E7D32" />
+                                <Border
+                                    x:Name="PerfectFormScoreBadge"
+                                    Grid.Column="2"
+                                    Padding="8,3"
+                                    BackgroundColor="#F7F7F5"
+                                    IsVisible="False"
+                                    Stroke="#E4E4DE"
+                                    StrokeThickness="1"
+                                    VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="PerfectFormScoreLabel"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="11"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Border>
+                            </Grid>
+                        </Grid>
+
+                        <Label
+                            x:Name="GeneratedFormsNote"
+                            FontSize="11"
+                            IsVisible="False"
+                            LineBreakMode="WordWrap"
+                            Text="These forms were built from regular weak-verb rules."
+                            TextColor="#648067" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border
+                    Padding="17"
+                    BackgroundColor="#FBF9FE"
+                    Stroke="#E4DDF2"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="18"
+                            Text="Beispiel"
+                            TextColor="#171717" />
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                FontSize="15"
+                                LineBreakMode="WordWrap"
+                                Text="Das ist ein Beispielsatz mit diesem Wort."
+                                TextColor="#333333" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="This is an example sentence using this word."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border
+                    Padding="17"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#E4E8F4"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="13">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="18"
+                            Text="Lernpunkte"
+                            TextColor="#171717" />
+                        <VerticalStackLayout Spacing="10">
+                            <Grid
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10">
+                            <Border
+                                x:Name="MeaningScoreCard"
+                                Padding="12"
+                                BackgroundColor="#F7F7F5"
+                                Stroke="#E4E4DE">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <Label FontSize="10" Text="BEDEUTUNG" TextColor="#777777" />
+                                    <Label
+                                        x:Name="MeaningScoreCheck"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="✓"
+                                        TextColor="#2E7D32" />
+                                    <Label
+                                        x:Name="MeaningScoreLabel"
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Grid>
+                            </Border>
+                            <Border
+                                x:Name="ReverseMeaningScoreCard"
+                                Grid.Column="1"
+                                Padding="12"
+                                BackgroundColor="#F7F7F5"
+                                Stroke="#E4E4DE">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <Label FontSize="10" Text="UMGEKEHRTE BEDEUTUNG" TextColor="#777777" />
+                                    <Label
+                                        x:Name="ReverseMeaningScoreCheck"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="✓"
+                                        TextColor="#2E7D32" />
+                                    <Label
+                                        x:Name="ReverseMeaningScoreLabel"
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Grid>
+                            </Border>
+                            </Grid>
+
+                            <Grid
+                                x:Name="NounScoresRow"
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                IsVisible="False">
+                            <Border
+                                x:Name="ArticleScoreCard"
+                                Padding="12"
+                                BackgroundColor="#F7F7F5"
+                                Stroke="#E4E4DE">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <Label FontSize="10" Text="ARTIKEL" TextColor="#777777" />
+                                    <Label
+                                        x:Name="ArticleScoreCheck"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="✓"
+                                        TextColor="#2E7D32" />
+                                    <Label
+                                        x:Name="ArticleScoreLabel"
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Grid>
+                            </Border>
+                            <Border
+                                x:Name="PluralScoreCard"
+                                Grid.Column="1"
+                                Padding="12"
+                                BackgroundColor="#F7F7F5"
+                                Stroke="#E4E4DE">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <Label FontSize="10" Text="PLURAL" TextColor="#777777" />
+                                    <Label
+                                        x:Name="PluralScoreCheck"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="✓"
+                                        TextColor="#2E7D32" />
+                                    <Label
+                                        x:Name="PluralScoreLabel"
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Grid>
+                            </Border>
+                            </Grid>
+
+                            <Grid
+                                x:Name="VerbScoresRow"
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                IsVisible="False">
+                            <Border
+                                x:Name="PrateritumScoreCard"
+                                Padding="12"
+                                BackgroundColor="#F7F7F5"
+                                Stroke="#E4E4DE">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <Label FontSize="10" Text="PRÄTERITUM" TextColor="#777777" />
+                                    <Label
+                                        x:Name="PrateritumScoreCheck"
+                                        HorizontalOptions="End"
+                                        IsVisible="False"
+                                        Text="✓"
+                                        TextColor="#2E7D32" />
+                                    <Label
+                                        x:Name="PrateritumScoreLabel"
+                                        Grid.Row="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Grid>
+                            </Border>
+                            <Border
+                                x:Name="PerfectScoreCard"
+                                Grid.Column="1"
+                                Padding="12"
+                                BackgroundColor="#F7F7F5"
+                                Stroke="#E4E4DE">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+                                <Grid
+                                    ColumnDefinitions="*,Auto"
+                                    RowDefinitions="Auto,Auto">
+                                    <Label FontSize="10" Text="PERFEKT" TextColor="#777777" />
+                                    <Label
+                                        x:Name="PerfectScoreCheck"
+                                        Grid.Column="1"
+                                        IsVisible="False"
+                                        Text="✓"
+                                        TextColor="#2E7D32" />
+                                    <Label
+                                        x:Name="PerfectScoreLabel"
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        Text="0"
+                                        TextColor="#171717" />
+                                </Grid>
+                            </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <local:BottomNavigationView
+            Grid.Row="1"
+            SelectedTab="Search"
+            TabSelected="OnBottomTabSelected" />
+
+        <Grid
+            x:Name="LoadingOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#CCFAFAF8">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                Spacing="10"
+                VerticalOptions="Center">
+                <ActivityIndicator
+                    Color="#2563EB"
+                    IsRunning="True" />
+                <Label
+                    FontSize="12"
+                    Text="Wort wird geladen..."
+                    TextColor="#777777" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+
+</ContentPage>

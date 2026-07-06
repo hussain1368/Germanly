@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.VerificationCodePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#FAFAF8" />
+            <GradientStop Offset="0.5" Color="#EEF4F8" />
+            <GradientStop Offset="1.0" Color="#F3F7EF" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,18,20,28" Spacing="18">
+            <Grid ColumnDefinitions="40,*" ColumnSpacing="10">
+                <Border
+                    BackgroundColor="#FFFFFF"
+                    HeightRequest="40"
+                    Stroke="#E8E8E4"
+                    StrokeThickness="1"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Path
+                        Aspect="Uniform"
+                        Data="M 19 8 L 11 16 L 19 24"
+                        Fill="Transparent"
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Back"
+                        Stroke="#171717"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="22" />
+                </Border>
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="0"
+                    VerticalOptions="Center">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="22"
+                        Text="E-Mail bestätigen"
+                        TextColor="#171717" />
+                    <Label
+                        FontSize="11"
+                        Text="Enter your six-digit verification code"
+                        TextColor="#777777" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border
+                Padding="20"
+                BackgroundColor="#FFFFFF"
+                Stroke="#DDE8F5"
+                StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="18">
+                    <Border
+                        BackgroundColor="#EAF2FF"
+                        HeightRequest="58"
+                        HorizontalOptions="Center"
+                        Stroke="#CFE0FA"
+                        StrokeThickness="1"
+                        WidthRequest="58">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="29" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="24"
+                            HorizontalTextAlignment="Center"
+                            Text="6"
+                            TextColor="#2563EB"
+                            VerticalTextAlignment="Center" />
+                    </Border>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="21"
+                            HorizontalTextAlignment="Center"
+                            Text="Prüfe deinen Posteingang"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="WordWrap"
+                            Text="We sent a six-digit code to"
+                            TextColor="#777777" />
+                        <Label
+                            x:Name="EmailLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="13"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="TailTruncation"
+                            Text="your email address"
+                            TextColor="#2563EB" />
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout
+                        Spacing="3"
+                        HorizontalOptions="Center"
+                        MaximumWidthRequest="320">
+                        <Border
+                            x:Name="DigitOneBorder"
+                            BackgroundColor="#F8FAFC"
+                            HeightRequest="44"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="DigitOneEntry"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="1"
+                                MinimumHeightRequest="0"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="Verification digit one"
+                                TextChanged="OnDigitTextChanged"
+                                TextColor="#171717"
+                                WidthRequest="44" />
+                        </Border>
+
+                        <Border
+                            x:Name="DigitTwoBorder"
+                            BackgroundColor="#F8FAFC"
+                            HeightRequest="44"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="DigitTwoEntry"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="1"
+                                MinimumHeightRequest="0"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="Verification digit two"
+                                TextChanged="OnDigitTextChanged"
+                                TextColor="#171717"
+                                WidthRequest="44" />
+                        </Border>
+
+                        <Border
+                            x:Name="DigitThreeBorder"
+                            BackgroundColor="#F8FAFC"
+                            HeightRequest="44"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="DigitThreeEntry"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="1"
+                                MinimumHeightRequest="0"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="Verification digit three"
+                                TextChanged="OnDigitTextChanged"
+                                TextColor="#171717"
+                                WidthRequest="44" />
+                        </Border>
+
+                        <Border
+                            x:Name="DigitFourBorder"
+                            BackgroundColor="#F8FAFC"
+                            HeightRequest="44"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="DigitFourEntry"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="1"
+                                MinimumHeightRequest="0"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="Verification digit four"
+                                TextChanged="OnDigitTextChanged"
+                                TextColor="#171717"
+                                WidthRequest="44" />
+                        </Border>
+
+                        <Border
+                            x:Name="DigitFiveBorder"
+                            BackgroundColor="#F8FAFC"
+                            HeightRequest="44"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="DigitFiveEntry"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="1"
+                                MinimumHeightRequest="0"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="Verification digit five"
+                                TextChanged="OnDigitTextChanged"
+                                TextColor="#171717"
+                                WidthRequest="44" />
+                        </Border>
+
+                        <Border
+                            x:Name="DigitSixBorder"
+                            BackgroundColor="#F8FAFC"
+                            HeightRequest="44"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="DigitSixEntry"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HeightRequest="44"
+                                HorizontalTextAlignment="Center"
+                                Keyboard="Numeric"
+                                MaxLength="1"
+                                MinimumHeightRequest="0"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="Verification digit six"
+                                TextChanged="OnDigitTextChanged"
+                                TextColor="#171717"
+                                WidthRequest="44" />
+                        </Border>
+                    </HorizontalStackLayout>
+
+                    <Label
+                        x:Name="CodeStatusLabel"
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        IsVisible="False"
+                        LineBreakMode="WordWrap"
+                        TextColor="#C43D36" />
+
+                    <Button
+                        x:Name="VerifyButton"
+                        BackgroundColor="#2563EB"
+                        Clicked="OnVerifyClicked"
+                        CornerRadius="8"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="50"
+                        IsEnabled="False"
+                        Text="Code bestätigen"
+                        TextColor="#FFFFFF" />
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontSize="12"
+                            HorizontalTextAlignment="Center"
+                            Text="Didn't receive the code?"
+                            TextColor="#777777" />
+                        <Label
+                            x:Name="ResendLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="13"
+                            HorizontalTextAlignment="Center"
+                            Opacity="0.45"
+                            SemanticProperties.Description="Resend verification code"
+                            Text="Resend code"
+                            TextColor="#2563EB">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnResendTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            x:Name="CountdownLabel"
+                            FontSize="11"
+                            HorizontalTextAlignment="Center"
+                            Text="Resend available in 01:00"
+                            TextColor="#8A8A8A" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label
+                FontSize="11"
+                HorizontalTextAlignment="Center"
+                LineBreakMode="WordWrap"
+                Text="Email delivery and server-side code validation will activate when the authentication service is connected."
+                TextColor="#8A8A8A" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

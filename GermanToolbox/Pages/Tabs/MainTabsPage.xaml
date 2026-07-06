@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.MainTabsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox"
+    BackgroundColor="#FAFAF8"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*,Auto">
+        <local:HomeTab x:Name="HomeTabContent" IsVisible="True" />
+
+        <local:PracticeTab x:Name="PracticeTabContent" IsVisible="False" />
+
+        <local:SearchTab x:Name="SearchTabContent" IsVisible="False" />
+
+        <local:SettingsTab
+            x:Name="SettingsTabContent"
+            ClearProgressRequested="OnClearProgressRequested"
+            IsVisible="False"
+            ProgressCriteriaChanged="OnProgressCriteriaChanged" />
+
+        <local:BottomNavigationView
+            x:Name="BottomNav"
+            Grid.Row="1"
+            SelectedTab="Home"
+            TabSelected="OnBottomTabSelected" />
+
+        <Grid
+            x:Name="ClearProgressOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#99000000"
+            IsVisible="False">
+            <Border
+                Margin="28"
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                HorizontalOptions="Fill"
+                Stroke="#F2DEDC"
+                StrokeThickness="1"
+                VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#33000000"
+                        Opacity="0.3"
+                        Radius="26"
+                        Offset="0,14" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="22"
+                        Text="Fortschritt löschen?"
+                        TextColor="#171717" />
+
+                    <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClearProgressConfirmationTapped" />
+                        </Grid.GestureRecognizers>
+                        <Border
+                            x:Name="ClearProgressConfirmationBox"
+                            BackgroundColor="#FFFFFF"
+                            HeightRequest="20"
+                            Stroke="#D43D35"
+                            StrokeThickness="1.6"
+                            VerticalOptions="Center"
+                            WidthRequest="20">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="5" />
+                            </Border.StrokeShape>
+                            <Path
+                                x:Name="ClearProgressConfirmationCheckMark"
+                                Aspect="Uniform"
+                                Data="M 4 9 L 8 13 L 16 5"
+                                Fill="Transparent"
+                                HeightRequest="14"
+                                HorizontalOptions="Center"
+                                IsVisible="False"
+                                Stroke="#FFFFFF"
+                                StrokeLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeThickness="2.2"
+                                VerticalOptions="Center"
+                                WidthRequest="14" />
+                        </Border>
+                        <Label
+                            Grid.Column="1"
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="I understand this will reset all scores, mistake flags, and learning flags."
+                            TextColor="#555555"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Border
+                            BackgroundColor="#FFFFFF"
+                            HeightRequest="46"
+                            Stroke="#E4E4DE"
+                            StrokeThickness="1">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCancelClearProgressTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="Abbrechen"
+                                TextColor="#171717"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+
+                        <Border
+                            x:Name="ClearProgressConfirmButton"
+                            Grid.Column="1"
+                            BackgroundColor="#E6A8A4"
+                            HeightRequest="46"
+                            InputTransparent="True"
+                            Opacity="0.6"
+                            Stroke="#E6A8A4"
+                            StrokeThickness="1">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnConfirmClearProgressTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                x:Name="ClearProgressConfirmLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="Löschen"
+                                TextColor="#FFFFFF"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

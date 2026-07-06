@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.SignInPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#FAFAF8" />
+            <GradientStop Offset="0.5" Color="#EEF4F8" />
+            <GradientStop Offset="1.0" Color="#F3F7EF" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
+    <ScrollView x:Name="AccountScrollView">
+        <VerticalStackLayout Padding="20,18,20,28" Spacing="14">
+            <Grid ColumnDefinitions="40,*" ColumnSpacing="10">
+                <Border
+                    BackgroundColor="#FFFFFF"
+                    HeightRequest="40"
+                    Stroke="#E8E8E4"
+                    StrokeThickness="1"
+                    WidthRequest="40">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Path
+                        Aspect="Uniform"
+                        Data="M 19 8 L 11 16 L 19 24"
+                        Fill="Transparent"
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        SemanticProperties.Description="Back"
+                        Stroke="#171717"
+                        StrokeLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeThickness="2.4"
+                        VerticalOptions="Center"
+                        WidthRequest="22" />
+                </Border>
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="0"
+                    VerticalOptions="Center">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="22"
+                        Text="Dein Konto"
+                        TextColor="#171717" />
+                    <Label
+                        x:Name="AccountSubtitle"
+                        FontSize="11"
+                        Text="Create an account"
+                        TextColor="#777777" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border
+                x:Name="SignUpView"
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                Stroke="#DDE8F5"
+                StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="3">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Konto erstellen"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="12"
+                            Text="Enter your details to create your profile."
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="NAME"
+                            TextColor="#555555" />
+                        <Border
+                            Padding="12,0"
+                            BackgroundColor="#F8FAFC"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                BackgroundColor="Transparent"
+                                HeightRequest="48"
+                                Placeholder="Your full name"
+                                TextColor="#171717" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="E-MAIL"
+                            TextColor="#555555" />
+                        <Border
+                            Padding="12,0"
+                            BackgroundColor="#F8FAFC"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                x:Name="SignUpEmailEntry"
+                                BackgroundColor="Transparent"
+                                HeightRequest="48"
+                                Keyboard="Email"
+                                Placeholder="name@example.com"
+                                TextColor="#171717" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="GEBURTSDATUM"
+                            TextColor="#555555" />
+                        <Border
+                            Padding="12,0"
+                            BackgroundColor="#F8FAFC"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnBirthdayTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Grid
+                                ColumnDefinitions="*,Auto"
+                                HeightRequest="48">
+                                <Label
+                                    x:Name="BirthdayValueLabel"
+                                    FontSize="14"
+                                    Text="01.01.2000"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="18"
+                                    Text="⌄"
+                                    TextColor="#2563EB"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Button
+                        BackgroundColor="#2563EB"
+                        Clicked="OnCreateAccountClicked"
+                        CornerRadius="8"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="50"
+                        Text="Konto erstellen"
+                        TextColor="#FFFFFF" />
+
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                        <BoxView
+                            HeightRequest="1"
+                            BackgroundColor="#E5E7EB"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="11"
+                            Text="ODER"
+                            TextColor="#8A8A8A" />
+                        <BoxView
+                            Grid.Column="2"
+                            HeightRequest="1"
+                            BackgroundColor="#E5E7EB"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Button
+                        BackgroundColor="#FFFFFF"
+                        BorderColor="#D8DEE8"
+                        BorderWidth="1"
+                        ContentLayout="Left,10"
+                        CornerRadius="8"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="50"
+                        ImageSource="google.png"
+                        Text="Continue with Google"
+                        TextColor="#171717" />
+
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        HorizontalTextAlignment="Center"
+                        SemanticProperties.Description="Switch to sign in"
+                        Text="Already have an account?"
+                        TextColor="#2563EB">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnShowSignInTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border
+                x:Name="SignInView"
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                IsVisible="False"
+                Stroke="#DDE8F5"
+                StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="3">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Anmelden"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="12"
+                            Text="Welcome back. Sign in to your profile."
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="E-MAIL"
+                            TextColor="#555555" />
+                        <Border
+                            Padding="12,0"
+                            BackgroundColor="#F8FAFC"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                BackgroundColor="Transparent"
+                                HeightRequest="48"
+                                Keyboard="Email"
+                                Placeholder="name@example.com"
+                                TextColor="#171717" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="PASSWORT"
+                            TextColor="#555555" />
+                        <Border
+                            Padding="12,0"
+                            BackgroundColor="#F8FAFC"
+                            Stroke="#DDE8F5"
+                            StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <local:BorderlessEntry
+                                BackgroundColor="Transparent"
+                                HeightRequest="48"
+                                IsPassword="True"
+                                Placeholder="Your password"
+                                TextColor="#171717" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Button
+                        BackgroundColor="#2563EB"
+                        CornerRadius="8"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="50"
+                        Text="Anmelden"
+                        TextColor="#FFFFFF" />
+
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                        <BoxView
+                            HeightRequest="1"
+                            BackgroundColor="#E5E7EB"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="11"
+                            Text="ODER"
+                            TextColor="#8A8A8A" />
+                        <BoxView
+                            Grid.Column="2"
+                            HeightRequest="1"
+                            BackgroundColor="#E5E7EB"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Button
+                        BackgroundColor="#FFFFFF"
+                        BorderColor="#D8DEE8"
+                        BorderWidth="1"
+                        ContentLayout="Left,10"
+                        CornerRadius="8"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="50"
+                        ImageSource="google.png"
+                        Text="Continue with Google"
+                        TextColor="#171717" />
+
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        HorizontalTextAlignment="Center"
+                        SemanticProperties.Description="Switch to sign up"
+                        Text="Don't have an account?"
+                        TextColor="#2563EB">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnShowSignUpTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label
+                FontSize="11"
+                HorizontalTextAlignment="Center"
+                LineBreakMode="WordWrap"
+                Text="Design preview only — account creation and sign-in are not connected yet."
+                TextColor="#8A8A8A" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+        <Grid
+            x:Name="BirthdayWheelOverlay"
+            BackgroundColor="#99000000"
+            IsVisible="False"
+            Padding="20"
+            ZIndex="20">
+            <Border
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                HorizontalOptions="Fill"
+                MaximumWidthRequest="420"
+                Stroke="#DDE8F5"
+                StrokeThickness="1"
+                VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="3">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="20"
+                            Text="Geburtsdatum"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="12"
+                            Text="Swipe each wheel to select your date."
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="11"
+                            HorizontalTextAlignment="Center"
+                            Text="TAG"
+                            TextColor="#777777" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="11"
+                            HorizontalTextAlignment="Center"
+                            Text="MONAT"
+                            TextColor="#777777" />
+                        <Label
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="11"
+                            HorizontalTextAlignment="Center"
+                            Text="JAHR"
+                            TextColor="#777777" />
+                    </Grid>
+
+                    <Grid
+                        HeightRequest="180"
+                        ColumnDefinitions="*,*,*"
+                        ColumnSpacing="8">
+                        <Border
+                            BackgroundColor="#EAF2FF"
+                            InputTransparent="True"
+                            Stroke="#CFE0FA"
+                            StrokeThickness="1"
+                            VerticalOptions="Center"
+                            HeightRequest="56">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="#EAF2FF"
+                            InputTransparent="True"
+                            Stroke="#CFE0FA"
+                            StrokeThickness="1"
+                            VerticalOptions="Center"
+                            HeightRequest="56">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                        </Border>
+                        <Border
+                            Grid.Column="2"
+                            BackgroundColor="#EAF2FF"
+                            InputTransparent="True"
+                            Stroke="#CFE0FA"
+                            StrokeThickness="1"
+                            VerticalOptions="Center"
+                            HeightRequest="56">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                        </Border>
+
+                        <CarouselView
+                            x:Name="BirthdayDayWheel"
+                            Grid.Column="0"
+                            ItemsUpdatingScrollMode="KeepScrollOffset"
+                            Loop="False"
+                            PeekAreaInsets="0,62"
+                            PositionChanged="OnBirthdayWheelPositionChanged"
+                            VerticalOptions="Fill">
+                            <CarouselView.ItemsLayout>
+                                <LinearItemsLayout
+                                    ItemSpacing="0"
+                                    Orientation="Vertical"
+                                    SnapPointsAlignment="Center"
+                                    SnapPointsType="MandatorySingle" />
+                            </CarouselView.ItemsLayout>
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="20"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding .}"
+                                        TextColor="#171717"
+                                        VerticalTextAlignment="Center" />
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <CarouselView
+                            x:Name="BirthdayMonthWheel"
+                            Grid.Column="1"
+                            ItemsUpdatingScrollMode="KeepScrollOffset"
+                            Loop="False"
+                            PeekAreaInsets="0,62"
+                            PositionChanged="OnBirthdayWheelPositionChanged"
+                            VerticalOptions="Fill">
+                            <CarouselView.ItemsLayout>
+                                <LinearItemsLayout
+                                    ItemSpacing="0"
+                                    Orientation="Vertical"
+                                    SnapPointsAlignment="Center"
+                                    SnapPointsType="MandatorySingle" />
+                            </CarouselView.ItemsLayout>
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="18"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding .}"
+                                        TextColor="#171717"
+                                        VerticalTextAlignment="Center" />
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <CarouselView
+                            x:Name="BirthdayYearWheel"
+                            Grid.Column="2"
+                            ItemsUpdatingScrollMode="KeepScrollOffset"
+                            Loop="False"
+                            PeekAreaInsets="0,62"
+                            PositionChanged="OnBirthdayWheelPositionChanged"
+                            VerticalOptions="Fill">
+                            <CarouselView.ItemsLayout>
+                                <LinearItemsLayout
+                                    ItemSpacing="0"
+                                    Orientation="Vertical"
+                                    SnapPointsAlignment="Center"
+                                    SnapPointsType="MandatorySingle" />
+                            </CarouselView.ItemsLayout>
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="18"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding .}"
+                                        TextColor="#171717"
+                                        VerticalTextAlignment="Center" />
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button
+                            BackgroundColor="#FFFFFF"
+                            BorderColor="#D8DEE8"
+                            BorderWidth="1"
+                            Clicked="OnCancelBirthdayClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="48"
+                            Text="Abbrechen"
+                            TextColor="#555555" />
+                        <Button
+                            Grid.Column="1"
+                            BackgroundColor="#2563EB"
+                            Clicked="OnConfirmBirthdayClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="48"
+                            Text="Übernehmen"
+                            TextColor="#FFFFFF" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

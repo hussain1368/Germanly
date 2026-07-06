@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.IrregularVerbsTestPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#FAFAF8" />
+            <GradientStop Offset="0.48" Color="#EEF5F0" />
+            <GradientStop Offset="1.0" Color="#F4F1E9" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid x:Name="PageLayout" SizeChanged="OnPageLayoutSizeChanged">
+        <ScrollView x:Name="TestScrollView">
+            <VerticalStackLayout Padding="24" Spacing="18">
+                <Grid ColumnDefinitions="*,Auto,40" ColumnSpacing="8">
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="28"
+                            Text="Unregelmäßige Verben"
+                            TextColor="#171717" />
+                        <Grid
+                            ColumnDefinitions="42,42,42"
+                            ColumnSpacing="7"
+                            HorizontalOptions="Start">
+                            <BoxView
+                                BackgroundColor="#2E7D32"
+                                CornerRadius="3"
+                                HeightRequest="5" />
+                            <BoxView
+                                Grid.Column="1"
+                                BackgroundColor="#F2C94C"
+                                CornerRadius="3"
+                                HeightRequest="5" />
+                            <BoxView
+                                Grid.Column="2"
+                                BackgroundColor="#2563EB"
+                                CornerRadius="3"
+                                HeightRequest="5" />
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="12,7"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#DCEBDD"
+                        VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Label
+                            x:Name="ProgressLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="13"
+                            Text="1 / 10"
+                            TextColor="#2E7D32" />
+                    </Border>
+
+                    <Border
+                        Grid.Column="2"
+                        BackgroundColor="#FFFFFF"
+                        HeightRequest="40"
+                        Stroke="#DCEBDD"
+                        ToolTipProperties.Text="Quit test"
+                        VerticalOptions="Center"
+                        WidthRequest="40">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnQuitTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Path
+                            Aspect="Uniform"
+                            Data="M 9 9 L 23 23 M 23 9 L 9 23"
+                            Fill="Transparent"
+                            HeightRequest="22"
+                            HorizontalOptions="Center"
+                            SemanticProperties.Description="Quit test"
+                            Stroke="#171717"
+                            StrokeLineCap="Round"
+                            StrokeThickness="2.4"
+                            VerticalOptions="Center"
+                            WidthRequest="22" />
+                    </Border>
+                </Grid>
+
+                <Border
+                    x:Name="WordCard"
+                    Padding="24"
+                    StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnWordCardTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#33000000"
+                            Opacity="0.28"
+                            Radius="28"
+                            Offset="0,16" />
+                    </Border.Shadow>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#17251D" />
+                            <GradientStop Offset="0.58" Color="#294332" />
+                            <GradientStop Offset="1.0" Color="#141C17" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <Grid
+                        x:Name="WordContent"
+                        MinimumHeightRequest="300"
+                        RowSpacing="12"
+                        RowDefinitions="Auto,*,Auto">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Border
+                                Padding="11,6"
+                                BackgroundColor="#28FFFFFF"
+                                HorizontalOptions="Start"
+                                Stroke="#22FFFFFF">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="FormLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="12"
+                                    Text="PRÃ„TERITUM"
+                                    TextColor="#9EE5AE" />
+                            </Border>
+                            <Border
+                                Grid.Column="1"
+                                Padding="10,6"
+                                BackgroundColor="#18FFFFFF"
+                                Stroke="#22FFFFFF">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="LevelLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="12"
+                                    Text="B1"
+                                    TextColor="#F2C94C" />
+                            </Border>
+                        </Grid>
+
+                        <VerticalStackLayout
+                            Grid.Row="1"
+                            Margin="0,42,0,0"
+                            HorizontalOptions="Fill"
+                            Spacing="7"
+                            VerticalOptions="Start">
+                            <Label
+                                x:Name="VerbLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="50"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="WordWrap"
+                                Text="sehen"
+                                TextColor="#FFFFFF" />
+                            <Label
+                                x:Name="RevealHintLabel"
+                                FontSize="13"
+                                HorizontalTextAlignment="Center"
+                                IsVisible="False"
+                                Text="Tap the card to reveal the correct form"
+                                TextColor="#C6D8CA" />
+                            <BoxView
+                                BackgroundColor="#F2C94C"
+                                CornerRadius="3"
+                                HeightRequest="5"
+                                HorizontalOptions="Center"
+                                WidthRequest="112" />
+                            <Label
+                                x:Name="TranslationLabel"
+                                FontSize="13"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="WordWrap"
+                                Text="translation"
+                                TextColor="#C6D8CA" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="2">
+                            <Border
+                                x:Name="CardAnswerReveal"
+                                Padding="12,8"
+                                BackgroundColor="#24FFFFFF"
+                                IsVisible="False"
+                                MaximumHeightRequest="86"
+                                MinimumHeightRequest="54"
+                                Opacity="0"
+                                Stroke="#2EFFFFFF">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <VerticalStackLayout
+                                    Spacing="1"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        x:Name="RevealTitleLabel"
+                                        FontSize="11"
+                                        HorizontalTextAlignment="Center"
+                                        Text="Correct"
+                                        TextColor="#C9D6E5" />
+                                    <Label
+                                        x:Name="RevealedAnswerLabel"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="24"
+                                        HorizontalTextAlignment="Center"
+                                        LineBreakMode="CharacterWrap"
+                                        MaxLines="2"
+                                        Text="sah"
+                                        TextColor="#FFFFFF"
+                                        VerticalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border
+                    x:Name="InlineTypingPanel"
+                    BackgroundColor="Transparent"
+                    IsVisible="False"
+                    StrokeThickness="0">
+                    <Border
+                        Padding="16,12"
+                        BackgroundColor="#FAFAF8"
+                        Stroke="#DCEBDD"
+                        StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="15"
+                                Text="Richtige Form eingeben"
+                                TextColor="#171717" />
+                            <Border
+                                BackgroundColor="#FFFFFF"
+                                Stroke="#DCEBDD"
+                                StrokeThickness="2">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Entry
+                                    x:Name="InlineAnswerEntry"
+                                    Margin="4,0"
+                                    Completed="OnSubmitAnswerClicked"
+                                    Focused="OnAnswerEntryFocused"
+                                    FontSize="18"
+                                    IsSpellCheckEnabled="False"
+                                    IsTextPredictionEnabled="False"
+                                    Keyboard="Text"
+                                    Placeholder="German verb form"
+                                    ReturnType="Done"
+                                    TextChanged="OnAnswerEntryTextChanged"
+                                    TextColor="#171717"
+                                    Unfocused="OnAnswerEntryUnfocused" />
+                            </Border>
+                            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                                <Button
+                                    BackgroundColor="#FFFFFF"
+                                    BorderColor="#DCEBDD"
+                                    BorderWidth="1"
+                                    Clicked="OnGermanCharacterClicked"
+                                    CommandParameter="ä"
+                                    Text="ä"
+                                    TextColor="#171717" />
+                                <Button
+                                    Grid.Column="1"
+                                    BackgroundColor="#FFFFFF"
+                                    BorderColor="#DCEBDD"
+                                    BorderWidth="1"
+                                    Clicked="OnGermanCharacterClicked"
+                                    CommandParameter="ö"
+                                    Text="ö"
+                                    TextColor="#171717" />
+                                <Button
+                                    Grid.Column="2"
+                                    BackgroundColor="#FFFFFF"
+                                    BorderColor="#DCEBDD"
+                                    BorderWidth="1"
+                                    Clicked="OnGermanCharacterClicked"
+                                    CommandParameter="ü"
+                                    Text="ü"
+                                    TextColor="#171717" />
+                                <Button
+                                    Grid.Column="3"
+                                    BackgroundColor="#FFFFFF"
+                                    BorderColor="#DCEBDD"
+                                    BorderWidth="1"
+                                    Clicked="OnGermanCharacterClicked"
+                                    CommandParameter="ß"
+                                    Text="ß"
+                                    TextColor="#171717" />
+                            </Grid>
+                            <Button
+                                BackgroundColor="#2E7D32"
+                                Clicked="OnSubmitAnswerClicked"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                HeightRequest="48"
+                                Text="Antwort prüfen"
+                                TextColor="#FFFFFF" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Border>
+
+                <VerticalStackLayout x:Name="MultipleChoicePanel" Spacing="8">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="15"
+                        Text="Richtige Form auswählen"
+                        TextColor="#171717" />
+                    <VerticalStackLayout x:Name="MultipleChoiceOptions" Spacing="8" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                    x:Name="SelfAssessmentPanel"
+                    IsVisible="False"
+                    Spacing="10">
+                    <Grid
+                        x:Name="SelfAssessmentActions"
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12"
+                        InputTransparent="True"
+                        Opacity="0.35">
+                        <Border
+                            BackgroundColor="#FFFFFF"
+                            HeightRequest="76"
+                            SemanticProperties.Description="Incorrect"
+                            Stroke="#D43D35"
+                            StrokeThickness="2"
+                            ToolTipProperties.Text="Incorrect">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSelfAssessmentWrongClicked" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Path
+                                Aspect="Uniform"
+                                Data="M 10 5 H 20 V 18 L 15 27 C 14 28.8 11.4 28.2 11.4 26.1 V 20 H 7 C 5.6 20 4.5 18.8 4.8 17.4 L 6.5 8.2 C 6.9 6.3 8.2 5 10 5 Z M 20 6 H 26 V 20 H 20"
+                                Fill="Transparent"
+                                HeightRequest="34"
+                                HorizontalOptions="Center"
+                                Stroke="#D43D35"
+                                StrokeLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeThickness="2.4"
+                                VerticalOptions="Center"
+                                WidthRequest="34" />
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="#FFFFFF"
+                            HeightRequest="76"
+                            SemanticProperties.Description="Correct"
+                            Stroke="#2E7D32"
+                            StrokeThickness="2"
+                            ToolTipProperties.Text="Correct">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSelfAssessmentCorrectClicked" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Path
+                                Aspect="Uniform"
+                                Data="M 22 27 H 12 V 14 L 17 5 C 18 3.2 20.6 3.8 20.6 5.9 V 12 H 25 C 26.4 12 27.5 13.2 27.2 14.6 L 25.5 23.8 C 25.1 25.7 23.8 27 22 27 Z M 12 26 H 6 V 12 H 12"
+                                Fill="Transparent"
+                                HeightRequest="34"
+                                HorizontalOptions="Center"
+                                Stroke="#2E7D32"
+                                StrokeLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeThickness="2.4"
+                                VerticalOptions="Center"
+                                WidthRequest="34" />
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border
+            x:Name="FloatingTypingPanel"
+            Margin="24,0,24,16"
+            Padding="16,12"
+            BackgroundColor="#FAFAF8"
+            IsVisible="False"
+            Stroke="#DCEBDD"
+            StrokeThickness="1"
+            VerticalOptions="End">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8" />
+            </Border.StrokeShape>
+            <VerticalStackLayout Spacing="8">
+                <Label
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="15"
+                    Text="Richtige Form eingeben"
+                    TextColor="#171717" />
+                <Border
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DCEBDD"
+                    StrokeThickness="2">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Entry
+                        x:Name="FloatingAnswerEntry"
+                        Margin="4,0"
+                        Completed="OnSubmitAnswerClicked"
+                        Focused="OnAnswerEntryFocused"
+                        FontSize="18"
+                        IsSpellCheckEnabled="False"
+                        IsTextPredictionEnabled="False"
+                        Keyboard="Text"
+                        Placeholder="German verb form"
+                        ReturnType="Done"
+                        TextChanged="OnAnswerEntryTextChanged"
+                        TextColor="#171717"
+                        Unfocused="OnAnswerEntryUnfocused" />
+                </Border>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                    <Button
+                        BackgroundColor="#FFFFFF"
+                        BorderColor="#DCEBDD"
+                        BorderWidth="1"
+                        Clicked="OnGermanCharacterClicked"
+                        CommandParameter="ä"
+                        Text="ä"
+                        TextColor="#171717" />
+                    <Button
+                        Grid.Column="1"
+                        BackgroundColor="#FFFFFF"
+                        BorderColor="#DCEBDD"
+                        BorderWidth="1"
+                        Clicked="OnGermanCharacterClicked"
+                        CommandParameter="ö"
+                        Text="ö"
+                        TextColor="#171717" />
+                    <Button
+                        Grid.Column="2"
+                        BackgroundColor="#FFFFFF"
+                        BorderColor="#DCEBDD"
+                        BorderWidth="1"
+                        Clicked="OnGermanCharacterClicked"
+                        CommandParameter="ü"
+                        Text="ü"
+                        TextColor="#171717" />
+                    <Button
+                        Grid.Column="3"
+                        BackgroundColor="#FFFFFF"
+                        BorderColor="#DCEBDD"
+                        BorderWidth="1"
+                        Clicked="OnGermanCharacterClicked"
+                        CommandParameter="ß"
+                        Text="ß"
+                        TextColor="#171717" />
+                </Grid>
+                <Button
+                    BackgroundColor="#2E7D32"
+                    Clicked="OnSubmitAnswerClicked"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    HeightRequest="48"
+                    Text="Antwort prüfen"
+                    TextColor="#FFFFFF" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Grid
+            x:Name="ToastOverlay"
+            Padding="24,0,24,34"
+            InputTransparent="True"
+            IsVisible="False"
+            RowDefinitions="*,Auto">
+            <Border
+                x:Name="ToastCard"
+                Grid.Row="1"
+                Padding="14,10"
+                BackgroundColor="#E0342F"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="360"
+                Opacity="0"
+                StrokeThickness="0"
+                TranslationY="18">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#33000000"
+                        Opacity="0.28"
+                        Radius="18"
+                        Offset="0,8" />
+                </Border.Shadow>
+                <Label
+                    x:Name="ToastLabel"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="13"
+                    HorizontalTextAlignment="Center"
+                    Text="Not quite. Try again."
+                    TextColor="#FFFFFF" />
+            </Border>
+        </Grid>
+
+        <Grid
+            x:Name="QuitConfirmationOverlay"
+            BackgroundColor="#99000000"
+            IsVisible="False">
+            <Border
+                Margin="28"
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                HorizontalOptions="Fill"
+                Stroke="#DCEBDD"
+                VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#33000000"
+                        Opacity="0.3"
+                        Radius="26"
+                        Offset="0,14" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="22"
+                            Text="Test beenden?"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="13"
+                            Text="Scores and mistakes will not be updated. These verbs will stay in your learning pool."
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Border
+                            BackgroundColor="#FFFFFF"
+                            HeightRequest="46"
+                            Stroke="#E4E4DE">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCancelQuitTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                HorizontalTextAlignment="Center"
+                                Text="Weiterüben"
+                                TextColor="#171717"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="#D43D35"
+                            HeightRequest="46"
+                            Stroke="#D43D35">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnConfirmQuitTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                HorizontalTextAlignment="Center"
+                                Text="Beenden"
+                                TextColor="#FFFFFF"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

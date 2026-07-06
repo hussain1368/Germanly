@@ -1,0 +1,27 @@
+Rules by Part of Speech:
+1. Nouns  
+   • Depluralize (unless it changes more than 2 characters)  
+   • Convert any non-nominative form to nominative  
+   • Remove gender inflection  
+
+2. Verbs  
+   • Lemmatize to the infinitive form (V1)  
+   • Remove gender inflection  
+
+3. Adjectives & Adverbs  
+   • Remove superlative & comparative forms (keep only the base)  
+   • Remove gender inflection  
+   • Lemmatize remaining forms  
+
+4. Prepositions  
+   • Remove completely  
+
+5. Pronouns  
+   • Lemmatize to the base form  
+
+6. Numerals, Conjunctions & Interjections  
+   • Keep as-is  
+
+General Rules:  
+   • Remove “super-cognates” (true cognates are OK)  
+   • Discard any words that don’t fit cleanly into the 6 categories above 

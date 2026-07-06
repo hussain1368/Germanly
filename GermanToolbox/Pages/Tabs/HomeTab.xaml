@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="GermanToolbox.HomeTab"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,20,24,22" Spacing="18">
+
+            <Grid RowDefinitions="Auto,18,Auto">
+                <Grid ColumnDefinitions="52,*" ColumnSpacing="12">
+                    <Grid
+                        HeightRequest="52"
+                        WidthRequest="52">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnAvatarTapped" />
+                        </Grid.GestureRecognizers>
+                        <Ellipse
+                            Fill="#FFFFFF"
+                            InputTransparent="True"
+                            Stroke="#E5E7EB"
+                            StrokeThickness="1.5" />
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="48"
+                            HorizontalOptions="Center"
+                            Source="profile_avatar.png"
+                            VerticalOptions="Center"
+                            WidthRequest="48">
+                            <Image.Clip>
+                                <EllipseGeometry
+                                    Center="24,24"
+                                    RadiusX="24"
+                                    RadiusY="24" />
+                            </Image.Clip>
+                        </Image>
+                    </Grid>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="1"
+                        VerticalOptions="Center">
+                        <Label
+                            x:Name="GreetingLabel"
+                            FontSize="12"
+                            Text="Guten Morgen"
+                            TextColor="#777777" />
+                        <Label
+                            x:Name="UserNameLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="21"
+                            Text="Alex Morgan"
+                            TextColor="#171717">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnUserNameTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </VerticalStackLayout>
+
+                </Grid>
+
+                <Border
+                    Grid.Row="2"
+                    MinimumHeightRequest="230"
+                    StrokeThickness="0"
+                    ZIndex="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#330E1B33"
+                            Opacity="0.28"
+                            Radius="24"
+                            Offset="0,12" />
+                    </Border.Shadow>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#171717" />
+                            <GradientStop Offset="0.58" Color="#243047" />
+                            <GradientStop Offset="1.0" Color="#1E4770" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+
+                <AbsoluteLayout
+                    Grid.Row="2"
+                    HeightRequest="1"
+                    InputTransparent="True"
+                    IsClippedToBounds="False"
+                    VerticalOptions="End"
+                    ZIndex="1">
+                    <Image
+                        x:Name="WelcomePersonImage"
+                        AbsoluteLayout.LayoutBounds="1,1,240,320"
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        Aspect="AspectFit"
+                        HeightRequest="320"
+                        InputTransparent="True"
+                        Source="girl.png"
+                        TranslationX="36"
+                        WidthRequest="240" />
+                </AbsoluteLayout>
+
+                <VerticalStackLayout
+                    Grid.Row="2"
+                    MinimumHeightRequest="230"
+                    Padding="20"
+                    Spacing="15"
+                    ZIndex="2">
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            x:Name="FocusTitleLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="24"
+                            LineBreakMode="WordWrap"
+                            Text="Bereit für eine kurze Deutschrunde?"
+                            TextColor="#FFFFFF">
+                            <Label.Shadow>
+                                <Shadow
+                                    Brush="#CC000000"
+                                    Opacity="0.8"
+                                    Radius="4"
+                                    Offset="0,1" />
+                            </Label.Shadow>
+                        </Label>
+                        <Grid RowDefinitions="Auto">
+                            <BoxView
+                                BackgroundColor="Black"
+                                CornerRadius="2"
+                                Opacity=".5" />
+                            <Label
+                                x:Name="FocusDescriptionLabel"
+                                Padding="3,0"
+                                FontSize="13"
+                                LineBreakMode="WordWrap"
+                                Text="Loading practice data..."
+                                TextColor="#DCE8F6" />
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <BoxView BackgroundColor="#26FFFFFF" HeightRequest="1" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                x:Name="FocusModeLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="17"
+                                Text="Übung"
+                                TextColor="#FFFFFF">
+                                <Label.Shadow>
+                                    <Shadow
+                                        Brush="#CC000000"
+                                        Opacity="0.75"
+                                        Radius="3"
+                                        Offset="0,1" />
+                                </Label.Shadow>
+                            </Label>
+                            <HorizontalStackLayout Spacing="8">
+                                <Border
+                                    Padding="8,4"
+                                    BackgroundColor="#18FFFFFF"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="FocusDueLabel"
+                                        FontSize="11"
+                                        Text="— fällig"
+                                        TextColor="#DCE8F6" />
+                                </Border>
+                                <Border
+                                    Padding="8,4"
+                                    BackgroundColor="#18FFFFFF"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="FocusMistakeLabel"
+                                        FontSize="11"
+                                        Text="— Fehler"
+                                        TextColor="#FFD4D0" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                        <Border
+                            Grid.Column="1"
+                            Padding="16,11"
+                            BackgroundColor="#FFFFFF"
+                            StrokeThickness="0"
+                            VerticalOptions="Center">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnFocusPracticeTapped" />
+                            </Border.GestureRecognizers>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <HorizontalStackLayout Spacing="8">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="13"
+                                    Text="Übung starten"
+                                    TextColor="#1E4770"
+                                    VerticalTextAlignment="Center" />
+                                <Path
+                                    Aspect="Uniform"
+                                    Data="M 5 9 H 17 M 12 4 L 17 9 L 12 14"
+                                    Fill="Transparent"
+                                    HeightRequest="18"
+                                    Stroke="#1E4770"
+                                    StrokeLineCap="Round"
+                                    StrokeLineJoin="Round"
+                                    StrokeThickness="2"
+                                    VerticalOptions="Center"
+                                    WidthRequest="18" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Grid>
+
+            <VerticalStackLayout Spacing="12">
+                <Grid>
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="22"
+                            Text="Schnellübersicht"
+                            TextColor="#171717" />
+                        <Label
+                            FontSize="12"
+                            x:Name="OverviewSubtitleLabel"
+                            Text="Your learning progress at a glance"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Border
+                    x:Name="MasteryOverviewCard"
+                    Padding="18"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMasteryOverviewTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#18000000"
+                            Opacity="0.18"
+                            Radius="16"
+                            Offset="0,7" />
+                    </Border.Shadow>
+
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="16"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="14">
+                        <VerticalStackLayout Spacing="4">
+                            <Grid ColumnDefinitions="30,*" ColumnSpacing="8">
+                                <Border
+                                    x:Name="MasteryIconBackground"
+                                    BackgroundColor="#EAF6EA"
+                                    HeightRequest="30"
+                                    StrokeThickness="0"
+                                    WidthRequest="30">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Path
+                                        x:Name="MasteryIconPath"
+                                        Aspect="Uniform"
+                                        Data="M 5 10 L 9 14 L 16 6"
+                                        Fill="Transparent"
+                                        HeightRequest="18"
+                                        HorizontalOptions="Center"
+                                        Stroke="#2E7D32"
+                                        StrokeLineCap="Round"
+                                        StrokeLineJoin="Round"
+                                        StrokeThickness="2.2"
+                                        VerticalOptions="Center"
+                                        WidthRequest="18" />
+                                </Border>
+                                <Label
+                                    x:Name="MasteryTitleLabel"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="15"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
+                                    Text="Gemeisterte Wörter"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                            <Label
+                                x:Name="MasteryDescriptionLabel"
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="Threshold reached in every applicable quiz"
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="0">
+                            <Label
+                                x:Name="MasteredCountLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="34"
+                                HorizontalTextAlignment="End"
+                                Text="0"
+                                TextColor="#2E7D32" />
+                            <Label
+                                x:Name="MasteredTotalLabel"
+                                FontSize="10"
+                                HorizontalTextAlignment="End"
+                                Text="of 0 words"
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
+                        <Grid
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            ColumnDefinitions="*,Auto"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="6">
+                            <Label
+                                x:Name="OverallMasteryCaptionLabel"
+                                FontSize="11"
+                                Text="Overall progress"
+                                TextColor="#777777" />
+                            <Label
+                                x:Name="OverallMasteryPercentLabel"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="11"
+                                Text="0%"
+                                TextColor="#2E7D32" />
+                            <ProgressBar
+                                x:Name="OverallMasteryProgressBar"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                BackgroundColor="#EAF6EA"
+                                Progress="0"
+                                ProgressColor="#2E7D32" />
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10"
+                    RowDefinitions="Auto,Auto"
+                    RowSpacing="10">
+                    <Border
+                        x:Name="VocabularyOverviewCard"
+                        Padding="14"
+                        BackgroundColor="#F7FAFF"
+                        Stroke="#DDE8F5"
+                        StrokeThickness="1">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnVocabularyTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="8"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="1">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="15"
+                                Text="Wortschatz"
+                                TextColor="#171717" />
+                            <Label
+                                x:Name="VocabularyPercentLabel"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="11"
+                                Text="0%"
+                                TextColor="#2563EB"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                x:Name="VocabularyLearnedLabel"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                FontSize="12"
+                                Text="0 learned"
+                                TextColor="#777777" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        x:Name="ArticlesOverviewCard"
+                        Grid.Column="1"
+                        Padding="14"
+                        BackgroundColor="#FFF9F8"
+                        Stroke="#F2DEDC"
+                        StrokeThickness="1">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnArticlesTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="8"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="1">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="15"
+                                Text="Artikel"
+                                TextColor="#171717" />
+                            <Label
+                                x:Name="ArticlesPercentLabel"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="11"
+                                Text="0%"
+                                TextColor="#D43D35"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                x:Name="ArticlesLearnedLabel"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                FontSize="12"
+                                Text="0 learned"
+                                TextColor="#777777" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        x:Name="PluralsOverviewCard"
+                        Grid.Row="1"
+                        Padding="14"
+                        BackgroundColor="#FBF9FE"
+                        Stroke="#E4DDF2"
+                        StrokeThickness="1">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPluralsTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="8"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="1">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="15"
+                                Text="Plural"
+                                TextColor="#171717" />
+                            <Label
+                                x:Name="PluralsPercentLabel"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="11"
+                                Text="0%"
+                                TextColor="#6D4AA2"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                x:Name="PluralsLearnedLabel"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                FontSize="12"
+                                Text="0 learned"
+                                TextColor="#777777" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        x:Name="IrregularOverviewCard"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Padding="14"
+                        BackgroundColor="#F8FCF8"
+                        Stroke="#DCEBDD"
+                        StrokeThickness="1">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnIrregularVerbsTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="8"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="1">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="15"
+                                Text="Starke Verben"
+                                TextColor="#171717" />
+                            <Label
+                                x:Name="IrregularPercentLabel"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="11"
+                                Text="0%"
+                                TextColor="#2E7D32"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                x:Name="IrregularLearnedLabel"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                FontSize="12"
+                                Text="0 learned"
+                                TextColor="#777777" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="12">
+                <Label
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="22"
+                    Text="Wort des Tages"
+                    TextColor="#171717" />
+
+                <Border
+                    x:Name="WordOfDayCard"
+                    Padding="18"
+                    BackgroundColor="#FFFFFF"
+                    IsVisible="False"
+                    Stroke="#E4DDF2"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnWordOfDayTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#16000000"
+                            Opacity="0.16"
+                            Radius="14"
+                            Offset="0,6" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="13">
+                        <VerticalStackLayout Spacing="2">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <Label
+                                    x:Name="WordOfDayWordLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="28"
+                                    Text="die Gewohnheit"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                                <Border
+                                    x:Name="WordOfDayTypeBadge"
+                                    Grid.Column="1"
+                                    Padding="9,5"
+                                    BackgroundColor="#F1ECFA"
+                                    Stroke="#D9CDEA"
+                                    StrokeThickness="1"
+                                    VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        x:Name="WordOfDayTypeLabel"
+                                        FontAttributes="Bold"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="10"
+                                        Text="NOMEN"
+                                        TextColor="#6D4AA2" />
+                                </Border>
+                            </Grid>
+
+                            <VerticalStackLayout Spacing="2">
+                                <Label
+                                    x:Name="WordOfDayPluralLabel"
+                                    FontSize="13"
+                                    Text="die Gewohnheiten"
+                                    TextColor="#F57C00" />
+                                <Label
+                                    x:Name="WordOfDayTranslationLabel"
+                                    FontSize="13"
+                                    Text="habit"
+                                    TextColor="#555555" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <Border
+                            Padding="12"
+                            BackgroundColor="#EDE5F5"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <VerticalStackLayout Spacing="3">
+                                <Label
+                                    FontSize="13"
+                                    LineBreakMode="WordWrap"
+                                    Text="Kleine Gewohnheiten machen einen großen Unterschied."
+                                    TextColor="#333333" />
+                                <Label
+                                    FontSize="11"
+                                    LineBreakMode="WordWrap"
+                                    Text="Small habits make a big difference."
+                                    TextColor="#888888" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <Border
+                x:Name="ReviewCard"
+                Padding="16"
+                BackgroundColor="#FFF9F8"
+                IsVisible="False"
+                Stroke="#F2DEDC"
+                StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="42,*,Auto" ColumnSpacing="12">
+                    <Border
+                        BackgroundColor="#FCEBEA"
+                        HeightRequest="42"
+                        StrokeThickness="0"
+                        WidthRequest="42">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Path
+                            Aspect="Uniform"
+                            Data="M 16 4 L 28 26 H 4 Z M 16 11 V 18 M 16 22 V 22.2"
+                            Fill="Transparent"
+                            HeightRequest="22"
+                            HorizontalOptions="Center"
+                            Stroke="#D43D35"
+                            StrokeLineCap="Round"
+                            StrokeLineJoin="Round"
+                            StrokeThickness="2"
+                            VerticalOptions="Center"
+                            WidthRequest="22" />
+                    </Border>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="2"
+                        VerticalOptions="Center">
+                        <Label
+                            x:Name="ReviewTitleLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="15"
+                            Text="7 Fehler bereit zur Wiederholung"
+                            TextColor="#171717" />
+                        <Label
+                            x:Name="ReviewSubtitleLabel"
+                            FontSize="11"
+                            Text="A short review can clear them up."
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <Border
+                        x:Name="ReviewButton"
+                        Grid.Column="2"
+                        Padding="13,9"
+                        BackgroundColor="#D43D35"
+                        StrokeThickness="0"
+                        VerticalOptions="Center">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnReviewTapped" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="12"
+                            Text="Wiederholen"
+                            TextColor="#FFFFFF" />
+                    </Border>
+                </Grid>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentView>
