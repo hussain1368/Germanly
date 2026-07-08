@@ -8,7 +8,7 @@ namespace GermanToolbox
         private const string SeedDatabaseFileName = "seeder.db3";
         private const string SeedPayloadAssetName = "seed/seeder.payload";
         private const string SeedCacheDirectoryPrefix = "seeder-";
-        private const string SeedKey = "WordsDatabaseV9";
+        private const string SeedKey = "WordsDatabaseV10";
         private static readonly string[] WordColumnOrder =
         [
             nameof(WordEntry.Id),
