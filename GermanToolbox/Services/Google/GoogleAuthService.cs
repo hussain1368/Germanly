@@ -587,7 +587,8 @@ namespace GermanToolbox
                     extension = ".jpg";
                 }
 
-                var photoPath = Path.Combine(photoDirectory, $"{ProfilePhotoFileName}{extension}");
+                var cacheKey = Guid.NewGuid().ToString("N")[..8];
+                var photoPath = Path.Combine(photoDirectory, $"{ProfilePhotoFileName}-{cacheKey}{extension}");
                 var bytes = await httpClient.GetByteArrayAsync(remotePhotoUrl);
                 await File.WriteAllBytesAsync(photoPath, bytes);
                 return photoPath;
@@ -606,7 +607,7 @@ namespace GermanToolbox
                 return;
             }
 
-            foreach (var file in Directory.EnumerateFiles(photoDirectory, $"{ProfilePhotoFileName}.*"))
+            foreach (var file in Directory.EnumerateFiles(photoDirectory, $"{ProfilePhotoFileName}*.*"))
             {
                 try
                 {
