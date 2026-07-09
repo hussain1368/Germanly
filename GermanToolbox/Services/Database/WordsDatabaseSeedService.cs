@@ -8,7 +8,7 @@ namespace GermanToolbox
         private const string SeedDatabaseFileName = "seeder.db3";
         private const string SeedPayloadAssetName = "seed/seeder.payload";
         private const string SeedCacheDirectoryPrefix = "seeder-";
-        private const string SeedKey = "WordsDatabaseV10";
+        private const string SeedKey = "WordsDatabaseV11";
         private static readonly string[] WordColumnOrder =
         [
             nameof(WordEntry.Id),
@@ -232,9 +232,9 @@ namespace GermanToolbox
 
                 connection.CreateTable<WordEntry>();
                 connection.Execute(
-                    $"""
-                    INSERT INTO "Words" ({targetColumns})
-                    SELECT {sourceExpressions}
+                    $$"""
+                    INSERT INTO "Words" ({{targetColumns}})
+                    SELECT {{sourceExpressions}}
                     FROM "WordsLegacy"
                     """);
                 connection.Execute("DROP TABLE \"WordsLegacy\"");

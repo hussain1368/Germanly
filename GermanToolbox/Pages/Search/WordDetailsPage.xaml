@@ -576,7 +576,7 @@
                     IsRunning="True" />
                 <Label
                     FontSize="12"
-                    Text="Wort wird geladen..."
+                    Text="Loading word..."
                     TextColor="#777777" />
             </VerticalStackLayout>
         </Grid>

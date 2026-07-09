@@ -4,12 +4,14 @@ namespace GermanToolbox
     {
         private readonly WordRepository repository;
         private readonly PracticeSettingsService settings;
+        private readonly DriveBackupService driveBackupService;
         private readonly Dictionary<PracticeMode, TestSessionResult> lastResults = [];
 
-        public TestSessionService(WordRepository repository, PracticeSettingsService settings)
+        public TestSessionService(WordRepository repository, PracticeSettingsService settings, DriveBackupService driveBackupService)
         {
             this.repository = repository;
             this.settings = settings;
+            this.driveBackupService = driveBackupService;
         }
 
         public TestSession? CurrentSession { get; private set; }
@@ -22,6 +24,11 @@ namespace GermanToolbox
             IrregularVerbForm irregularVerbForm = IrregularVerbForm.Prateritum,
             IrregularTestMethod irregularTestMethod = IrregularTestMethod.MultipleChoice)
         {
+            if (driveBackupService?.IsRestoreInProgress == true)
+            {
+                throw new InvalidOperationException("A restore is in progress. Please wait until it completes.");
+            }
+
             var words = await repository.GetRegularSessionWordsAsync(
                 mode,
                 vocabularyDirection,
@@ -52,6 +59,11 @@ namespace GermanToolbox
             IrregularVerbForm irregularVerbForm = IrregularVerbForm.Prateritum,
             IrregularTestMethod irregularTestMethod = IrregularTestMethod.MultipleChoice)
         {
+            if (driveBackupService?.IsRestoreInProgress == true)
+            {
+                throw new InvalidOperationException("A restore is in progress. Please wait until it completes.");
+            }
+
             var words = await repository.GetMistakeReviewWordsAsync(
                 mode,
                 irregularVerbForm,

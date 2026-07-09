@@ -5,8 +5,10 @@ namespace GermanToolbox
         private readonly WordRepository repository;
         private readonly TestSessionService testSessionService;
         private readonly PracticeSettingsService settingsService;
+        private readonly GoogleAuthService googleAuthService;
         private const string WelcomeImageDatePreferenceKey = "HomeWelcomeImageDate";
         private const string WelcomeImageSourcePreferenceKey = "HomeWelcomeImageSource";
+        private const string GuestUserName = "Guest";
         private static readonly string[] WelcomeImageSources = ["boy.png", "girl.png"];
         private readonly SemaphoreSlim refreshLock = new(1, 1);
         private PracticeMode focusMode = PracticeMode.Meaning;
@@ -23,13 +25,17 @@ namespace GermanToolbox
             repository = AppServices.GetRequiredService<WordRepository>();
             testSessionService = AppServices.GetRequiredService<TestSessionService>();
             settingsService = AppServices.GetRequiredService<PracticeSettingsService>();
+            googleAuthService = AppServices.GetRequiredService<GoogleAuthService>();
+            googleAuthService.AuthenticationStateChanged += OnAuthenticationStateChanged;
             ApplyDailyWelcomeImage();
+            ApplySignedInUser();
         }
 
         public async Task RefreshAsync()
         {
             GreetingLabel.Text = GetGreeting(DateTime.Now.Hour);
             ApplyDailyWelcomeImage();
+            ApplySignedInUser();
             await refreshLock.WaitAsync();
             try
             {
@@ -74,6 +80,18 @@ namespace GermanToolbox
                 refreshLock.Release();
             }
         }
+
+        private void ApplySignedInUser()
+        {
+            var currentUser = googleAuthService.CurrentUser;
+            UserNameLabel.Text = currentUser?.FirstName ?? GuestUserName;
+            UserAvatarImage.Source = string.IsNullOrWhiteSpace(currentUser?.PhotoPath)
+                ? "profile_avatar.png"
+                : ImageSource.FromFile(currentUser.PhotoPath);
+        }
+
+        private void OnAuthenticationStateChanged(object? sender, EventArgs e) =>
+            ApplySignedInUser();
 
         private void ApplyDailyWelcomeImage()
         {

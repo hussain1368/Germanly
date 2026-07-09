@@ -75,30 +75,44 @@ namespace GermanToolbox
 
         private async void OnStartTestClicked(object sender, EventArgs e)
         {
-            var session = await testSessionService.StartRegularSessionAsync(PracticeMode.Meaning, selectedDirection);
-            if (session.TotalCount == 0)
+            try
             {
-                await ToastService.ShowAsync(
-                    this,
-                    $"No {GetSelectedLevelPrefix()}vocabulary words available for this test.");
-                return;
-            }
+                var session = await testSessionService.StartRegularSessionAsync(PracticeMode.Meaning, selectedDirection);
+                if (session.TotalCount == 0)
+                {
+                    await ToastService.ShowAsync(
+                        this,
+                        $"No {GetSelectedLevelPrefix()}vocabulary words available for this test.");
+                    return;
+                }
 
-            await Shell.Current.GoToAsync(nameof(VocabularyTestPage));
+                await Shell.Current.GoToAsync(nameof(VocabularyTestPage));
+            }
+            catch (InvalidOperationException ex)
+            {
+                await ToastService.ShowAsync(this, ex.Message);
+            }
         }
 
         private async void OnReviewWordsClicked(object sender, EventArgs e)
         {
-            var session = await testSessionService.StartMistakeReviewSessionAsync(PracticeMode.Meaning, selectedDirection);
-            if (session.TotalCount == 0)
+            try
             {
-                await ToastService.ShowAsync(
-                    this,
-                    $"No {GetSelectedLevelPrefix()}vocabulary mistakes to review yet.");
-                return;
-            }
+                var session = await testSessionService.StartMistakeReviewSessionAsync(PracticeMode.Meaning, selectedDirection);
+                if (session.TotalCount == 0)
+                {
+                    await ToastService.ShowAsync(
+                        this,
+                        $"No {GetSelectedLevelPrefix()}vocabulary mistakes to review yet.");
+                    return;
+                }
 
-            await Shell.Current.GoToAsync(nameof(VocabularyTestPage));
+                await Shell.Current.GoToAsync(nameof(VocabularyTestPage));
+            }
+            catch (InvalidOperationException ex)
+            {
+                await ToastService.ShowAsync(this, ex.Message);
+            }
         }
 
         private async void OnBottomTabSelected(object sender, TabSelectedEventArgs e)

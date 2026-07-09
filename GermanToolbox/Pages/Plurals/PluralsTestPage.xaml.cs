@@ -38,7 +38,7 @@ namespace GermanToolbox
 
             if (!ApplyCurrentWord())
             {
-                await DisplayAlert("Kein aktiver Test", "Start a plural test first.", "OK");
+                await DisplayAlert("No active test", "Start a plural test first.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -141,7 +141,7 @@ namespace GermanToolbox
             }
             catch (InvalidOperationException)
             {
-                await DisplayAlert("Kein aktiver Test", "Start a plural test first.", "OK");
+                await DisplayAlert("No active test", "Start a plural test first.", "OK");
                 await Shell.Current.GoToAsync("..");
                 return;
             }

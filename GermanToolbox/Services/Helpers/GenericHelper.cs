@@ -7,7 +7,8 @@ namespace GermanToolbox
             var words = text.Split(' ');
             var longestWordLength = words.Max(w => w.Length);
 
-            if (text.Length < 10) return 56;
+            if (text.Length < 7) return 56;
+            if (text.Length < 12) return 46;
 
             else if (text.Length < 18)
             {
@@ -23,6 +24,7 @@ namespace GermanToolbox
 
             /*
              * 56 - 10 Reiseurgt
+             * 46 - 12 Reiseurgtykm
              * 
              * 36 - 15 Reiseurgtykmnb
              * 32 - 17 Reiseurgtykmnbpns

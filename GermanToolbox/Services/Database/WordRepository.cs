@@ -4,6 +4,22 @@ namespace GermanToolbox
 {
     public sealed class WordRepository
     {
+        public static IReadOnlyList<string> UserProgressColumnOrder { get; } =
+        [
+            nameof(WordEntry.Id),
+            nameof(WordEntry.Learning),
+            nameof(WordEntry.ScoreMeaning),
+            nameof(WordEntry.ScoreReverseMeaning),
+            nameof(WordEntry.ScoreArticle),
+            nameof(WordEntry.ScorePlural),
+            nameof(WordEntry.ScoreIrregularPrateritum),
+            nameof(WordEntry.ScoreIrregularPerfect),
+            nameof(WordEntry.MistakeMeaning),
+            nameof(WordEntry.MistakeArticle),
+            nameof(WordEntry.MistakePlural),
+            nameof(WordEntry.MistakeIrregular)
+        ];
+
         private readonly AppDatabase database;
         private readonly WordsDatabaseSeedService wordsDatabaseSeedService;
         private readonly SemaphoreSlim initializationLock = new(1, 1);
@@ -48,12 +64,12 @@ namespace GermanToolbox
             await InitializeAsync();
 
             var mistakeColumn = GetMistakeColumn(mode);
-            var sql = $"""
+            var sql = $$"""
                 SELECT *
                 FROM Words
-                WHERE {GetLevelFilterWhereClause(level)}
-                  AND {GetEligibilityWhereClause(mode)}
-                  AND {mistakeColumn} = 1
+                WHERE {{GetLevelFilterWhereClause(level)}}
+                  AND {{GetEligibilityWhereClause(mode)}}
+                  AND {{mistakeColumn}} = 1
                 ORDER BY RANDOM()
                 LIMIT ?
                 """;
@@ -99,18 +115,18 @@ namespace GermanToolbox
                 " OR ",
                 searchVariants.Select(_ =>
                     $"{nameof(WordEntry.Translation)} LIKE ? ESCAPE '\\'"));
-            var sql = $"""
+            var sql = $$"""
                 SELECT *
                 FROM Words
-                WHERE {whereClause}
+                WHERE {{whereClause}}
                 ORDER BY
                     CASE
-                        WHEN {wordPrefixClause} THEN 0
-                        WHEN {translationPrefixClause} THEN 1
+                        WHEN {{wordPrefixClause}} THEN 0
+                        WHEN {{translationPrefixClause}} THEN 1
                         ELSE 2
                     END,
-                    LENGTH({nameof(WordEntry.Word)}),
-                    {nameof(WordEntry.Word)} COLLATE NOCASE
+                    LENGTH({{nameof(WordEntry.Word)}}),
+                    {{nameof(WordEntry.Word)}} COLLATE NOCASE
                 LIMIT ?
                 """;
 
@@ -167,11 +183,11 @@ namespace GermanToolbox
             await InitializeAsync();
 
             var rows = await database.Connection.QueryAsync<OverallMasteryCounts>(
-                $"""
+                $$"""
                 SELECT
                     COUNT(*) AS TotalCount,
                     COALESCE(
-                        SUM(CASE WHEN {GetCompletedWhereClause()} THEN 1 ELSE 0 END),
+                        SUM(CASE WHEN {{GetCompletedWhereClause()}} THEN 1 ELSE 0 END),
                         0) AS MasteredCount
                 FROM Words
                 """,
@@ -195,12 +211,12 @@ namespace GermanToolbox
             var rows = await WithLearningFlagsAsync(
                 learnedThreshold,
                 () => database.Connection.QueryAsync<LevelMasteryCounts>(
-                    $"""
+                    $$"""
                     WITH LevelRows AS (
                         SELECT
-                            {nameof(WordEntry.Level)} AS Level,
-                            CASE WHEN {completedWhereClause} THEN 1 ELSE 0 END AS IsMastered,
-                            CASE WHEN {nameof(WordEntry.Learning)} = 1 THEN 1 ELSE 0 END AS IsLearning
+                            {{nameof(WordEntry.Level)}} AS Level,
+                            CASE WHEN {{completedWhereClause}} THEN 1 ELSE 0 END AS IsMastered,
+                            CASE WHEN {{nameof(WordEntry.Learning)}} = 1 THEN 1 ELSE 0 END AS IsLearning
                         FROM Words
                     )
                     SELECT
@@ -319,39 +335,39 @@ namespace GermanToolbox
             var rows = await WithLearningFlagsAsync(
                 learnedThreshold,
                 () => database.Connection.QueryAsync<PracticeSummaryCounts>(
-                    $"""
+                    $$"""
                     SELECT
                         COUNT(*) AS TotalCount,
                         COALESCE(
-                            SUM(CASE WHEN {learnedCondition} THEN 1 ELSE 0 END),
+                            SUM(CASE WHEN {{learnedCondition}} THEN 1 ELSE 0 END),
                             0) AS LearnedCount,
                         COALESCE(
-                            SUM(CASE WHEN {learningCondition} THEN 1 ELSE 0 END),
+                            SUM(CASE WHEN {{learningCondition}} THEN 1 ELSE 0 END),
                             0) AS LearningCount,
                         COALESCE(
-                            SUM(CASE WHEN {mistakeColumn} = 1 THEN 1 ELSE 0 END),
+                            SUM(CASE WHEN {{mistakeColumn}} = 1 THEN 1 ELSE 0 END),
                             0) AS MistakeCount,
                         COALESCE(
-                            SUM(CASE WHEN {masteredCondition} THEN 1 ELSE 0 END),
+                            SUM(CASE WHEN {{masteredCondition}} THEN 1 ELSE 0 END),
                             0) AS MasteredCount,
                         COALESCE(
                             SUM(
-                                CASE WHEN {vocabularyMasteredRemainingCondition}
+                                CASE WHEN {{vocabularyMasteredRemainingCondition}}
                                 THEN 1 ELSE 0 END),
                             0) AS VocabularyMasteredRemainingCount,
                         COALESCE(
                             SUM(
-                                CASE WHEN {germanToEnglishCompletionCondition}
+                                CASE WHEN {{germanToEnglishCompletionCondition}}
                                 THEN 1 ELSE 0 END),
                             0) AS GermanToEnglishCompletionCount,
                         COALESCE(
                             SUM(
-                                CASE WHEN {englishToGermanCompletionCondition}
+                                CASE WHEN {{englishToGermanCompletionCondition}}
                                 THEN 1 ELSE 0 END),
                             0) AS EnglishToGermanCompletionCount
                     FROM Words
-                    WHERE {whereClause}
-                      AND {GetLevelFilterWhereClause(level)}
+                    WHERE {{whereClause}}
+                      AND {{GetLevelFilterWhereClause(level)}}
                     """,
                     queryParameters.ToArray()));
             var counts = rows.FirstOrDefault() ?? new PracticeSummaryCounts();
@@ -438,6 +454,94 @@ namespace GermanToolbox
                 }
             });
         }
+
+        public sealed class WordProgressRow
+        {
+            public int Id { get; set; }
+            public bool Learning { get; set; }
+            public int ScoreMeaning { get; set; }
+            public int ScoreReverseMeaning { get; set; }
+            public int ScoreArticle { get; set; }
+            public int ScorePlural { get; set; }
+            public int ScoreIrregularPrateritum { get; set; }
+            public int ScoreIrregularPerfect { get; set; }
+            public bool MistakeMeaning { get; set; }
+            public bool MistakeArticle { get; set; }
+            public bool MistakePlural { get; set; }
+            public bool MistakeIrregular { get; set; }
+        }
+
+        public async Task<List<WordProgressRow>> GetUserProgressRowsAsync()
+        {
+            await InitializeAsync();
+
+            var selectedColumns = string.Join(", ", UserProgressColumnOrder.Select(QuoteIdentifier));
+            var rows = await database.Connection.QueryAsync<WordProgressRow>(
+                $"SELECT {selectedColumns} FROM Words");
+
+            return rows.ToList();
+        }
+
+        public async Task ApplyUserProgressAsync(
+            IEnumerable<WordProgressRow> rows,
+            IReadOnlyCollection<string> columnsToApply)
+        {
+            await InitializeAsync();
+            var list = rows.ToList();
+            if (list.Count == 0)
+            {
+                return;
+            }
+
+            var allowedColumns = UserProgressColumnOrder
+                .Skip(1)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var updateColumns = columnsToApply
+                .Where(allowedColumns.Contains)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            if (updateColumns.Count == 0)
+            {
+                return;
+            }
+
+            var setClause = string.Join(
+                ", ",
+                updateColumns.Select(column => $"{QuoteIdentifier(column)} = ?"));
+            var sql = $"UPDATE Words SET {setClause} WHERE {QuoteIdentifier(nameof(WordEntry.Id))} = ?";
+
+            await ExecuteWriteAsync(() => database.Connection.RunInTransactionAsync(conn =>
+            {
+                foreach (var w in list)
+                {
+                    var parameters = updateColumns
+                        .Select(column => GetProgressColumnValue(w, column))
+                        .Append(w.Id)
+                        .ToArray();
+                    conn.Execute(sql, parameters);
+                }
+            }));
+        }
+
+        private static object GetProgressColumnValue(WordProgressRow row, string column) =>
+            column switch
+            {
+                nameof(WordEntry.Learning) => row.Learning ? 1 : 0,
+                nameof(WordEntry.ScoreMeaning) => row.ScoreMeaning,
+                nameof(WordEntry.ScoreReverseMeaning) => row.ScoreReverseMeaning,
+                nameof(WordEntry.ScoreArticle) => row.ScoreArticle,
+                nameof(WordEntry.ScorePlural) => row.ScorePlural,
+                nameof(WordEntry.ScoreIrregularPrateritum) => row.ScoreIrregularPrateritum,
+                nameof(WordEntry.ScoreIrregularPerfect) => row.ScoreIrregularPerfect,
+                nameof(WordEntry.MistakeMeaning) => row.MistakeMeaning ? 1 : 0,
+                nameof(WordEntry.MistakeArticle) => row.MistakeArticle ? 1 : 0,
+                nameof(WordEntry.MistakePlural) => row.MistakePlural ? 1 : 0,
+                nameof(WordEntry.MistakeIrregular) => row.MistakeIrregular ? 1 : 0,
+                _ => throw new ArgumentOutOfRangeException(nameof(column), column, "Unknown progress column.")
+            };
+
+        private static string QuoteIdentifier(string identifier) =>
+            $"\"{identifier.Replace("\"", "\"\"")}\"";
 
         private async Task InitializeAsync()
         {
@@ -531,28 +635,28 @@ namespace GermanToolbox
         private async Task SyncLearningFlagsAsync(int learnedThreshold)
         {
             var completedWhereClause = GetCompletedWhereClause();
-            var clearCompletedSql = $"""
+            var clearCompletedSql = $$"""
                 UPDATE Words
-                SET {nameof(WordEntry.Learning)} = 0
-                WHERE {nameof(WordEntry.Learning)} = 1
-                  AND {completedWhereClause}
+                SET {{nameof(WordEntry.Learning)}} = 0
+                WHERE {{nameof(WordEntry.Learning)}} = 1
+                  AND {{completedWhereClause}}
                 """;
-            var promoteInProgressSql = $"""
+            var promoteInProgressSql = $$"""
                 UPDATE Words
-                SET {nameof(WordEntry.Learning)} = 1
-                WHERE {nameof(WordEntry.Learning)} = 0
-                  AND NOT ({completedWhereClause})
+                SET {{nameof(WordEntry.Learning)}} = 1
+                WHERE {{nameof(WordEntry.Learning)}} = 0
+                  AND NOT ({{completedWhereClause}})
                   AND (
-                    {nameof(WordEntry.ScoreMeaning)} <> 0
-                    OR {nameof(WordEntry.ScoreReverseMeaning)} <> 0
-                    OR {nameof(WordEntry.ScoreArticle)} <> 0
-                    OR {nameof(WordEntry.ScoreIrregularPrateritum)} <> 0
-                    OR {nameof(WordEntry.ScoreIrregularPerfect)} <> 0
-                    OR {nameof(WordEntry.ScorePlural)} <> 0
-                    OR {nameof(WordEntry.MistakeMeaning)} = 1
-                    OR {nameof(WordEntry.MistakeArticle)} = 1
-                    OR {nameof(WordEntry.MistakeIrregular)} = 1
-                    OR {nameof(WordEntry.MistakePlural)} = 1
+                    {{nameof(WordEntry.ScoreMeaning)}} <> 0
+                    OR {{nameof(WordEntry.ScoreReverseMeaning)}} <> 0
+                    OR {{nameof(WordEntry.ScoreArticle)}} <> 0
+                    OR {{nameof(WordEntry.ScoreIrregularPrateritum)}} <> 0
+                    OR {{nameof(WordEntry.ScoreIrregularPerfect)}} <> 0
+                    OR {{nameof(WordEntry.ScorePlural)}} <> 0
+                    OR {{nameof(WordEntry.MistakeMeaning)}} = 1
+                    OR {{nameof(WordEntry.MistakeArticle)}} = 1
+                    OR {{nameof(WordEntry.MistakeIrregular)}} = 1
+                    OR {{nameof(WordEntry.MistakePlural)}} = 1
                   )
                 """;
 
@@ -628,15 +732,15 @@ namespace GermanToolbox
                   $"THEN {learningPriorityColumn} END DESC"
                 : string.Empty;
 
-            var sql = $"""
+            var sql = $$"""
                 SELECT *
                 FROM Words
-                WHERE {GetLevelFilterWhereClause(level)}
-                  AND {GetEligibilityWhereClause(mode)}
-                  AND {scoreColumn} < ?
+                WHERE {{GetLevelFilterWhereClause(level)}}
+                  AND {{GetEligibilityWhereClause(mode)}}
+                  AND {{scoreColumn}} < ?
                 ORDER BY
-                    {nameof(WordEntry.Learning)} DESC
-                    {learningPriority},
+                    {{nameof(WordEntry.Learning)}} DESC
+                    {{learningPriority}},
                     RANDOM()
                 LIMIT ?
                 """;
@@ -817,36 +921,36 @@ namespace GermanToolbox
         }
 
         private static string GetIrregularScoresCompletedWhereClause() =>
-            $"""
-            {nameof(WordEntry.ScoreIrregularPrateritum)} >= ?
-            AND {nameof(WordEntry.ScoreIrregularPerfect)} >= ?
+            $$"""
+            {{nameof(WordEntry.ScoreIrregularPrateritum)}} >= ?
+            AND {{nameof(WordEntry.ScoreIrregularPerfect)}} >= ?
             """;
 
         private static string GetVocabularyMasteredWhereClause() =>
-            $"""
-            {nameof(WordEntry.ScoreMeaning)} >= ?
-            AND {nameof(WordEntry.ScoreReverseMeaning)} >= ?
+            $$"""
+            {{nameof(WordEntry.ScoreMeaning)}} >= ?
+            AND {{nameof(WordEntry.ScoreReverseMeaning)}} >= ?
             """;
 
         private static string GetCompletedWhereClause() =>
-            $"""
-            {nameof(WordEntry.ScoreMeaning)} >= ?
-            AND {nameof(WordEntry.ScoreReverseMeaning)} >= ?
+            $$"""
+            {{nameof(WordEntry.ScoreMeaning)}} >= ?
+            AND {{nameof(WordEntry.ScoreReverseMeaning)}} >= ?
             AND (
                 Type <> 'noun'
                 OR Gender IS NULL
                 OR Gender NOT IN ('m', 'f', 'n')
-                OR {nameof(WordEntry.ScoreArticle)} >= ?
+                OR {{nameof(WordEntry.ScoreArticle)}} >= ?
             )
             AND (
                 Type <> 'noun'
-                OR {nameof(WordEntry.Plural)} IS NULL
-                OR TRIM({nameof(WordEntry.Plural)}) = ''
-                OR {nameof(WordEntry.ScorePlural)} >= ?
+                OR {{nameof(WordEntry.Plural)}} IS NULL
+                OR TRIM({{nameof(WordEntry.Plural)}}) = ''
+                OR {{nameof(WordEntry.ScorePlural)}} >= ?
             )
             AND (
-                {nameof(WordEntry.IsStrong)} = 0
-                OR ({GetIrregularScoresCompletedWhereClause()})
+                {{nameof(WordEntry.IsStrong)}} = 0
+                OR ({{GetIrregularScoresCompletedWhereClause()}})
             )
             """;
     }

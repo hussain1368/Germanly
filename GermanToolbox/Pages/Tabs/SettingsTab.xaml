@@ -4,10 +4,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="24,24,24,18"
-            Spacing="16">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="24,24,24,18"
+                Spacing="16">
             <Label
                 FontAttributes="Bold"
                 FontFamily="OpenSansSemibold"
@@ -42,6 +43,61 @@
                         Text="Changes are saved immediately on this device and used the next time a test starts."
                         TextColor="#DCE8F6" />
                 </VerticalStackLayout>
+            </Border>
+
+            <Border
+                Padding="16"
+                BackgroundColor="#FFFFFF"
+                Stroke="#DDE8F5"
+                StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                    <VerticalStackLayout Spacing="4">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="17"
+                            Text="Backup &amp; Restore"
+                            TextColor="#171717" />
+                        <Label
+                            x:Name="BackupStatusLabel"
+                            FontSize="12"
+                            LineBreakMode="WordWrap"
+                            Text="No backups yet"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        Spacing="8"
+                        VerticalOptions="Center">
+                        <Button
+                            x:Name="BackupButton"
+                            BackgroundColor="#2563EB"
+                            Clicked="OnBackupClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="44"
+                            Text="Backup now"
+                            TextColor="#FFFFFF" />
+                        <Button
+                            x:Name="RestoreButton"
+                            BackgroundColor="#FFFFFF"
+                            BorderColor="#2563EB"
+                            BorderWidth="1"
+                            Clicked="OnRestoreClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="44"
+                            Text="Restore backup"
+                            TextColor="#2563EB" />
+                    </VerticalStackLayout>
+                </Grid>
             </Border>
 
             <Border
@@ -313,6 +369,49 @@
                 BackgroundColor="#FFFFFF"
                 Stroke="#DDE8F5"
                 StrokeThickness="1">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="17"
+                            Text="Google Drive Konto"
+                            TextColor="#171717" />
+                        <Label
+                            x:Name="GoogleAccountStatusLabel"
+                            FontSize="12"
+                            LineBreakMode="WordWrap"
+                            Text="Not connected"
+                            TextColor="#777777" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        Spacing="8"
+                        VerticalOptions="Center">
+                        <Button
+                            x:Name="GoogleActionButton"
+                            BackgroundColor="#2563EB"
+                            Clicked="OnGoogleActionClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="44"
+                            Text="Anmelden"
+                            TextColor="#FFFFFF" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Border
+                Padding="16"
+                BackgroundColor="#FFFFFF"
+                Stroke="#DDE8F5"
+                StrokeThickness="1">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnUserGuideTapped" />
                 </Border.GestureRecognizers>
@@ -397,7 +496,42 @@
                         VerticalOptions="Center" />
                 </Grid>
             </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid
+            x:Name="GoogleSignInOverlay"
+            BackgroundColor="#8A111827"
+            InputTransparent="False"
+            IsVisible="False"
+            ZIndex="10">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                Spacing="14"
+                VerticalOptions="Center">
+                <ActivityIndicator
+                    x:Name="GoogleSignInActivityIndicator"
+                    Color="#FFFFFF"
+                    HeightRequest="44"
+                    IsRunning="False"
+                    WidthRequest="44" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="Loading Google accounts..."
+                    TextColor="#FFFFFF" />
+                <Button
+                    x:Name="CancelGoogleSignInButton"
+                    BackgroundColor="#FFFFFF"
+                    Clicked="OnCancelGoogleSignInClicked"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    IsVisible="False"
+                    Text="Cancel"
+                    TextColor="#171717" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
 
 </ContentView>

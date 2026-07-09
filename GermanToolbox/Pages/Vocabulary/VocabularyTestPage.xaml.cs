@@ -19,7 +19,7 @@ namespace GermanToolbox
 
             if (!ApplyCurrentWord())
             {
-                await DisplayAlert("Kein aktiver Test", "Start a vocabulary test first.", "OK");
+                await DisplayAlert("No active test", "Start a vocabulary test first.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -93,7 +93,7 @@ namespace GermanToolbox
             }
             catch (InvalidOperationException)
             {
-                await DisplayAlert("Kein aktiver Test", "Start a vocabulary test first.", "OK");
+                await DisplayAlert("No active test", "Start a vocabulary test first.", "OK");
                 await Shell.Current.GoToAsync("..");
                 return;
             }

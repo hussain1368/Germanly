@@ -1,2 +1,13 @@
 cmd /c "adb exec-out run-as com.hussain.germanly cat files/german_toolbox.db3 > seeder.db3"
 
+dotnet build GermanToolbox.csproj -f net9.0-android -t:Run -p:Device=804afa37
+keytool -list -v -alias androiddebugkey -keystore C:\Users\mhk13\.android\debug.keystore
+
+-------------------
+
+Visual Studio:
+5B:4C:B6:BE:16:33:31:95:0B:38:B7:C9:34:2D:9D:4A:BC:39:67:7B
+
+96:B5:CA:9C:8D:8F:71:FB:C9:9D:9B:5B:18:D2:E1:B4:F2:1D:16:52
+
+* test the db schema check vs backup. 

@@ -56,8 +56,15 @@ namespace GermanToolbox
 
             builder.Services.AddSingleton<AppDatabase>();
             builder.Services.AddSingleton<PracticeSettingsService>();
+            builder.Services.AddSingleton<GoogleAuthService>();
+#if ANDROID
+            builder.Services.AddSingleton<IGoogleNativeSignInService, AndroidGoogleNativeSignInService>();
+#else
+            builder.Services.AddSingleton<IGoogleNativeSignInService, NoOpGoogleNativeSignInService>();
+#endif
             builder.Services.AddSingleton<WordsDatabaseSeedService>();
             builder.Services.AddSingleton<WordRepository>();
+            builder.Services.AddSingleton<DriveBackupService>();
             builder.Services.AddSingleton<TestSessionService>();
             builder.Services.AddSingleton<AnswerFeedbackService>();
             builder.Services.AddSingleton<PluralDistractorGenerator>();

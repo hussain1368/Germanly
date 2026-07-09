@@ -338,7 +338,7 @@ namespace GermanToolbox
         {
             LoadingOverlay.IsVisible = false;
             await DisplayAlert(
-                "Wort nicht verfügbar",
+                "Word unavailable",
                 "The selected word could not be loaded.",
                 "OK");
             await Shell.Current.GoToAsync("..");
@@ -356,7 +356,7 @@ namespace GermanToolbox
                 "m" => "der",
                 "f" => "die",
                 "n" => "das",
-                _ => "Nicht verfügbar"
+                _ => "Unavailable"
             };
 
         private static bool HasArticleGender(string? gender) =>

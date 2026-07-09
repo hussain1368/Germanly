@@ -21,6 +21,7 @@
                             Stroke="#E5E7EB"
                             StrokeThickness="1.5" />
                         <Image
+                            x:Name="UserAvatarImage"
                             Aspect="AspectFill"
                             HeightRequest="48"
                             HorizontalOptions="Center"
@@ -50,7 +51,7 @@
                             FontAttributes="Bold"
                             FontFamily="OpenSansSemibold"
                             FontSize="21"
-                            Text="Alex Morgan"
+                            Text="Guest"
                             TextColor="#171717">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnUserNameTapped" />

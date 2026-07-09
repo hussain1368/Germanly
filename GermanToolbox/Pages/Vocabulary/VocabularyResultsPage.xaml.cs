@@ -35,7 +35,7 @@ namespace GermanToolbox
             var session = testSessionService.StartMistakeReviewFromLastResult(PracticeMode.Meaning);
             if (session is null || session.TotalCount == 0)
             {
-                await DisplayAlert("Keine Fehler", "There are no mistakes from this session to review.", "OK");
+                await DisplayAlert("No mistakes", "There are no mistakes from this session to review.", "OK");
                 return;
             }
 

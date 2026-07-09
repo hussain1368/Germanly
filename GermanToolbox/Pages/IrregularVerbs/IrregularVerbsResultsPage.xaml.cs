@@ -35,7 +35,7 @@ namespace GermanToolbox
             if (session is null || session.TotalCount == 0)
             {
                 await DisplayAlert(
-                    "Keine Fehler",
+                    "No mistakes",
                     "There are no mistakes from this session to review.",
                     "OK");
                 return;

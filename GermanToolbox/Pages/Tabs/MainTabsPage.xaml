@@ -18,6 +18,7 @@
             x:Name="SettingsTabContent"
             ClearProgressRequested="OnClearProgressRequested"
             IsVisible="False"
+            RestoreRequested="OnRestoreRequested"
             ProgressCriteriaChanged="OnProgressCriteriaChanged" />
 
         <local:BottomNavigationView
@@ -147,6 +148,292 @@
                 </VerticalStackLayout>
             </Border>
         </Grid>
+
+        <Grid
+            x:Name="RestoreOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#99000000"
+            IsVisible="False">
+            <Border
+                x:Name="RestoreDialogBorder"
+                Margin="28"
+                Padding="18"
+                BackgroundColor="#FFFFFF"
+                HorizontalOptions="Fill"
+                Stroke="#DDE8F5"
+                StrokeThickness="1"
+                VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="#33000000"
+                        Opacity="0.3"
+                        Radius="26"
+                        Offset="0,14" />
+                </Border.Shadow>
+
+                <Grid>
+                    <VerticalStackLayout x:Name="RestoreSelectionContent" Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="22"
+                            Text="Restore backup"
+                            TextColor="#171717" />
+
+                        <Label
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="Pick a backup, then confirm that you want to restore your progress to that point."
+                            TextColor="#555555" />
+
+                        <ScrollView MaximumHeightRequest="260">
+                            <VerticalStackLayout
+                                x:Name="RestoreBackupListContainer"
+                                Padding="0"
+                                Spacing="8" />
+                        </ScrollView>
+
+                        <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRestoreConfirmationTapped" />
+                            </Grid.GestureRecognizers>
+                            <Border
+                                x:Name="RestoreConfirmationBox"
+                                BackgroundColor="#FFFFFF"
+                                HeightRequest="20"
+                                Stroke="#2563EB"
+                                StrokeThickness="1.6"
+                                VerticalOptions="Center"
+                                WidthRequest="20">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="5" />
+                                </Border.StrokeShape>
+                                <Path
+                                    x:Name="RestoreConfirmationCheckMark"
+                                    Aspect="Uniform"
+                                    Data="M 4 9 L 8 13 L 16 5"
+                                    Fill="Transparent"
+                                    HeightRequest="14"
+                                    HorizontalOptions="Center"
+                                    IsVisible="False"
+                                    Stroke="#FFFFFF"
+                                    StrokeLineCap="Round"
+                                    StrokeLineJoin="Round"
+                                    StrokeThickness="2.2"
+                                    VerticalOptions="Center"
+                                    WidthRequest="14" />
+                            </Border>
+                            <Label
+                                Grid.Column="1"
+                                FontSize="13"
+                                LineBreakMode="WordWrap"
+                                Text="I understand that this will set my progress to the point when backup was created."
+                                TextColor="#555555"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border
+                                BackgroundColor="#FFFFFF"
+                                HeightRequest="46"
+                                Stroke="#E4E4DE"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCancelRestoreTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Cancel"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+
+                            <Border
+                                x:Name="RestoreConfirmButton"
+                                Grid.Column="1"
+                                BackgroundColor="#EAF1FF"
+                                HeightRequest="46"
+                                InputTransparent="True"
+                                Opacity="0.6"
+                                Stroke="#CFE0FF"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnConfirmRestoreTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="RestoreConfirmLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Confirm"
+                                    TextColor="#2563EB"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout
+                        x:Name="RestoreSchemaWarningContent"
+                        IsVisible="False"
+                        Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="22"
+                            Text="Backup columns changed"
+                            TextColor="#171717" />
+
+                        <Label
+                            x:Name="RestoreSchemaWarningDetailLabel"
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            TextColor="#555555" />
+
+                        <Border
+                            Padding="12"
+                            BackgroundColor="#FFF7ED"
+                            Stroke="#FED7AA"
+                            StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8" />
+                            </Border.StrokeShape>
+                            <ScrollView MaximumHeightRequest="180">
+                                <Label
+                                    x:Name="RestoreSchemaWarningColumnsLabel"
+                                    FontSize="12"
+                                    LineBreakMode="WordWrap"
+                                    TextColor="#7C2D12" />
+                            </ScrollView>
+                        </Border>
+
+                        <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRestoreSchemaWarningConfirmationTapped" />
+                            </Grid.GestureRecognizers>
+                            <Border
+                                x:Name="RestoreSchemaWarningConfirmationBox"
+                                BackgroundColor="#FFFFFF"
+                                HeightRequest="20"
+                                Stroke="#2563EB"
+                                StrokeThickness="1.6"
+                                VerticalOptions="Center"
+                                WidthRequest="20">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="5" />
+                                </Border.StrokeShape>
+                                <Path
+                                    x:Name="RestoreSchemaWarningConfirmationCheckMark"
+                                    Aspect="Uniform"
+                                    Data="M 4 9 L 8 13 L 16 5"
+                                    Fill="Transparent"
+                                    HeightRequest="14"
+                                    HorizontalOptions="Center"
+                                    IsVisible="False"
+                                    Stroke="#FFFFFF"
+                                    StrokeLineCap="Round"
+                                    StrokeLineJoin="Round"
+                                    StrokeThickness="2.2"
+                                    VerticalOptions="Center"
+                                    WidthRequest="14" />
+                            </Border>
+                            <Label
+                                Grid.Column="1"
+                                FontSize="13"
+                                LineBreakMode="WordWrap"
+                                Text="I understand only matching progress columns will be restored."
+                                TextColor="#555555"
+                                VerticalTextAlignment="Center" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border
+                                BackgroundColor="#FFFFFF"
+                                HeightRequest="46"
+                                Stroke="#E4E4DE"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCancelRestoreSchemaWarningTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Cancel"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+
+                            <Border
+                                x:Name="RestoreSchemaWarningConfirmButton"
+                                Grid.Column="1"
+                                BackgroundColor="#EAF1FF"
+                                HeightRequest="46"
+                                InputTransparent="True"
+                                Opacity="0.6"
+                                Stroke="#CFE0FF"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnConfirmRestoreSchemaWarningTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="RestoreSchemaWarningConfirmLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Continue"
+                                    TextColor="#2563EB"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout x:Name="RestoreProgressContent" IsVisible="False" Spacing="14">
+                        <ActivityIndicator
+                            x:Name="RestoreActivityIndicator"
+                            Color="#2563EB"
+                            HeightRequest="44"
+                            IsRunning="False"
+                            WidthRequest="44" />
+                        <Label
+                            x:Name="RestoreProgressLabel"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="18"
+                            HorizontalTextAlignment="Center"
+                            Text="Restoring backup..."
+                            TextColor="#171717" />
+                        <Label
+                            x:Name="RestoreProgressDetailLabel"
+                            FontSize="13"
+                            HorizontalTextAlignment="Center"
+                            Text="Please wait until the restore completes."
+                            TextColor="#555555" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
     </Grid>
 
 </ContentPage>

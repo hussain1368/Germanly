@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
@@ -12,6 +13,16 @@ namespace GermanToolbox
         {
             base.OnCreate(savedInstanceState);
             AndroidSoftInputModeService.UseOverlayMode();
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
+        {
+            if (AndroidGoogleNativeSignInService.TryHandleActivityResult(requestCode, resultCode, data))
+            {
+                return;
+            }
+
+            base.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }
