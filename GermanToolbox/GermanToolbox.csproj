@@ -61,6 +61,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Config\google-oauth-settings.local.json" Condition="Exists('Config\google-oauth-settings.local.json')" />
+		<None Remove="Config\google-oauth-windows-secret.local.txt" Condition="Exists('Config\google-oauth-windows-secret.local.txt')" />
+		<EmbeddedResource
+			Include="Config\google-oauth-settings.local.json"
+			Condition="Exists('Config\google-oauth-settings.local.json')"
+			LogicalName="GermanToolbox.Config.google-oauth-settings.json" />
+		<EmbeddedResource
+			Include="Config\google-oauth-windows-secret.local.txt"
+			Condition="Exists('Config\google-oauth-windows-secret.local.txt') And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'"
+			LogicalName="GermanToolbox.Config.google-oauth-windows-secret.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />

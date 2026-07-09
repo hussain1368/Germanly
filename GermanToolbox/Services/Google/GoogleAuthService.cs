@@ -37,12 +37,16 @@ namespace GermanToolbox
 
         private readonly HttpClient httpClient = new();
         private readonly IGoogleNativeSignInService nativeSignInService;
+        private readonly GoogleOAuthOptions googleOAuthOptions;
         private CancellationTokenSource? pendingSignInCancellationSource;
         private GoogleSignedInUser? currentUser;
 
-        public GoogleAuthService(IGoogleNativeSignInService nativeSignInService)
+        public GoogleAuthService(
+            IGoogleNativeSignInService nativeSignInService,
+            GoogleOAuthOptions googleOAuthOptions)
         {
             this.nativeSignInService = nativeSignInService;
+            this.googleOAuthOptions = googleOAuthOptions;
             var email = Preferences.Default.Get(EmailPreferenceKey, string.Empty);
             var displayName = Preferences.Default.Get(DisplayNamePreferenceKey, string.Empty);
             var firstName = Preferences.Default.Get(FirstNamePreferenceKey, string.Empty);
@@ -135,8 +139,8 @@ namespace GermanToolbox
                     return persistedAndroidUser;
                 }
 
-                var clientId = GoogleOAuthOptions.GetClientId(platform);
-                var clientSecret = GoogleOAuthOptions.GetClientSecret(platform);
+                var clientId = googleOAuthOptions.GetClientId(platform);
+                var clientSecret = googleOAuthOptions.GetClientSecret(platform);
                 if (string.IsNullOrWhiteSpace(clientId))
                 {
                     throw new InvalidOperationException(
@@ -369,8 +373,8 @@ namespace GermanToolbox
         private async Task<string> RefreshAccessTokenAsync(string refreshToken)
         {
             var platform = DeviceInfo.Current.Platform;
-            var clientId = GoogleOAuthOptions.GetClientId(platform);
-            var clientSecret = GoogleOAuthOptions.GetClientSecret(platform);
+            var clientId = googleOAuthOptions.GetClientId(platform);
+            var clientSecret = googleOAuthOptions.GetClientSecret(platform);
 
             var formData = new List<KeyValuePair<string, string>>
             {

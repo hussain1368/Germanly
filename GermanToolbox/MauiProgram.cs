@@ -56,6 +56,7 @@ namespace GermanToolbox
 
             builder.Services.AddSingleton<AppDatabase>();
             builder.Services.AddSingleton<PracticeSettingsService>();
+            builder.Services.AddSingleton(GoogleOAuthOptions.Load());
             builder.Services.AddSingleton<GoogleAuthService>();
 #if ANDROID
             builder.Services.AddSingleton<IGoogleNativeSignInService, AndroidGoogleNativeSignInService>();

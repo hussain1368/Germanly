@@ -11,6 +11,10 @@
 *.sln.docstates
 *.env
 
+# Local OAuth config values used for private builds.
+GermanToolbox/Config/google-oauth-settings.local.json
+GermanToolbox/Config/google-oauth-windows-secret.local.txt
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
