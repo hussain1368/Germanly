@@ -173,13 +173,13 @@ namespace GermanToolbox
             SetBackupButtonBusyState(true);
             try
             {
-                BackupStatusLabel.Text = "Preparing backup...";
+                BackupButton.Text = "Preparing backup...";
                 await Task.Yield();
-                var progress = new Progress<int>(p => BackupStatusLabel.Text = p < 100 ? $"Backup {p}%" : "Uploading...");
+                var progress = new Progress<int>(p => BackupButton.Text = p < 100 ? $"Backup {p}%" : "Uploading...");
                 var zip = await driveBackupService.CreateBackupZipAsync(progress);
                 var fileName = $"germanly_backup_{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.zip";
                 var fileId = await driveBackupService.UploadBackupAsync(zip, fileName);
-                BackupStatusLabel.Text = "Backup uploaded successfully";
+                BackupButton.Text = "Backup uploaded successfully";
                 if (Shell.Current.CurrentPage is ContentPage page1)
                 {
                     await ToastService.ShowAsync(page1, "Backup uploaded to Google Drive");
@@ -188,10 +188,11 @@ namespace GermanToolbox
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Backup failed", ex.Message, "OK");
-                BackupStatusLabel.Text = "Backup failed";
+                BackupButton.Text = "Backup failed";
             }
             finally
             {
+                BackupButton.Text = "Backup now";
                 SetBackupButtonBusyState(false);
             }
         }
@@ -207,7 +208,8 @@ namespace GermanToolbox
             GoogleAccountStatusLabel.Text = currentUser is null
                 ? "Not connected. Sign in with Google to prepare Drive backup."
                 : $"Connected as {currentUser.Email}";
-            GoogleActionButton.Text = currentUser is null ? "Anmelden" : "Abmelden";
+            GoogleActionButton.Text = currentUser is null ? "Sign in to Google" : "Sign out";
+            GoogleActionButton.ImageSource = currentUser is null ? "google.png" : "power.png";
             GoogleActionButton.IsEnabled = !isGoogleActionBusy;
         }
 

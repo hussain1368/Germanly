@@ -9,9 +9,7 @@
 
             <Grid RowDefinitions="Auto,18,Auto">
                 <Grid ColumnDefinitions="52,*" ColumnSpacing="12">
-                    <Grid
-                        HeightRequest="52"
-                        WidthRequest="52">
+                    <Grid HeightRequest="52" WidthRequest="52">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnAvatarTapped" />
                         </Grid.GestureRecognizers>
@@ -106,8 +104,8 @@
 
                 <VerticalStackLayout
                     Grid.Row="2"
-                    MinimumHeightRequest="230"
                     Padding="20"
+                    MinimumHeightRequest="230"
                     Spacing="15"
                     ZIndex="2">
                     <VerticalStackLayout Spacing="5">
@@ -238,8 +236,8 @@
                             Text="Schnellübersicht"
                             TextColor="#171717" />
                         <Label
-                            FontSize="12"
                             x:Name="OverviewSubtitleLabel"
+                            FontSize="12"
                             Text="Your learning progress at a glance"
                             TextColor="#777777" />
                     </VerticalStackLayout>

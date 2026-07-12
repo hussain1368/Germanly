@@ -6,74 +6,372 @@
 
     <Grid>
         <ScrollView>
-            <VerticalStackLayout
-                Padding="24,24,24,18"
-                Spacing="16">
-            <Label
-                FontAttributes="Bold"
-                FontFamily="OpenSansSemibold"
-                FontSize="32"
-                Text="Einstellungen"
-                TextColor="#171717" />
+            <VerticalStackLayout Padding="24,24,24,18" Spacing="16">
+                <Label
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="32"
+                    Text="Einstellungen"
+                    TextColor="#171717" />
 
-            <Border Padding="18" StrokeThickness="0">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Border.Shadow>
-                    <Shadow Brush="#26000000" Offset="0,10" Opacity="0.22" Radius="20" />
-                </Border.Shadow>
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Offset="0.0" Color="#171717" />
-                        <GradientStop Offset="0.62" Color="#243047" />
-                        <GradientStop Offset="1.0" Color="#182235" />
-                    </LinearGradientBrush>
-                </Border.Background>
-                <VerticalStackLayout Spacing="8">
-                    <Label
-                        FontAttributes="Bold"
-                        FontFamily="OpenSansSemibold"
-                        FontSize="28"
-                        Text="Sitzungen anpassen"
-                        TextColor="#FFFFFF" />
-                    <Label
-                        FontSize="13"
-                        LineBreakMode="WordWrap"
-                        Text="Changes are saved immediately on this device and used the next time a test starts."
-                        TextColor="#DCE8F6" />
-                </VerticalStackLayout>
-            </Border>
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid
+                        ColumnDefinitions="*,132"
+                        ColumnSpacing="14"
+                        HorizontalOptions="Fill">
+                        <VerticalStackLayout Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="17"
+                                Text="Lernschwelle"
+                                TextColor="#171717" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="A word is considered learned after this many net correct answers. Wrong answers lower the score."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
 
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
-                    <VerticalStackLayout Spacing="4">
+                        <Grid
+                            Grid.Column="1"
+                            ColumnDefinitions="38,*,38"
+                            ColumnSpacing="6"
+                            VerticalOptions="Center">
+                            <Border
+                                BackgroundColor="#EAF1FF"
+                                HeightRequest="38"
+                                Stroke="#CFE0FF"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnDecreaseThresholdTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="22"
+                                    HorizontalTextAlignment="Center"
+                                    Text="-"
+                                    TextColor="#2563EB"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="1"
+                                BackgroundColor="#F7FAFF"
+                                Stroke="#DDE8F5"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="LearnedThresholdValueLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="22"
+                                    HorizontalTextAlignment="Center"
+                                    Text="3"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="2"
+                                BackgroundColor="#2563EB"
+                                HeightRequest="38"
+                                Stroke="#2563EB"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnIncreaseThresholdTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="22"
+                                    HorizontalTextAlignment="Center"
+                                    Text="+"
+                                    TextColor="#FFFFFF"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid
+                        ColumnDefinitions="*,132"
+                        ColumnSpacing="14"
+                        HorizontalOptions="Fill">
+                        <VerticalStackLayout Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="17"
+                                Text="Sitzungsgröße"
+                                TextColor="#171717" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="How many words a regular test tries to load. Mistake review can be smaller if fewer mistakes exist."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
+                        <Grid
+                            Grid.Column="1"
+                            ColumnDefinitions="38,*,38"
+                            ColumnSpacing="6"
+                            VerticalOptions="Center">
+                            <Border
+                                BackgroundColor="#EAF1FF"
+                                HeightRequest="38"
+                                Stroke="#CFE0FF"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnDecreaseChunkSizeTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="22"
+                                    HorizontalTextAlignment="Center"
+                                    Text="-"
+                                    TextColor="#2563EB"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="1"
+                                BackgroundColor="#F7FAFF"
+                                Stroke="#DDE8F5"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    x:Name="ChunkSizeValueLabel"
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="22"
+                                    HorizontalTextAlignment="Center"
+                                    Text="10"
+                                    TextColor="#171717"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="2"
+                                BackgroundColor="#2563EB"
+                                HeightRequest="38"
+                                Stroke="#2563EB"
+                                StrokeThickness="1">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnIncreaseChunkSizeTapped" />
+                                </Border.GestureRecognizers>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="22"
+                                    HorizontalTextAlignment="Center"
+                                    Text="+"
+                                    TextColor="#FFFFFF"
+                                    VerticalTextAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid
+                        ColumnDefinitions="*,62"
+                        ColumnSpacing="14"
+                        HorizontalOptions="Fill">
+                        <VerticalStackLayout Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="17"
+                                Text="Töne"
+                                TextColor="#171717" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="Play feedback sounds for answers and when a results page appears."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
+                        <Switch
+                            x:Name="SoundsSwitch"
+                            Grid.Column="1"
+                            HorizontalOptions="End"
+                            OnColor="#CFE0FF"
+                            ThumbColor="#2563EB"
+                            Toggled="OnSoundsToggled"
+                            VerticalOptions="Center"
+                            WidthRequest="56" />
+                    </Grid>
+                </Border>
+
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid
+                        ColumnDefinitions="*,60"
+                        ColumnSpacing="14"
+                        HorizontalOptions="Fill">
+                        <VerticalStackLayout Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="17"
+                                Text="Vibration"
+                                TextColor="#171717" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="Use a light vibration for wrong answers and thumbs-down taps."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
+                        <Switch
+                            x:Name="VibrationsSwitch"
+                            Grid.Column="1"
+                            HorizontalOptions="End"
+                            OnColor="#CFE0FF"
+                            ThumbColor="#2563EB"
+                            Toggled="OnVibrationsToggled"
+                            VerticalOptions="Center"
+                            WidthRequest="56" />
+                    </Grid>
+                </Border>
+
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="8">
+                        <Grid ColumnDefinitions="34,*,Auto" ColumnSpacing="14">
+                            <Image
+                                Grid.Column="0"
+                                Source="drive.png"
+                                VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="17"
+                                    Text="Setup Google Drive"
+                                    TextColor="#171717" />
+                                <Label
+                                    x:Name="GoogleAccountStatusLabel"
+                                    FontSize="12"
+                                    LineBreakMode="WordWrap"
+                                    Text="Not connected"
+                                    TextColor="#777777" />
+                            </VerticalStackLayout>
+
+                        </Grid>
+                        <Button
+                            x:Name="GoogleActionButton"
+                            BackgroundColor="#FFFFFF"
+                            BorderColor="#2563EB"
+                            BorderWidth="1"
+                            Clicked="OnGoogleActionClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="44"
+                            ImageSource="google.png"
+                            Text="Sign in to Google"
+                            TextColor="#2563EB" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="8">
                         <Label
                             FontAttributes="Bold"
                             FontFamily="OpenSansSemibold"
                             FontSize="17"
-                            Text="Backup &amp; Restore"
+                            Text="Backup and Restore"
                             TextColor="#171717" />
-                        <Label
-                            x:Name="BackupStatusLabel"
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="No backups yet"
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
 
-                    <VerticalStackLayout
-                        Grid.Column="1"
-                        HorizontalOptions="End"
-                        Spacing="8"
-                        VerticalOptions="Center">
+                        <BoxView BackgroundColor="#DDE8F5" HeightRequest="1" />
+
+                        <Grid
+                            ColumnDefinitions="*,62"
+                            ColumnSpacing="14"
+                            HorizontalOptions="Fill">
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="17"
+                                    Text="Automatic Backups"
+                                    TextColor="#171717" />
+                                <Label
+                                    FontSize="12"
+                                    LineBreakMode="WordWrap"
+                                    Text="Backup your progress on a daily basis."
+                                    TextColor="#777777" />
+                            </VerticalStackLayout>
+
+                            <Switch
+                                x:Name="AutoBackupSwitch"
+                                Grid.Column="1"
+                                HorizontalOptions="End"
+                                OnColor="#CFE0FF"
+                                ThumbColor="#2563EB"
+                                VerticalOptions="Center"
+                                WidthRequest="56" />
+                        </Grid>
+
+                        <BoxView BackgroundColor="#DDE8F5" HeightRequest="1" />
+
                         <Button
                             x:Name="BackupButton"
                             BackgroundColor="#2563EB"
@@ -82,6 +380,7 @@
                             FontAttributes="Bold"
                             FontFamily="OpenSansSemibold"
                             HeightRequest="44"
+                            ImageSource="backup.png"
                             Text="Backup now"
                             TextColor="#FFFFFF" />
                         <Button
@@ -94,408 +393,101 @@
                             FontAttributes="Bold"
                             FontFamily="OpenSansSemibold"
                             HeightRequest="44"
+                            ImageSource="restore.png"
                             Text="Restore backup"
                             TextColor="#2563EB" />
                     </VerticalStackLayout>
-                </Grid>
-            </Border>
+                </Border>
 
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid
-                    ColumnDefinitions="*,132"
-                    ColumnSpacing="14"
-                    HorizontalOptions="Fill">
-                    <VerticalStackLayout Spacing="4">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Lernschwelle"
-                            TextColor="#171717" />
-                        <Label
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="A word is considered learned after this many net correct answers. Wrong answers lower the score."
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <Grid
-                        Grid.Column="1"
-                        ColumnDefinitions="38,*,38"
-                        ColumnSpacing="6"
-                        VerticalOptions="Center">
-                        <Border
-                            BackgroundColor="#EAF1FF"
-                            HeightRequest="38"
-                            Stroke="#CFE0FF"
-                            StrokeThickness="1">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnDecreaseThresholdTapped" />
-                            </Border.GestureRecognizers>
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8" />
-                            </Border.StrokeShape>
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFFFFF"
+                    Stroke="#DDE8F5"
+                    StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUserGuideTapped" />
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*,40" ColumnSpacing="14">
+                        <VerticalStackLayout Spacing="4">
                             <Label
                                 FontAttributes="Bold"
                                 FontFamily="OpenSansSemibold"
-                                FontSize="22"
-                                HorizontalTextAlignment="Center"
-                                Text="-"
-                                TextColor="#2563EB"
-                                VerticalTextAlignment="Center" />
-                        </Border>
+                                FontSize="17"
+                                Text="Benutzerhandbuch"
+                                TextColor="#171717" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="A quick tour of search, practice modes, scoring, and app settings."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
                         <Border
                             Grid.Column="1"
-                            BackgroundColor="#F7FAFF"
-                            Stroke="#DDE8F5"
-                            StrokeThickness="1">
+                            BackgroundColor="#EAF2FF"
+                            HeightRequest="40"
+                            Stroke="#CFE0FA"
+                            StrokeThickness="1"
+                            VerticalOptions="Center"
+                            WidthRequest="40">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8" />
                             </Border.StrokeShape>
-                            <Label
-                                x:Name="LearnedThresholdValueLabel"
-                                FontAttributes="Bold"
-                                FontFamily="OpenSansSemibold"
-                                FontSize="22"
-                                HorizontalTextAlignment="Center"
-                                Text="3"
-                                TextColor="#171717"
-                                VerticalTextAlignment="Center" />
-                        </Border>
-                        <Border
-                            Grid.Column="2"
-                            BackgroundColor="#2563EB"
-                            HeightRequest="38"
-                            Stroke="#2563EB"
-                            StrokeThickness="1">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnIncreaseThresholdTapped" />
-                            </Border.GestureRecognizers>
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8" />
-                            </Border.StrokeShape>
-                            <Label
-                                FontAttributes="Bold"
-                                FontFamily="OpenSansSemibold"
-                                FontSize="22"
-                                HorizontalTextAlignment="Center"
-                                Text="+"
-                                TextColor="#FFFFFF"
-                                VerticalTextAlignment="Center" />
+                            <Path
+                                Aspect="Uniform"
+                                Data="M 12 7 L 21 16 L 12 25"
+                                Fill="Transparent"
+                                HeightRequest="20"
+                                HorizontalOptions="Center"
+                                Stroke="#2563EB"
+                                StrokeLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeThickness="2.3"
+                                VerticalOptions="Center"
+                                WidthRequest="20" />
                         </Border>
                     </Grid>
-                </Grid>
-            </Border>
+                </Border>
 
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid
-                    ColumnDefinitions="*,132"
-                    ColumnSpacing="14"
-                    HorizontalOptions="Fill">
-                    <VerticalStackLayout Spacing="4">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Sitzungsgröße"
-                            TextColor="#171717" />
-                        <Label
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="How many words a regular test tries to load. Mistake review can be smaller if fewer mistakes exist."
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <Grid
-                        Grid.Column="1"
-                        ColumnDefinitions="38,*,38"
-                        ColumnSpacing="6"
-                        VerticalOptions="Center">
-                        <Border
-                            BackgroundColor="#EAF1FF"
-                            HeightRequest="38"
-                            Stroke="#CFE0FF"
-                            StrokeThickness="1">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnDecreaseChunkSizeTapped" />
-                            </Border.GestureRecognizers>
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8" />
-                            </Border.StrokeShape>
+                <Border
+                    Padding="16"
+                    BackgroundColor="#FFF7F6"
+                    Stroke="#F2DEDC"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                        <VerticalStackLayout Spacing="4">
                             <Label
                                 FontAttributes="Bold"
                                 FontFamily="OpenSansSemibold"
-                                FontSize="22"
-                                HorizontalTextAlignment="Center"
-                                Text="-"
-                                TextColor="#2563EB"
-                                VerticalTextAlignment="Center" />
-                        </Border>
-                        <Border
-                            Grid.Column="1"
-                            BackgroundColor="#F7FAFF"
-                            Stroke="#DDE8F5"
-                            StrokeThickness="1">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8" />
-                            </Border.StrokeShape>
+                                FontSize="17"
+                                Text="Fortschritt löschen"
+                                TextColor="#171717" />
                             <Label
-                                x:Name="ChunkSizeValueLabel"
-                                FontAttributes="Bold"
-                                FontFamily="OpenSansSemibold"
-                                FontSize="22"
-                                HorizontalTextAlignment="Center"
-                                Text="10"
-                                TextColor="#171717"
-                                VerticalTextAlignment="Center" />
-                        </Border>
-                        <Border
-                            Grid.Column="2"
-                            BackgroundColor="#2563EB"
-                            HeightRequest="38"
-                            Stroke="#2563EB"
-                            StrokeThickness="1">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnIncreaseChunkSizeTapped" />
-                            </Border.GestureRecognizers>
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="8" />
-                            </Border.StrokeShape>
-                            <Label
-                                FontAttributes="Bold"
-                                FontFamily="OpenSansSemibold"
-                                FontSize="22"
-                                HorizontalTextAlignment="Center"
-                                Text="+"
-                                TextColor="#FFFFFF"
-                                VerticalTextAlignment="Center" />
-                        </Border>
-                    </Grid>
-                </Grid>
-            </Border>
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="Reset all scores, mistake flags, and learning flags. Your word list stays intact."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
 
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid
-                    ColumnDefinitions="*,132"
-                    ColumnSpacing="14"
-                    HorizontalOptions="Fill">
-                    <VerticalStackLayout Spacing="4">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Töne"
-                            TextColor="#171717" />
-                        <Label
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="Play feedback sounds for answers and when a results page appears."
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <Switch
-                        x:Name="SoundsSwitch"
-                        Grid.Column="1"
-                        HorizontalOptions="End"
-                        OnColor="#CFE0FF"
-                        ThumbColor="#2563EB"
-                        Toggled="OnSoundsToggled"
-                        VerticalOptions="Center"
-                        WidthRequest="56" />
-                </Grid>
-            </Border>
-
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid
-                    ColumnDefinitions="*,132"
-                    ColumnSpacing="14"
-                    HorizontalOptions="Fill">
-                    <VerticalStackLayout Spacing="4">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Vibration"
-                            TextColor="#171717" />
-                        <Label
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="Use a light vibration for wrong answers and thumbs-down taps."
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <Switch
-                        x:Name="VibrationsSwitch"
-                        Grid.Column="1"
-                        HorizontalOptions="End"
-                        OnColor="#CFE0FF"
-                        ThumbColor="#2563EB"
-                        Toggled="OnVibrationsToggled"
-                        VerticalOptions="Center"
-                        WidthRequest="56" />
-                </Grid>
-            </Border>
-
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
-                    <VerticalStackLayout Spacing="6">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Google Drive Konto"
-                            TextColor="#171717" />
-                        <Label
-                            x:Name="GoogleAccountStatusLabel"
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="Not connected"
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout
-                        Grid.Column="1"
-                        HorizontalOptions="End"
-                        Spacing="8"
-                        VerticalOptions="Center">
                         <Button
-                            x:Name="GoogleActionButton"
-                            BackgroundColor="#2563EB"
-                            Clicked="OnGoogleActionClicked"
+                            Grid.Column="1"
+                            BackgroundColor="#D43D35"
+                            Clicked="OnClearProgressClicked"
                             CornerRadius="8"
                             FontAttributes="Bold"
                             FontFamily="OpenSansSemibold"
                             HeightRequest="44"
-                            Text="Anmelden"
-                            TextColor="#FFFFFF" />
-                    </VerticalStackLayout>
-                </Grid>
-            </Border>
-
-            <Border
-                Padding="16"
-                BackgroundColor="#FFFFFF"
-                Stroke="#DDE8F5"
-                StrokeThickness="1">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnUserGuideTapped" />
-                </Border.GestureRecognizers>
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid ColumnDefinitions="*,40" ColumnSpacing="14">
-                    <VerticalStackLayout Spacing="4">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Benutzerhandbuch"
-                            TextColor="#171717" />
-                        <Label
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="A quick tour of search, practice modes, scoring, and app settings."
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <Border
-                        Grid.Column="1"
-                        BackgroundColor="#EAF2FF"
-                        HeightRequest="40"
-                        Stroke="#CFE0FA"
-                        StrokeThickness="1"
-                        VerticalOptions="Center"
-                        WidthRequest="40">
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="8" />
-                        </Border.StrokeShape>
-                        <Path
-                            Aspect="Uniform"
-                            Data="M 12 7 L 21 16 L 12 25"
-                            Fill="Transparent"
-                            HeightRequest="20"
-                            HorizontalOptions="Center"
-                            Stroke="#2563EB"
-                            StrokeLineCap="Round"
-                            StrokeLineJoin="Round"
-                            StrokeThickness="2.3"
-                            VerticalOptions="Center"
-                            WidthRequest="20" />
-                    </Border>
-                </Grid>
-            </Border>
-
-            <Border
-                Padding="16"
-                BackgroundColor="#FFF7F6"
-                Stroke="#F2DEDC"
-                StrokeThickness="1">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
-                    <VerticalStackLayout Spacing="4">
-                        <Label
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="17"
-                            Text="Fortschritt löschen"
-                            TextColor="#171717" />
-                        <Label
-                            FontSize="12"
-                            LineBreakMode="WordWrap"
-                            Text="Reset all scores, mistake flags, and learning flags. Your word list stays intact."
-                            TextColor="#777777" />
-                    </VerticalStackLayout>
-
-                    <Button
-                        Grid.Column="1"
-                        BackgroundColor="#D43D35"
-                        Clicked="OnClearProgressClicked"
-                        CornerRadius="8"
-                        FontAttributes="Bold"
-                        FontFamily="OpenSansSemibold"
-                        HeightRequest="44"
-                        Text="Zurücksetzen"
-                        TextColor="#FFFFFF"
-                        VerticalOptions="Center" />
-                </Grid>
-            </Border>
+                            Text="Zurücksetzen"
+                            TextColor="#FFFFFF"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
 
             </VerticalStackLayout>
         </ScrollView>
@@ -512,10 +504,10 @@
                 VerticalOptions="Center">
                 <ActivityIndicator
                     x:Name="GoogleSignInActivityIndicator"
-                    Color="#FFFFFF"
                     HeightRequest="44"
                     IsRunning="False"
-                    WidthRequest="44" />
+                    WidthRequest="44"
+                    Color="#FFFFFF" />
                 <Label
                     HorizontalTextAlignment="Center"
                     Text="Loading Google accounts..."

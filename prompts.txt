@@ -1,0 +1,11 @@
+I want to implement automatic daily backup
+- implement an automatic hourly backup. 
+- write the code for daily backup as well but comment it out. 
+- write comments for me indicating which part of the code to replace later in order to change the hourly backup to daily
+- automatic backup would run if the AutoBackupSwitch toggle in the settings page is on and the google account is signed in and internet is available
+- when the user turns on the AutoBackupSwitch if the google account is not set up yet, show a popup saying the google must be set up first and turn the switch immediately back off.
+- implement a flag that every time a setting is altered or any learning, score or mistake flag in the database is updated through test sessions the flag would trun on.
+- every time an automatic or manual backup is sucessfully taken and uploaded the flag would turn off
+- when the time for automatic backup hits, the app would first check the flag and only performs the backup if the flag is on. this is to avoid making identical backups.
+- implement the logic for this flag, but ignore it for now for automatic backups because I need to quickly test the automatic backup. put comments in the code where I need to change in order to make the flag checking effective
+- when doing automatic backups, the app should check and delete older backups. only up to 50 backups can live in the google drive.
