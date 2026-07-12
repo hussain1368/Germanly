@@ -1,6 +1,6 @@
 namespace GermanToolbox
 {
-    public static class GermanArticleService
+    public static class ArticleService
     {
         public static ArticleForms GetForms(ArticleCase articleCase, ArticleType articleType) =>
             (articleCase, articleType) switch

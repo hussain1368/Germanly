@@ -156,7 +156,7 @@ namespace GermanToolbox
             }
 
             var word = session.CurrentWord.Word;
-            var articleForms = GermanArticleService.GetForms(session.ArticleCase, session.ArticleType);
+            var articleForms = ArticleService.GetForms(session.ArticleCase, session.ArticleType);
 
             NounLabel.Text = word.Word;
             NounLabel.FontSize = GenericHelper.GetPromptFontSize(NounLabel.Text);

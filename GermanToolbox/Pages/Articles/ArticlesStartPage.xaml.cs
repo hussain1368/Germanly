@@ -329,23 +329,23 @@ namespace GermanToolbox
 
         private void UpdateOptionDescriptions()
         {
-            NominativeCaseSubtitle.Text = GermanArticleService
+            NominativeCaseSubtitle.Text = ArticleService
                 .GetForms(ArticleCase.Nominative, selectedArticleType)
                 .Summary;
-            AccusativeCaseSubtitle.Text = GermanArticleService
+            AccusativeCaseSubtitle.Text = ArticleService
                 .GetForms(ArticleCase.Accusative, selectedArticleType)
                 .Summary;
-            DativeCaseSubtitle.Text = GermanArticleService
+            DativeCaseSubtitle.Text = ArticleService
                 .GetForms(ArticleCase.Dative, selectedArticleType)
                 .Summary;
-            GenitiveCaseSubtitle.Text = GermanArticleService
+            GenitiveCaseSubtitle.Text = ArticleService
                 .GetForms(ArticleCase.Genitive, selectedArticleType)
                 .Summary;
 
-            DefiniteTypeSubtitle.Text = GermanArticleService
+            DefiniteTypeSubtitle.Text = ArticleService
                 .GetForms(selectedCase, ArticleType.Definite)
                 .Summary;
-            IndefiniteTypeSubtitle.Text = GermanArticleService
+            IndefiniteTypeSubtitle.Text = ArticleService
                 .GetForms(selectedCase, ArticleType.Indefinite)
                 .Summary;
         }
