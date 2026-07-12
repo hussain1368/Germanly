@@ -75,6 +75,7 @@
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
 		<PackageReference Include="Xamarin.GooglePlayServices.Auth" Version="119.2.0.5" />
+		<PackageReference Include="Xamarin.AndroidX.Work.Runtime" Version="2.11.1.1" />
 	</ItemGroup>
 
 </Project>

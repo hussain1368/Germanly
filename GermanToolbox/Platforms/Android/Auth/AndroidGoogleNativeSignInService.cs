@@ -55,8 +55,7 @@ namespace GermanToolbox
             string? existingAccessToken,
             bool forceRefresh)
         {
-            var activity = Platform.CurrentActivity
-                ?? throw new InvalidOperationException("No active Android activity is available for Google Drive access.");
+            var context = Platform.CurrentActivity ?? Android.App.Application.Context;
             if (string.IsNullOrWhiteSpace(email))
             {
                 throw new InvalidOperationException("Google Drive access failed: no signed-in Google account is available.");
@@ -69,10 +68,10 @@ namespace GermanToolbox
                 {
                     if (forceRefresh && !string.IsNullOrWhiteSpace(existingAccessToken))
                     {
-                        GoogleAuthUtil.ClearToken(activity, existingAccessToken);
+                        GoogleAuthUtil.ClearToken(context, existingAccessToken);
                     }
 
-                    return GoogleAuthUtil.GetToken(activity, email, scope);
+                    return GoogleAuthUtil.GetToken(context, email, scope);
                 });
             }
             catch (UserRecoverableAuthException ex)

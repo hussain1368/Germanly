@@ -11,6 +11,8 @@ namespace GermanToolbox
         private readonly PracticeSettingsService settingsService;
         private readonly GoogleAuthService googleAuthService;
         private readonly DriveBackupService driveBackupService;
+        private readonly AutoBackupService autoBackupService;
+        private readonly ImageSource? backupButtonImageSource;
         private bool isRefreshingValues;
         private bool isGoogleActionBusy;
         private bool isBackupActionBusy;
@@ -25,6 +27,8 @@ namespace GermanToolbox
             settingsService = AppServices.GetRequiredService<PracticeSettingsService>();
             googleAuthService = AppServices.GetRequiredService<GoogleAuthService>();
             driveBackupService = AppServices.GetRequiredService<DriveBackupService>();
+            autoBackupService = AppServices.GetRequiredService<AutoBackupService>();
+            backupButtonImageSource = BackupButton.ImageSource;
             googleAuthService.AuthenticationStateChanged += OnAuthenticationStateChanged;
             RefreshValues();
         }
@@ -53,6 +57,7 @@ namespace GermanToolbox
                 ChunkSizeValueLabel.Text = settingsService.TestChunkSize.ToString();
                 SoundsSwitch.IsToggled = settingsService.SoundsEnabled;
                 VibrationsSwitch.IsToggled = settingsService.VibrationsEnabled;
+                AutoBackupSwitch.IsToggled = settingsService.AutoBackupEnabled;
                 SetBackupButtonBusyState(isBackupActionBusy);
                 ApplyGoogleAccountState();
             }
@@ -112,6 +117,37 @@ namespace GermanToolbox
             }
         }
 
+        private async void OnAutoBackupToggled(object sender, ToggledEventArgs e)
+        {
+            if (isRefreshingValues)
+            {
+                return;
+            }
+
+            if (e.Value && !googleAuthService.IsSignedIn)
+            {
+                isRefreshingValues = true;
+                try
+                {
+                    AutoBackupSwitch.IsToggled = false;
+                    settingsService.AutoBackupEnabled = false;
+                }
+                finally
+                {
+                    isRefreshingValues = false;
+                }
+
+                await Shell.Current.DisplayAlert(
+                    "Google account required",
+                    "Google must be set up first before automatic backups can be enabled.",
+                    "OK");
+                return;
+            }
+
+            settingsService.AutoBackupEnabled = e.Value;
+            autoBackupService.RefreshBackgroundSchedule();
+        }
+
         private async void OnUserGuideTapped(object sender, TappedEventArgs e) =>
             await Shell.Current.GoToAsync(nameof(UserGuidePage));
 
@@ -140,7 +176,6 @@ namespace GermanToolbox
 
             SetGoogleSignInOverlayVisible(true);
             GoogleActionButton.IsEnabled = false;
-            var previousText = GoogleActionButton.Text;
             GoogleActionButton.Text = "Connecting...";
             isGoogleActionBusy = true;
 
@@ -160,8 +195,7 @@ namespace GermanToolbox
             {
                 isGoogleActionBusy = false;
                 SetGoogleSignInOverlayVisible(false);
-                GoogleActionButton.Text = previousText;
-                GoogleActionButton.IsEnabled = true;
+                ApplyGoogleAccountState();
             }
         }
 
@@ -170,15 +204,27 @@ namespace GermanToolbox
 
         private async void OnBackupClicked(object sender, EventArgs e)
         {
+            if (!await EnsureGoogleAccountReadyAsync("backup or restore your data"))
+            {
+                return;
+            }
+
             SetBackupButtonBusyState(true);
             try
             {
                 BackupButton.Text = "Preparing backup...";
                 await Task.Yield();
                 var progress = new Progress<int>(p => BackupButton.Text = p < 100 ? $"Backup {p}%" : "Uploading...");
-                var zip = await driveBackupService.CreateBackupZipAsync(progress);
-                var fileName = $"germanly_backup_{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.zip";
-                var fileId = await driveBackupService.UploadBackupAsync(zip, fileName);
+                await driveBackupService.CreateAndUploadBackupAsync(progress);
+                try
+                {
+                    await driveBackupService.DeleteOlderBackupsAsync();
+                }
+                catch
+                {
+                    // Backup already succeeded; automatic cleanup will try again later.
+                }
+
                 BackupButton.Text = "Backup uploaded successfully";
                 if (Shell.Current.CurrentPage is ContentPage page1)
                 {
@@ -197,9 +243,28 @@ namespace GermanToolbox
             }
         }
 
-        private void OnRestoreClicked(object sender, EventArgs e)
+        private async void OnRestoreClicked(object sender, EventArgs e)
         {
+            if (!await EnsureGoogleAccountReadyAsync("restore a backup"))
+            {
+                return;
+            }
+
             RestoreRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private async Task<bool> EnsureGoogleAccountReadyAsync(string actionDescription)
+        {
+            if (googleAuthService.IsSignedIn)
+            {
+                return true;
+            }
+
+            await Shell.Current.DisplayAlert(
+                "Google account required",
+                $"Google must be set up first before you can {actionDescription}.",
+                "OK");
+            return false;
         }
 
         private void ApplyGoogleAccountState()
@@ -211,6 +276,12 @@ namespace GermanToolbox
             GoogleActionButton.Text = currentUser is null ? "Sign in to Google" : "Sign out";
             GoogleActionButton.ImageSource = currentUser is null ? "google.png" : "power.png";
             GoogleActionButton.IsEnabled = !isGoogleActionBusy;
+
+            if (currentUser is null && settingsService.AutoBackupEnabled)
+            {
+                settingsService.AutoBackupEnabled = false;
+                AutoBackupSwitch.IsToggled = false;
+            }
         }
 
         private void OnAuthenticationStateChanged(object? sender, EventArgs e) =>
@@ -230,6 +301,9 @@ namespace GermanToolbox
             BackupButton.IsEnabled = !isBusy;
             BackupButton.BackgroundColor = isBusy ? BackupDisabledBackgroundColor : BackupEnabledBackgroundColor;
             BackupButton.TextColor = isBusy ? BackupDisabledTextColor : BackupEnabledTextColor;
+            BackupButton.ImageSource = isBusy ? null : backupButtonImageSource;
+            BackupActivityIndicator.IsVisible = isBusy;
+            BackupActivityIndicator.IsRunning = isBusy;
         }
     }
 }

@@ -22,16 +22,21 @@ namespace GermanToolbox
 
         private readonly AppDatabase database;
         private readonly WordsDatabaseSeedService wordsDatabaseSeedService;
+        private readonly PracticeSettingsService settingsService;
         private readonly SemaphoreSlim initializationLock = new(1, 1);
         private readonly SemaphoreSlim learningSyncLock = new(1, 1);
         private readonly SemaphoreSlim writeLock = new(1, 1);
         private bool isInitialized;
         private int? synchronizedLearningThreshold;
 
-        public WordRepository(AppDatabase database, WordsDatabaseSeedService wordsDatabaseSeedService)
+        public WordRepository(
+            AppDatabase database,
+            WordsDatabaseSeedService wordsDatabaseSeedService,
+            PracticeSettingsService settingsService)
         {
             this.database = database;
             this.wordsDatabaseSeedService = wordsDatabaseSeedService;
+            this.settingsService = settingsService;
         }
 
         public async Task<IReadOnlyList<WordEntry>> GetRegularSessionWordsAsync(
@@ -396,6 +401,7 @@ namespace GermanToolbox
             var placeholders = string.Join(",", ids.Select(_ => "?"));
             var sql = $"UPDATE Words SET {nameof(WordEntry.Learning)} = 1 WHERE Id IN ({placeholders})";
             await ExecuteWriteAsync(() => database.Connection.ExecuteAsync(sql, ids.Cast<object>().ToArray()));
+            settingsService.MarkBackupNeeded();
         }
 
         public async Task ApplySessionResultsAsync(
@@ -423,6 +429,7 @@ namespace GermanToolbox
                 await ExecuteLearningFlagWriteAsync(
                     learnedThreshold,
                     () => database.Connection.UpdateAllAsync(wordsToUpdate));
+                settingsService.MarkBackupNeeded();
             }
         }
 
@@ -453,6 +460,7 @@ namespace GermanToolbox
                     await database.Connection.UpdateAllAsync(words);
                 }
             });
+            settingsService.MarkBackupNeeded();
         }
 
         public sealed class WordProgressRow
@@ -521,6 +529,7 @@ namespace GermanToolbox
                     conn.Execute(sql, parameters);
                 }
             }));
+            settingsService.MarkBackupNeeded();
         }
 
         private static object GetProgressColumnValue(WordProgressRow row, string column) =>

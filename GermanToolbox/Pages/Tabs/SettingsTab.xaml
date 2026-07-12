@@ -356,7 +356,7 @@
                                 <Label
                                     FontSize="12"
                                     LineBreakMode="WordWrap"
-                                    Text="Backup your progress on a daily basis."
+                                    Text="Backup your progress on an hourly basis."
                                     TextColor="#777777" />
                             </VerticalStackLayout>
 
@@ -366,23 +366,37 @@
                                 HorizontalOptions="End"
                                 OnColor="#CFE0FF"
                                 ThumbColor="#2563EB"
+                                Toggled="OnAutoBackupToggled"
                                 VerticalOptions="Center"
                                 WidthRequest="56" />
                         </Grid>
 
                         <BoxView BackgroundColor="#DDE8F5" HeightRequest="1" />
 
-                        <Button
-                            x:Name="BackupButton"
-                            BackgroundColor="#2563EB"
-                            Clicked="OnBackupClicked"
-                            CornerRadius="8"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            HeightRequest="44"
-                            ImageSource="backup.png"
-                            Text="Backup now"
-                            TextColor="#FFFFFF" />
+                        <Grid HeightRequest="44">
+                            <Button
+                                x:Name="BackupButton"
+                                BackgroundColor="#2563EB"
+                                Clicked="OnBackupClicked"
+                                CornerRadius="8"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                HeightRequest="44"
+                                ImageSource="backup.png"
+                                Text="Backup now"
+                                TextColor="#FFFFFF" />
+                            <ActivityIndicator
+                                x:Name="BackupActivityIndicator"
+                                HeightRequest="20"
+                                HorizontalOptions="Start"
+                                InputTransparent="True"
+                                IsRunning="False"
+                                IsVisible="False"
+                                Margin="18,0,0,0"
+                                VerticalOptions="Center"
+                                WidthRequest="20"
+                                Color="#7A8797" />
+                        </Grid>
                         <Button
                             x:Name="RestoreButton"
                             BackgroundColor="#FFFFFF"

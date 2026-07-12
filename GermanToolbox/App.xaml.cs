@@ -9,6 +9,8 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
+            AppServices.GetRequiredService<AutoBackupService>().Start();
+
             return new Window(new AppShell())
             {
                 Width = 430,

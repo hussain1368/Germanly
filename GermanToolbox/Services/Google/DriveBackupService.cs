@@ -11,6 +11,10 @@ namespace GermanToolbox
 {
     public sealed class DriveBackupService
     {
+        private const int MaximumBackupsToKeep = 50;
+        private const int MaximumDriveListPageSize = 1000;
+        private const string BackupFileNamePrefix = "germanly_backup_";
+
         private static readonly string[] RestorableProgressColumns = WordRepository.UserProgressColumnOrder
             .Skip(1)
             .ToArray();
@@ -30,6 +34,15 @@ namespace GermanToolbox
             this.wordRepository = wordRepository;
             this.settingsService = settingsService;
             this.googleAuthService = googleAuthService;
+        }
+
+        public async Task<string> CreateAndUploadBackupAsync(IProgress<int>? progress = null)
+        {
+            var zip = await CreateBackupZipAsync(progress);
+            var fileName = $"{BackupFileNamePrefix}{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.zip";
+            var fileId = await UploadBackupAsync(zip, fileName);
+            settingsService.ClearBackupNeeded();
+            return fileId;
         }
 
         public async Task<byte[]> CreateBackupZipAsync(IProgress<int>? progress = null)
@@ -129,25 +142,75 @@ namespace GermanToolbox
 
         public async Task<IReadOnlyList<DriveBackupItem>> ListBackupsAsync()
         {
-            var url = "https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&pageSize=50&fields=files(id,name,modifiedTime,size)";
-            var payload = await SendDriveJsonRequestAsync(() => new HttpRequestMessage(HttpMethod.Get, url), canRetryWithRefresh: true);
+            return await ListBackupsAsync(pageSize: MaximumBackupsToKeep, includeAllPages: false);
+        }
 
-            using var doc = JsonDocument.Parse(payload);
-            var files = doc.RootElement.GetProperty("files").EnumerateArray()
-                .Select(f => new DriveBackupItem(
-                    f.GetProperty("id").GetString() ?? string.Empty,
-                    f.GetProperty("name").GetString() ?? string.Empty,
-                    f.TryGetProperty("modifiedTime", out var m) ? m.GetDateTimeOffset() : DateTimeOffset.MinValue,
-                    f.TryGetProperty("size", out var s) ? ReadInt64Value(s) : 0))
+        public async Task DeleteOlderBackupsAsync()
+        {
+            var backups = (await ListBackupsAsync(
+                    pageSize: MaximumDriveListPageSize,
+                    includeAllPages: true))
+                .Where(IsBackupFile)
+                .OrderByDescending(backup => backup.Modified)
                 .ToList();
 
-            return files;
+            foreach (var backup in backups.Skip(MaximumBackupsToKeep))
+            {
+                await DeleteBackupAsync(backup.Id);
+            }
         }
 
         public async Task<byte[]> DownloadBackupAsync(string fileId)
         {
             var url = $"https://www.googleapis.com/drive/v3/files/{fileId}?alt=media";
             return await SendDriveBinaryRequestAsync(() => new HttpRequestMessage(HttpMethod.Get, url), canRetryWithRefresh: true);
+        }
+
+        private async Task<IReadOnlyList<DriveBackupItem>> ListBackupsAsync(
+            int pageSize,
+            bool includeAllPages)
+        {
+            var files = new List<DriveBackupItem>();
+            string? pageToken = null;
+
+            do
+            {
+                var url =
+                    "https://www.googleapis.com/drive/v3/files" +
+                    "?spaces=appDataFolder" +
+                    "&orderBy=modifiedTime desc" +
+                    $"&pageSize={pageSize}" +
+                    "&fields=nextPageToken,files(id,name,modifiedTime,size)" +
+                    (string.IsNullOrWhiteSpace(pageToken)
+                        ? string.Empty
+                        : $"&pageToken={Uri.EscapeDataString(pageToken)}");
+                var payload = await SendDriveJsonRequestAsync(
+                    () => new HttpRequestMessage(HttpMethod.Get, url),
+                    canRetryWithRefresh: true);
+
+                using var doc = JsonDocument.Parse(payload);
+                files.AddRange(doc.RootElement.GetProperty("files").EnumerateArray()
+                    .Select(f => new DriveBackupItem(
+                        f.GetProperty("id").GetString() ?? string.Empty,
+                        f.GetProperty("name").GetString() ?? string.Empty,
+                        f.TryGetProperty("modifiedTime", out var m) ? m.GetDateTimeOffset() : DateTimeOffset.MinValue,
+                        f.TryGetProperty("size", out var s) ? ReadInt64Value(s) : 0)));
+
+                pageToken = doc.RootElement.TryGetProperty("nextPageToken", out var token)
+                    ? token.GetString()
+                    : null;
+            }
+            while (includeAllPages && !string.IsNullOrWhiteSpace(pageToken));
+
+            return files;
+        }
+
+        private async Task DeleteBackupAsync(string fileId)
+        {
+            var url = $"https://www.googleapis.com/drive/v3/files/{fileId}";
+            await SendDriveJsonRequestAsync(
+                () => new HttpRequestMessage(HttpMethod.Delete, url),
+                canRetryWithRefresh: true);
         }
 
         private MultipartContent CreateMultipartRelatedContent(string fileName, byte[] zipBytes)
@@ -163,6 +226,10 @@ namespace GermanToolbox
 
             return content;
         }
+
+        private static bool IsBackupFile(DriveBackupItem backup) =>
+            backup.Name.StartsWith(BackupFileNamePrefix, StringComparison.OrdinalIgnoreCase) &&
+            backup.Name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase);
 
         private async Task<string> SendDriveJsonRequestAsync(
             Func<HttpRequestMessage> requestFactory,

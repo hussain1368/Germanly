@@ -66,6 +66,12 @@ namespace GermanToolbox
             builder.Services.AddSingleton<WordsDatabaseSeedService>();
             builder.Services.AddSingleton<WordRepository>();
             builder.Services.AddSingleton<DriveBackupService>();
+#if ANDROID
+            builder.Services.AddSingleton<IBackgroundBackupScheduler, AndroidBackgroundBackupScheduler>();
+#else
+            builder.Services.AddSingleton<IBackgroundBackupScheduler, NoOpBackgroundBackupScheduler>();
+#endif
+            builder.Services.AddSingleton<AutoBackupService>();
             builder.Services.AddSingleton<TestSessionService>();
             builder.Services.AddSingleton<AnswerFeedbackService>();
             builder.Services.AddSingleton<PluralDistractorGenerator>();
