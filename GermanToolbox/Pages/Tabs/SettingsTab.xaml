@@ -356,7 +356,7 @@
                                 <Label
                                     FontSize="12"
                                     LineBreakMode="WordWrap"
-                                    Text="Backup your progress on an hourly basis."
+                                    Text="Backup your progress on an daily basis."
                                     TextColor="#777777" />
                             </VerticalStackLayout>
 

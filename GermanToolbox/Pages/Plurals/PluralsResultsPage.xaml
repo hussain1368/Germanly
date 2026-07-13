@@ -15,161 +15,199 @@
     </ContentPage.Background>
 
     <Grid>
-    <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="18">
-            <VerticalStackLayout Spacing="2">
-                <Label
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    FontSize="28"
-                    Text="Ergebnisse"
-                    TextColor="#171717" />
-                <Grid
-                    Margin="0,5,0,0"
-                    ColumnDefinitions="16,16,16"
-                    ColumnSpacing="5"
-                    VerticalOptions="Center">
-                    <BoxView BackgroundColor="#6D4AA2" CornerRadius="2" HeightRequest="4" />
-                    <BoxView Grid.Column="1" BackgroundColor="#A05A9D" CornerRadius="2" HeightRequest="4" />
-                    <BoxView Grid.Column="2" BackgroundColor="#5977B8" CornerRadius="2" HeightRequest="4" />
-                </Grid>
-            </VerticalStackLayout>
-
-            <Border Padding="24" StrokeThickness="0">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Border.Shadow>
-                    <Shadow Brush="#32000000" Offset="0,16" Opacity="0.28" Radius="28" />
-                </Border.Shadow>
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Offset="0.0" Color="#21152F" />
-                        <GradientStop Offset="0.6" Color="#3B2853" />
-                        <GradientStop Offset="1.0" Color="#160E21" />
-                    </LinearGradientBrush>
-                </Border.Background>
-
-                <VerticalStackLayout Spacing="18">
-
-                    <VerticalStackLayout Spacing="0">
-                        <Label
-                            x:Name="AccuracyLabel"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="72"
-                            HorizontalTextAlignment="Center"
-                            Text="86%"
-                            TextColor="#FFFFFF" />
-                        <Label
-                            x:Name="SummaryLabel"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="20"
-                            HorizontalTextAlignment="Center"
-                            Text="Gut gemacht"
-                            TextColor="#D4BFF0" />
-                    </VerticalStackLayout>
-                    <ProgressBar
-                        x:Name="AccuracyProgressBar"
-                        BackgroundColor="#33FFFFFF"
-                        ProgressColor="#D4BFF0" />
+        <ScrollView>
+            <VerticalStackLayout Padding="24" Spacing="18">
+                <VerticalStackLayout Spacing="2">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="28"
+                        Text="Ergebnisse"
+                        TextColor="#171717" />
+                    <Grid
+                        Margin="0,5,0,0"
+                        ColumnDefinitions="16,16,16"
+                        ColumnSpacing="5"
+                        VerticalOptions="Center">
+                        <BoxView
+                            BackgroundColor="#6D4AA2"
+                            CornerRadius="2"
+                            HeightRequest="4" />
+                        <BoxView
+                            Grid.Column="1"
+                            BackgroundColor="#A05A9D"
+                            CornerRadius="2"
+                            HeightRequest="4" />
+                        <BoxView
+                            Grid.Column="2"
+                            BackgroundColor="#5977B8"
+                            CornerRadius="2"
+                            HeightRequest="4" />
+                    </Grid>
                 </VerticalStackLayout>
-            </Border>
 
-            <Grid
-                ColumnDefinitions="*,*"
-                ColumnSpacing="12"
-                RowDefinitions="Auto,Auto"
-                RowSpacing="12">
-                <Border Padding="14" BackgroundColor="#FFFFFF" Stroke="#E4DDF2">
+                <Border Padding="24" StrokeThickness="0">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="8" />
                     </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="2">
-                        <Label FontSize="12" Text="Richtig" TextColor="#777777" />
-                        <Label
-                            x:Name="CorrectCountLabel"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="24"
-                            Text="0"
-                            TextColor="#2E7D32" />
-                    </VerticalStackLayout>
-                </Border>
-                <Border Grid.Column="1" Padding="14" BackgroundColor="#FFFFFF" Stroke="#E4DDF2">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="8" />
-                    </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="2">
-                        <Label FontSize="12" Text="Fehler" TextColor="#777777" />
-                        <Label
-                            x:Name="MistakeCountLabel"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="24"
-                            Text="0"
-                            TextColor="#D43D35" />
-                    </VerticalStackLayout>
-                </Border>
-                <Border Grid.Row="1" Padding="14" BackgroundColor="#FFFFFF" Stroke="#E4DDF2">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="8" />
-                    </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="2">
-                        <Label FontSize="12" Text="Zeit" TextColor="#777777" />
-                        <Label
-                            x:Name="TimeLabel"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="24"
-                            Text="0:00"
-                            TextColor="#2563EB" />
-                    </VerticalStackLayout>
-                </Border>
-                <Border
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Padding="14"
-                    BackgroundColor="#FFFFFF"
-                    Stroke="#E4DDF2">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="8" />
-                    </Border.StrokeShape>
-                    <VerticalStackLayout Spacing="2">
-                        <Label FontSize="12" Text="Nomen" TextColor="#777777" />
-                        <Label
-                            x:Name="TotalCountLabel"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            FontSize="24"
-                            Text="0"
-                            TextColor="#B88900" />
-                    </VerticalStackLayout>
-                </Border>
-            </Grid>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#32000000"
+                            Opacity="0.28"
+                            Radius="28"
+                            Offset="0,16" />
+                    </Border.Shadow>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#21152F" />
+                            <GradientStop Offset="0.6" Color="#3B2853" />
+                            <GradientStop Offset="1.0" Color="#160E21" />
+                        </LinearGradientBrush>
+                    </Border.Background>
 
-            <VerticalStackLayout Spacing="8">
-                <Button
-                    x:Name="ReviewMistakesButton"
-                    BackgroundColor="#6D4AA2"
-                    Clicked="OnReviewMistakesClicked"
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    HeightRequest="52"
-                    Text="Fehler wiederholen"
-                    TextColor="#FFFFFF" />
-                <Button
-                    BackgroundColor="#171717"
-                    Clicked="OnBackToStartClicked"
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    HeightRequest="52"
-                    Text="Zurück zum Start"
-                    TextColor="#FFFFFF" />
+                    <VerticalStackLayout Spacing="18">
+
+                        <VerticalStackLayout Spacing="0">
+                            <Label
+                                x:Name="AccuracyLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="72"
+                                HorizontalTextAlignment="Center"
+                                Text="86%"
+                                TextColor="#FFFFFF" />
+                            <Label
+                                x:Name="SummaryLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HorizontalTextAlignment="Center"
+                                Text="Gut gemacht"
+                                TextColor="#D4BFF0" />
+                        </VerticalStackLayout>
+                        <ProgressBar
+                            x:Name="AccuracyProgressBar"
+                            BackgroundColor="#33FFFFFF"
+                            ProgressColor="#D4BFF0" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12"
+                    RowDefinitions="Auto,Auto"
+                    RowSpacing="12">
+                    <Border
+                        Padding="14"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#E4DDF2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                FontSize="12"
+                                Text="Richtig"
+                                TextColor="#777777" />
+                            <Label
+                                x:Name="CorrectCountLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="24"
+                                Text="0"
+                                TextColor="#2E7D32" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border
+                        Grid.Column="1"
+                        Padding="14"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#E4DDF2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                FontSize="12"
+                                Text="Fehler"
+                                TextColor="#777777" />
+                            <Label
+                                x:Name="MistakeCountLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="24"
+                                Text="0"
+                                TextColor="#D43D35" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border
+                        Grid.Row="1"
+                        Padding="14"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#E4DDF2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                FontSize="12"
+                                Text="Zeit"
+                                TextColor="#777777" />
+                            <Label
+                                x:Name="TimeLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="24"
+                                Text="0:00"
+                                TextColor="#2563EB" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Padding="14"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#E4DDF2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="2">
+                            <Label
+                                FontSize="12"
+                                Text="Nomen"
+                                TextColor="#777777" />
+                            <Label
+                                x:Name="TotalCountLabel"
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="24"
+                                Text="0"
+                                TextColor="#B88900" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <VerticalStackLayout Spacing="8">
+                    <Button
+                        x:Name="ReviewMistakesButton"
+                        BackgroundColor="#6D4AA2"
+                        Clicked="OnReviewMistakesClicked"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="52"
+                        Text="Fehler wiederholen"
+                        TextColor="#FFFFFF" />
+                    <Button
+                        BackgroundColor="#171717"
+                        Clicked="OnBackToStartClicked"
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        HeightRequest="52"
+                        Text="Zurück zum Start"
+                        TextColor="#FFFFFF" />
+                </VerticalStackLayout>
             </VerticalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
         <local:PerfectScoreFireworksView x:Name="PerfectScoreFireworks" />
     </Grid>
 </ContentPage>

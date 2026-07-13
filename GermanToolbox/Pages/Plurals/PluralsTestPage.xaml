@@ -120,8 +120,8 @@
                     <Grid
                         x:Name="WordContent"
                         MinimumHeightRequest="300"
-                        RowSpacing="12"
-                        RowDefinitions="Auto,*,Auto">
+                        RowDefinitions="Auto,*,Auto"
+                        RowSpacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <Border
                                 Padding="11,6"
@@ -159,15 +159,14 @@
 
                         <VerticalStackLayout
                             Grid.Row="1"
-                            Margin="0,42,0,0"
                             HorizontalOptions="Fill"
-                            Spacing="7"
+                            Spacing="8"
                             VerticalOptions="Start">
                             <Label
                                 x:Name="NounLabel"
                                 FontAttributes="Bold"
                                 FontFamily="OpenSansSemibold"
-                                FontSize="50"
+                                FontSize="36"
                                 HorizontalTextAlignment="Center"
                                 LineBreakMode="WordWrap"
                                 Text="Wort"
@@ -207,9 +206,7 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
-                                <VerticalStackLayout
-                                    Spacing="1"
-                                    VerticalOptions="Center">
+                                <VerticalStackLayout Spacing="1" VerticalOptions="Center">
                                     <Label
                                         x:Name="RevealTitleLabel"
                                         FontSize="11"
@@ -219,7 +216,7 @@
                                     <Label
                                         x:Name="RevealedAnswerLabel"
                                         FontFamily="OpenSansSemibold"
-                                        FontSize="24"
+                                        FontSize="22"
                                         HorizontalTextAlignment="Center"
                                         LineBreakMode="CharacterWrap"
                                         MaxLines="2"

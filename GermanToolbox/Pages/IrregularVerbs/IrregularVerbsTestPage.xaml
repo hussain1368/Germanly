@@ -22,7 +22,7 @@
                             FontAttributes="Bold"
                             FontFamily="OpenSansSemibold"
                             FontSize="28"
-                            Text="Unregelmäßige Verben"
+                            Text="Starke Verben"
                             TextColor="#171717" />
                         <Grid
                             ColumnDefinitions="42,42,42"
@@ -120,8 +120,8 @@
                     <Grid
                         x:Name="WordContent"
                         MinimumHeightRequest="300"
-                        RowSpacing="12"
-                        RowDefinitions="Auto,*,Auto">
+                        RowDefinitions="Auto,*,Auto"
+                        RowSpacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <Border
                                 Padding="11,6"
@@ -136,7 +136,7 @@
                                     FontAttributes="Bold"
                                     FontFamily="OpenSansSemibold"
                                     FontSize="12"
-                                    Text="PRÃ„TERITUM"
+                                    Text="PRÃTERITUM"
                                     TextColor="#9EE5AE" />
                             </Border>
                             <Border
@@ -159,15 +159,14 @@
 
                         <VerticalStackLayout
                             Grid.Row="1"
-                            Margin="0,42,0,0"
                             HorizontalOptions="Fill"
-                            Spacing="7"
+                            Spacing="8"
                             VerticalOptions="Start">
                             <Label
                                 x:Name="VerbLabel"
                                 FontAttributes="Bold"
                                 FontFamily="OpenSansSemibold"
-                                FontSize="50"
+                                FontSize="36"
                                 HorizontalTextAlignment="Center"
                                 LineBreakMode="WordWrap"
                                 Text="sehen"
@@ -207,9 +206,7 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
-                                <VerticalStackLayout
-                                    Spacing="1"
-                                    VerticalOptions="Center">
+                                <VerticalStackLayout Spacing="1" VerticalOptions="Center">
                                     <Label
                                         x:Name="RevealTitleLabel"
                                         FontSize="11"

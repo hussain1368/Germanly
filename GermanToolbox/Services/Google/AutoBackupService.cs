@@ -4,12 +4,12 @@ namespace GermanToolbox
     {
         // Automatic backups run hourly for testing now.
         // To change hourly automatic backups to daily later, replace this active line:
-        public static readonly TimeSpan BackupInterval = TimeSpan.FromHours(1);
-        public static readonly TimeSpan InitialDelay = BackupInterval;
+        //public static readonly TimeSpan BackupInterval = TimeSpan.FromHours(1);
+        //public static readonly TimeSpan InitialDelay = BackupInterval;
 
         // Daily backup code for later:
-        // public static readonly TimeSpan BackupInterval = TimeSpan.FromDays(1);
-        // public static TimeSpan InitialDelay => GetDelayUntilNextLocalMidnight();
+        public static readonly TimeSpan BackupInterval = TimeSpan.FromDays(1);
+        public static TimeSpan InitialDelay => GetDelayUntilNextLocalMidnight();
 
         private static TimeSpan GetDelayUntilNextLocalMidnight()
         {

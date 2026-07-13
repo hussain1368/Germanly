@@ -142,12 +142,12 @@
                     </Border.Background>
 
                     <Grid
-                        MinimumHeightRequest="330"
-                        RowDefinitions="Auto,Auto,Auto"
-                        RowSpacing="18">
+                        MinimumHeightRequest="300"
+                        RowDefinitions="Auto,*,Auto"
+                        RowSpacing="12">
                         <Grid ColumnDefinitions="*,Auto">
                             <Border
-                                Padding="12,6"
+                                Padding="11,6"
                                 BackgroundColor="#28FFFFFF"
                                 HorizontalOptions="Start"
                                 Stroke="#22FFFFFF">
@@ -185,40 +185,36 @@
                             x:Name="WordContent"
                             Grid.Row="1"
                             HorizontalOptions="Fill"
-                            MinimumHeightRequest="220"
                             Spacing="8"
-                            VerticalOptions="Center">
+                            VerticalOptions="Start">
                             <Label
                                 x:Name="WordLabel"
                                 FontAttributes="Bold"
                                 FontFamily="OpenSansSemibold"
                                 FontSize="36"
-                                HorizontalOptions="Fill"
                                 HorizontalTextAlignment="Center"
                                 LineBreakMode="WordWrap"
-                                SemanticProperties.HeadingLevel="Level2"
                                 Text="Fremdsprache korresow"
                                 TextColor="#FFFFFF" />
                             <Label
                                 x:Name="RevealHintLabel"
                                 FontSize="13"
-                                HorizontalOptions="Fill"
                                 HorizontalTextAlignment="Center"
                                 LineBreakMode="WordWrap"
                                 Text="Tap the card to reveal the translation"
                                 TextColor="#C9D6E5" />
                             <BoxView
-                                BackgroundColor="#8FD6FF"
+                                BackgroundColor="#F2C94C"
                                 CornerRadius="3"
                                 HeightRequest="5"
                                 HorizontalOptions="Center"
-                                WidthRequest="72" />
+                                WidthRequest="112" />
                         </VerticalStackLayout>
 
                         <Border
                             x:Name="TranslationReveal"
                             Grid.Row="2"
-                            Padding="14,10"
+                            Padding="12,8"
                             BackgroundColor="#24FFFFFF"
                             Opacity="0"
                             Stroke="#2EFFFFFF"
