@@ -35,13 +35,11 @@
             <Border.Shadow>
                 <Shadow
                     Brush="#16000000"
-                    Offset="0,6"
                     Opacity="0.16"
-                    Radius="14" />
+                    Radius="14"
+                    Offset="0,6" />
             </Border.Shadow>
-            <Grid
-                ColumnDefinitions="24,*"
-                ColumnSpacing="10">
+            <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
                 <Path
                     Aspect="Uniform"
                     Data="M 14 4 A 10 10 0 1 0 14 24 A 10 10 0 1 0 14 4 M 21 21 L 28 28"
@@ -67,9 +65,7 @@
             </Grid>
         </Border>
 
-        <Grid
-            Grid.Row="2"
-            ColumnDefinitions="*,Auto">
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
             <Label
                 x:Name="StatusLabel"
                 FontSize="12"
@@ -78,31 +74,23 @@
             <ActivityIndicator
                 x:Name="LoadingIndicator"
                 Grid.Column="1"
-                Color="#2563EB"
                 HeightRequest="20"
                 IsRunning="False"
                 IsVisible="False"
-                WidthRequest="20" />
+                WidthRequest="20"
+                Color="#2563EB" />
         </Grid>
 
         <Grid Grid.Row="3">
-            <CollectionView
-                x:Name="ResultsCollection"
-                SelectionMode="None">
+            <CollectionView x:Name="ResultsCollection" SelectionMode="None">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout
-                        ItemSpacing="0"
-                        Orientation="Vertical" />
+                    <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:SearchResultItem">
-                        <Grid
-                            Padding="2,0"
-                            RowDefinitions="Auto,1">
+                        <Grid Padding="2,0" RowDefinitions="Auto,1">
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer
-                                    CommandParameter="{Binding .}"
-                                    Tapped="OnResultTapped" />
+                                <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="OnResultTapped" />
                             </Grid.GestureRecognizers>
                             <Grid
                                 Padding="7,8"

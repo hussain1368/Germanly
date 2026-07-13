@@ -118,10 +118,10 @@ namespace GermanToolbox
             // Backup-needed flag is intentionally ignored for automatic backups while testing.
             // To make automatic backups skip identical data later, uncomment this block:
             //
-            // if (!settingsService.BackupNeeded)
-            // {
-            //     return;
-            // }
+            if (!settingsService.BackupNeeded)
+            {
+                return;
+            }
 
             if (!await backupLock.WaitAsync(0, cancellationToken))
             {

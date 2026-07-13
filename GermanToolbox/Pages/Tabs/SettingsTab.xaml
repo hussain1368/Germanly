@@ -387,12 +387,12 @@
                                 TextColor="#FFFFFF" />
                             <ActivityIndicator
                                 x:Name="BackupActivityIndicator"
+                                Margin="18,0,0,0"
                                 HeightRequest="20"
                                 HorizontalOptions="Start"
                                 InputTransparent="True"
                                 IsRunning="False"
                                 IsVisible="False"
-                                Margin="18,0,0,0"
                                 VerticalOptions="Center"
                                 WidthRequest="20"
                                 Color="#7A8797" />
