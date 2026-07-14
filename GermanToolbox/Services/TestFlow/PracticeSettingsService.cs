@@ -20,6 +20,7 @@ namespace GermanToolbox
         private const string IrregularTestMethodKey = "IrregularVerbs.SelectedMethod";
         private const string AutoBackupEnabledKey = "Backup.AutoBackupEnabled";
         private const string BackupNeededKey = "Backup.BackupNeeded";
+        private const string UserGuideSeenKey = "UserGuide.HasSeen";
 
         public int LearnedThreshold
         {
@@ -139,6 +140,12 @@ namespace GermanToolbox
 
         public void ClearBackupNeeded() =>
             Preferences.Default.Set(BackupNeededKey, false);
+
+        public bool HasSeenUserGuide
+        {
+            get => Preferences.Default.Get(UserGuideSeenKey, false);
+            set => Preferences.Default.Set(UserGuideSeenKey, value);
+        }
 
         private static string NormalizeLevel(string level)
         {

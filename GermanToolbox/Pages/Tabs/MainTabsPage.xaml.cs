@@ -8,6 +8,7 @@ namespace GermanToolbox
     {
         private readonly TestSessionService testSessionService;
         private readonly DriveBackupService driveBackupService;
+        private readonly PracticeSettingsService settingsService;
         private bool isClearingProgress;
         private bool isClearProgressConfirmed;
         private bool isRestoringBackup;
@@ -23,12 +24,30 @@ namespace GermanToolbox
             InitializeComponent();
             testSessionService = AppServices.GetRequiredService<TestSessionService>();
             driveBackupService = AppServices.GetRequiredService<DriveBackupService>();
+            settingsService = AppServices.GetRequiredService<PracticeSettingsService>();
             SelectTab("Home", refreshContent: false);
+
+            if (!settingsService.HasSeenUserGuide)
+            {
+                // Keep the home UI hidden until the first-run guide closes.
+                Opacity = 0;
+            }
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            if (!settingsService.HasSeenUserGuide)
+            {
+                return;
+            }
+
+            if (Opacity < 1)
+            {
+                Opacity = 1;
+            }
+
             SettingsTabContent.RefreshValues();
             await HomeTabContent.RefreshAsync();
             await PracticeTabContent.RefreshStatsAsync();

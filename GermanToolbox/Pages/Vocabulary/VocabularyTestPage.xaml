@@ -243,9 +243,12 @@
                 </Border>
 
                 <Grid
+                    x:Name="ThumbsActions"
                     Grid.Row="2"
                     ColumnDefinitions="*,*"
-                    ColumnSpacing="12">
+                    ColumnSpacing="12"
+                    InputTransparent="True"
+                    Opacity="0.35">
                     <Border
                         SemanticProperties.Description="Dislike word"
                         Stroke="#D43D35"

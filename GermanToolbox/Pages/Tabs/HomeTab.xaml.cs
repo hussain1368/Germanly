@@ -85,9 +85,11 @@ namespace GermanToolbox
         {
             var currentUser = googleAuthService.CurrentUser;
             UserNameLabel.Text = currentUser?.FirstName ?? GuestUserName;
-            UserAvatarImage.Source = string.IsNullOrWhiteSpace(currentUser?.PhotoPath)
-                ? "profile_avatar.png"
-                : ImageSource.FromFile(currentUser.PhotoPath);
+            UserAvatarImage.Source =
+                string.IsNullOrWhiteSpace(currentUser?.PhotoPath) ||
+                !File.Exists(currentUser.PhotoPath)
+                    ? "profile_avatar.png"
+                    : ImageSource.FromFile(currentUser.PhotoPath);
         }
 
         private void OnAuthenticationStateChanged(object? sender, EventArgs e) =>

@@ -51,6 +51,11 @@ namespace GermanToolbox
             var displayName = Preferences.Default.Get(DisplayNamePreferenceKey, string.Empty);
             var firstName = Preferences.Default.Get(FirstNamePreferenceKey, string.Empty);
             var photoPath = Preferences.Default.Get(PhotoPathPreferenceKey, string.Empty);
+            if (!string.IsNullOrWhiteSpace(photoPath) && !File.Exists(photoPath))
+            {
+                Preferences.Default.Remove(PhotoPathPreferenceKey);
+                photoPath = string.Empty;
+            }
 
             if (!string.IsNullOrWhiteSpace(email))
             {
@@ -590,6 +595,11 @@ namespace GermanToolbox
                 var cacheKey = Guid.NewGuid().ToString("N")[..8];
                 var photoPath = Path.Combine(photoDirectory, $"{ProfilePhotoFileName}-{cacheKey}{extension}");
                 var bytes = await httpClient.GetByteArrayAsync(remotePhotoUrl);
+                if (bytes.Length == 0)
+                {
+                    return null;
+                }
+
                 await File.WriteAllBytesAsync(photoPath, bytes);
                 return photoPath;
             }

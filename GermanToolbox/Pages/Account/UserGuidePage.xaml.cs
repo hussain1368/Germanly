@@ -104,6 +104,10 @@ namespace GermanToolbox
             NextButton.Text = position == Slides.Count - 1 ? "Loslegen" : "Weiter";
         }
 
-        private static Task CloseGuideAsync() => Shell.Current.GoToAsync("..");
+        private async Task CloseGuideAsync()
+        {
+            AppServices.GetRequiredService<PracticeSettingsService>().HasSeenUserGuide = true;
+            await Shell.Current.GoToAsync("..");
+        }
     }
 }

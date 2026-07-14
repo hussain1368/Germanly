@@ -32,8 +32,10 @@ namespace GermanToolbox
             }
 
             isAnimating = true;
+            ThumbsActions.InputTransparent = false;
 
             await Task.WhenAll(
+                ThumbsActions.FadeTo(1, 150, Easing.CubicOut),
                 TranslationReveal.FadeTo(1, 150, Easing.CubicOut),
                 TranslationReveal.TranslateTo(0, 0, 150, Easing.CubicOut));
 
@@ -81,7 +83,7 @@ namespace GermanToolbox
 
         private async Task HandleMeaningAnswerAsync(bool isCorrect)
         {
-            if (isAnimating)
+            if (isAnimating || TranslationReveal.Opacity < 1)
             {
                 return;
             }
@@ -166,6 +168,8 @@ namespace GermanToolbox
             ProgressLabel.Text = $"{session.CurrentIndex + 1} / {session.TotalCount}";
             TranslationReveal.Opacity = 0;
             TranslationReveal.TranslationY = 12;
+            ThumbsActions.Opacity = 0.35;
+            ThumbsActions.InputTransparent = true;
             WordContent.Opacity = 1;
             WordContent.TranslationY = 0;
             WordCard.Scale = 1;

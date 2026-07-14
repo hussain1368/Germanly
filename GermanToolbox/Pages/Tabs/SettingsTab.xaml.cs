@@ -151,6 +151,16 @@ namespace GermanToolbox
         private async void OnUserGuideTapped(object sender, TappedEventArgs e) =>
             await Shell.Current.GoToAsync(nameof(UserGuidePage));
 
+        private async void OnResetFirstRunGuideClicked(object sender, EventArgs e)
+        {
+            // TEMP: remove after first-run guide testing
+            settingsService.HasSeenUserGuide = false;
+            await Shell.Current.DisplayAlert(
+                "First-run guide reset",
+                "The first-run user guide flag was cleared. Restart the app to see the guide on startup.",
+                "OK");
+        }
+
         private void OnClearProgressClicked(object sender, EventArgs e) =>
             ClearProgressRequested?.Invoke(this, EventArgs.Empty);
 

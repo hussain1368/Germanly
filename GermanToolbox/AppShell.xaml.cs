@@ -24,6 +24,20 @@
             Routing.RegisterRoute(nameof(SignInPage), typeof(SignInPage));
             Routing.RegisterRoute(nameof(VerificationCodePage), typeof(VerificationCodePage));
             Routing.RegisterRoute(nameof(UserProfilePage), typeof(UserProfilePage));
+
+            Loaded += OnShellLoaded;
+        }
+
+        private async void OnShellLoaded(object? sender, EventArgs e)
+        {
+            Loaded -= OnShellLoaded;
+
+            if (AppServices.GetRequiredService<PracticeSettingsService>().HasSeenUserGuide)
+            {
+                return;
+            }
+
+            await GoToAsync(nameof(UserGuidePage));
         }
     }
 }

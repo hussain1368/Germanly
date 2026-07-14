@@ -466,6 +466,17 @@
                     </Grid>
                 </Border>
 
+                <!-- TEMP: remove after first-run guide testing -->
+                <Button
+                    BackgroundColor="#F59E0B"
+                    Clicked="OnResetFirstRunGuideClicked"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    HeightRequest="44"
+                    Text="TEMP: Reset first-run guide"
+                    TextColor="#FFFFFF" />
+
                 <Border
                     Padding="16"
                     BackgroundColor="#FFF7F6"

@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:GermanToolbox"
     FlyoutBehavior="Disabled"
+    BackgroundColor="#FAFAF8"
     Shell.NavBarIsVisible="False"
     Shell.TabBarBackgroundColor="#FFFFFF"
     Shell.TabBarForegroundColor="#2563EB"
