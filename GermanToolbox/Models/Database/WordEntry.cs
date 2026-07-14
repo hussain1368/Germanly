@@ -19,6 +19,8 @@ namespace GermanToolbox
 
         public string? Gender { get; set; }
 
+        public int? GenderHint { get; set; }
+
         public string? Plural { get; set; }
 
         [Indexed]

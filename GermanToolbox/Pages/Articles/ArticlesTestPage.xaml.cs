@@ -8,6 +8,7 @@ namespace GermanToolbox
         private static readonly Color NeuterNounColor = Color.FromArgb("#2E7D32");
         private readonly TestSessionService testSessionService;
         private readonly AnswerFeedbackService answerFeedbackService;
+        private readonly WordRepository wordRepository;
         private bool isAnimating;
 
         public ArticlesTestPage()
@@ -15,6 +16,7 @@ namespace GermanToolbox
             InitializeComponent();
             testSessionService = AppServices.GetRequiredService<TestSessionService>();
             answerFeedbackService = AppServices.GetRequiredService<AnswerFeedbackService>();
+            wordRepository = AppServices.GetRequiredService<WordRepository>();
         }
 
         protected override async void OnAppearing()
@@ -88,7 +90,7 @@ namespace GermanToolbox
 
             if (!result.IsCorrect)
             {
-                RevealCorrectGenderStyle();
+                await RevealCorrectGenderStyleAsync();
                 await ShakeWordCardAsync();
                 return;
             }
@@ -161,6 +163,7 @@ namespace GermanToolbox
             NounLabel.Text = word.Word;
             NounLabel.FontSize = GenericHelper.GetPromptFontSize(NounLabel.Text);
             ResetNounStyle();
+            HideArticleRuleReveal();
             MeaningLabel.Text = word.Translation;
             MeaningLabel.FontSize = GetMeaningFontSize(MeaningLabel.Text);
             LevelLabel.Text = word.Level;
@@ -189,11 +192,35 @@ namespace GermanToolbox
             return true;
         }
 
-        private void RevealCorrectGenderStyle()
+        private async Task RevealCorrectGenderStyleAsync()
         {
-            var gender = testSessionService.CurrentSession?.CurrentWord?.Word.Gender;
-            NounLabel.TextColor = GetGenderColor(gender);
+            var word = testSessionService.CurrentSession?.CurrentWord?.Word;
+            NounLabel.TextColor = GetGenderColor(word?.Gender);
             SetNounOutlineVisible(true);
+
+            HideArticleRuleReveal();
+
+            if (word?.GenderHint is not int hintId || hintId <= 0)
+            {
+                return;
+            }
+
+            var hint = await wordRepository.GetHintByIdAsync(hintId);
+            if (hint is null || string.IsNullOrWhiteSpace(hint.Rule))
+            {
+                return;
+            }
+
+            RevealedRuleLabel.Text = hint.Rule.Trim();
+            RuleApplicationPerLabel.Text = $"{hint.Percentage}%";
+            CardArticleRuleReveal.IsVisible = true;
+        }
+
+        private void HideArticleRuleReveal()
+        {
+            CardArticleRuleReveal.IsVisible = false;
+            RevealedRuleLabel.Text = string.Empty;
+            RuleApplicationPerLabel.Text = string.Empty;
         }
 
         private void ResetNounStyle()

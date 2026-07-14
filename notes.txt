@@ -1,4 +1,4 @@
-cmd /c "adb exec-out run-as com.hussain.germanly cat files/german_toolbox.db3 > seeder.db3"
+ee
 
 dotnet build GermanToolbox.csproj -f net9.0-android -t:Run -p:Device=804afa37
 keytool -list -v -alias androiddebugkey -keystore C:\Users\mhk13\.android\debug.keystore

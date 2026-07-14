@@ -284,22 +284,37 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
-                                <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                <Grid ColumnDefinitions="*,60">
+                                    <VerticalStackLayout
+                                        Grid.Column="0"
+                                        Spacing="1"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            x:Name="RevealTitleLabel"
+                                            FontSize="11"
+                                            Text="Article Hint"
+                                            TextColor="#C9D6E5" />
+                                        <Label
+                                            x:Name="RevealedRuleLabel"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="15"
+                                            LineBreakMode="CharacterWrap"
+                                            MaxLines="2"
+                                            Text=""
+                                            TextColor="LightGray"
+                                            VerticalTextAlignment="Center" />
+                                    </VerticalStackLayout>
                                     <Label
-                                        x:Name="RevealTitleLabel"
-                                        FontSize="11"
-                                        Text="Rule"
-                                        TextColor="#C9D6E5" />
-                                    <Label
-                                        x:Name="RevealedAnswerLabel"
+                                        x:Name="RuleApplicationPerLabel"
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
                                         FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        LineBreakMode="CharacterWrap"
-                                        MaxLines="2"
-                                        Text="Article rule"
-                                        TextColor="DarkOrange"
-                                        VerticalTextAlignment="Center" />
-                                </VerticalStackLayout>
+                                        FontSize="16"
+                                        HorizontalOptions="End"
+                                        Text=""
+                                        TextColor="#F2C94C"
+                                        VerticalOptions="Center" />
+                                </Grid>
                             </Border>
                         </Grid>
                     </Grid>

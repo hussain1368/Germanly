@@ -158,6 +158,12 @@ namespace GermanToolbox
             return await database.Connection.FindAsync<WordEntry>(wordId);
         }
 
+        public async Task<HintEntry?> GetHintByIdAsync(int hintId)
+        {
+            await InitializeAsync();
+            return await database.Connection.FindAsync<HintEntry>(hintId);
+        }
+
         public async Task<WordEntry?> GetWordOfTheDayAsync(DateOnly date)
         {
             await InitializeAsync();
@@ -568,6 +574,7 @@ namespace GermanToolbox
                 }
 
                 await database.Connection.CreateTableAsync<WordEntry>();
+                await database.Connection.CreateTableAsync<HintEntry>();
                 await wordsDatabaseSeedService.SeedOnceAsync();
 
                 isInitialized = true;

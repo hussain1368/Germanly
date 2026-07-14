@@ -8,7 +8,7 @@ namespace GermanToolbox
         private const string SeedDatabaseFileName = "seeder.db3";
         private const string SeedPayloadAssetName = "seed/seeder.payload";
         private const string SeedCacheDirectoryPrefix = "seeder-";
-        private const string SeedKey = "WordsDatabaseV11";
+        private const string SeedKey = "WordsDatabaseV12";
         private static readonly string[] WordColumnOrder =
         [
             nameof(WordEntry.Id),
@@ -16,6 +16,7 @@ namespace GermanToolbox
             nameof(WordEntry.Translation),
             nameof(WordEntry.Type),
             nameof(WordEntry.Gender),
+            nameof(WordEntry.GenderHint),
             nameof(WordEntry.Plural),
             nameof(WordEntry.Level),
             nameof(WordEntry.IsStrong),
@@ -33,6 +34,14 @@ namespace GermanToolbox
             nameof(WordEntry.MistakePlural),
             nameof(WordEntry.MistakeIrregular)
         ];
+        private static readonly string[] HintColumnOrder =
+        [
+            nameof(HintEntry.Id),
+            nameof(HintEntry.Gender),
+            nameof(HintEntry.Rule),
+            nameof(HintEntry.Suffix),
+            nameof(HintEntry.Percentage)
+        ];
 
         private readonly AppDatabase database;
 
@@ -45,20 +54,21 @@ namespace GermanToolbox
         {
             await database.Connection.CreateTableAsync<SeedRun>();
             await EnsureCurrentWordSchemaAsync();
+            await EnsureCurrentHintSchemaAsync();
 
             if (await database.Connection.FindAsync<SeedRun>(SeedKey) is not null)
             {
                 return;
             }
 
-            var words = await LoadWordsAsync();
-            if (words.Count == 0)
+            var seedData = await LoadSeedDataAsync();
+            if (seedData.Words.Count == 0)
             {
                 throw new InvalidDataException(
                     $"{SeedDatabaseFileName} did not contain any vocabulary rows.");
             }
 
-            var duplicateId = words
+            var duplicateId = seedData.Words
                 .GroupBy(word => word.Id)
                 .FirstOrDefault(group => group.Count() > 1);
             if (duplicateId is not null)
@@ -70,19 +80,19 @@ namespace GermanToolbox
             await database.Connection.RunInTransactionAsync(connection =>
             {
                 connection.Execute("DELETE FROM \"Words\"");
-                connection.InsertAll(words, runInTransaction: false);
-                connection.Insert(CreateSeedRun());
+                connection.InsertAll(seedData.Words, runInTransaction: false);
+                connection.Execute("DELETE FROM \"Hints\"");
+                connection.InsertAll(seedData.Hints, runInTransaction: false);
+                connection.Insert(
+                    new SeedRun
+                    {
+                        Key = SeedKey,
+                        RanAtUtc = DateTime.UtcNow
+                    });
             });
         }
 
-        private static SeedRun CreateSeedRun() =>
-            new()
-            {
-                Key = SeedKey,
-                RanAtUtc = DateTime.UtcNow
-            };
-
-        private static async Task<IReadOnlyList<WordEntry>> LoadWordsAsync()
+        private static async Task<SeedData> LoadSeedDataAsync()
         {
             DeleteStaleSeedCacheDirectories();
 
@@ -108,7 +118,7 @@ namespace GermanToolbox
                     await packageStream.CopyToAsync(temporaryStream);
                 }
 
-                return await Task.Run(() => LoadValidatedWords(temporaryPath));
+                return await Task.Run(() => LoadValidatedSeedData(temporaryPath));
             }
             finally
             {
@@ -143,13 +153,15 @@ namespace GermanToolbox
             }
         }
 
-        private static IReadOnlyList<WordEntry> LoadValidatedWords(string databasePath)
+        private static SeedData LoadValidatedSeedData(string databasePath)
         {
             using var sourceConnection = new SQLiteConnection(
                 databasePath,
                 SQLiteOpenFlags.ReadOnly);
             ValidateSourceDatabase(sourceConnection);
-            return sourceConnection.Table<WordEntry>().ToList();
+            return new SeedData(
+                sourceConnection.Table<WordEntry>().ToList(),
+                sourceConnection.Table<HintEntry>().ToList());
         }
 
         private static void ValidateSourceDatabase(SQLiteConnection sourceConnection)
@@ -162,13 +174,22 @@ namespace GermanToolbox
                     $"{SeedDatabaseFileName} failed SQLite integrity validation: {integrityResult}");
             }
 
+            ValidateTableSchema(sourceConnection, "Words", WordColumnOrder);
+            ValidateTableSchema(sourceConnection, "Hints", HintColumnOrder);
+        }
+
+        private static void ValidateTableSchema(
+            SQLiteConnection sourceConnection,
+            string tableName,
+            IReadOnlyList<string> expectedColumnOrder)
+        {
             var sourceColumns = sourceConnection
-                .Query<SchemaColumn>("PRAGMA table_info(\"Words\")")
+                .Query<SchemaColumn>($"PRAGMA table_info(\"{tableName}\")")
                 .Select(column => column.Name)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var expectedColumns = WordColumnOrder
+            var expectedColumns = expectedColumnOrder
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var missingRequiredColumns = WordColumnOrder
+            var missingRequiredColumns = expectedColumnOrder
                 .Where(column =>
                     !IsDefaultableSourceColumn(column) &&
                     !sourceColumns.Contains(column))
@@ -180,7 +201,7 @@ namespace GermanToolbox
             if (missingRequiredColumns.Count > 0 || unexpectedColumns.Count > 0)
             {
                 throw new InvalidDataException(
-                    $"{SeedDatabaseFileName} does not contain the expected Words schema.");
+                    $"{SeedDatabaseFileName} does not contain the expected {tableName} schema.");
             }
         }
 
@@ -241,6 +262,31 @@ namespace GermanToolbox
             });
         }
 
+        private async Task EnsureCurrentHintSchemaAsync()
+        {
+            var columns = await database.Connection.QueryAsync<SchemaColumn>(
+                "PRAGMA table_info(\"Hints\")");
+            if (columns.Count == 0)
+            {
+                await database.Connection.CreateTableAsync<HintEntry>();
+                return;
+            }
+
+            var currentOrder = columns.Select(column => column.Name).ToList();
+            if (currentOrder.SequenceEqual(
+                HintColumnOrder,
+                StringComparer.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            await database.Connection.RunInTransactionAsync(connection =>
+            {
+                connection.Execute("DROP TABLE IF EXISTS \"Hints\"");
+                connection.CreateTable<HintEntry>();
+            });
+        }
+
         private static string GetMigrationExpression(
             string targetColumn,
             IReadOnlySet<string> sourceColumns,
@@ -261,6 +307,7 @@ namespace GermanToolbox
             return targetColumn switch
             {
                 nameof(WordEntry.Gender) or
+                nameof(WordEntry.GenderHint) or
                 nameof(WordEntry.Past) or
                 nameof(WordEntry.Perfekt) or
                 nameof(WordEntry.Plural) => "NULL",
@@ -278,6 +325,10 @@ namespace GermanToolbox
 
         private static string QuoteIdentifier(string identifier) =>
             $"\"{identifier.Replace("\"", "\"\"")}\"";
+
+        private sealed record SeedData(
+            IReadOnlyList<WordEntry> Words,
+            IReadOnlyList<HintEntry> Hints);
 
         public sealed class SchemaColumn
         {
