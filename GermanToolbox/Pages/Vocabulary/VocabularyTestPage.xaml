@@ -184,6 +184,7 @@
                         <VerticalStackLayout
                             x:Name="WordContent"
                             Grid.Row="1"
+                            Margin="0,10,0,0"
                             HorizontalOptions="Fill"
                             Spacing="8"
                             VerticalOptions="Start">

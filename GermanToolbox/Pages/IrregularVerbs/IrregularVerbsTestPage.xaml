@@ -159,6 +159,7 @@
 
                         <VerticalStackLayout
                             Grid.Row="1"
+                            Margin="0,10,0,0"
                             HorizontalOptions="Fill"
                             Spacing="8"
                             VerticalOptions="Start">
@@ -186,7 +187,7 @@
                                 WidthRequest="112" />
                             <Label
                                 x:Name="TranslationLabel"
-                                FontSize="13"
+                                FontSize="14"
                                 HorizontalTextAlignment="Center"
                                 LineBreakMode="WordWrap"
                                 Text="translation"
