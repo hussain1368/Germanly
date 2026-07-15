@@ -271,7 +271,6 @@
                                 TextColor="#D7D7D0" />
                         </VerticalStackLayout>
 
-                        <!--  reserved area for rule reveal  -->
                         <Grid Grid.Row="2">
                             <Border
                                 x:Name="CardArticleRuleReveal"
@@ -284,37 +283,38 @@
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
-                                <Grid ColumnDefinitions="*,60">
-                                    <VerticalStackLayout
-                                        Grid.Column="0"
-                                        Spacing="1"
-                                        VerticalOptions="Center">
+                                <VerticalStackLayout
+                                    Grid.Column="0"
+                                    Spacing="1"
+                                    VerticalOptions="Center">
+                                    <Grid ColumnDefinitions="*,60">
                                         <Label
                                             x:Name="RevealTitleLabel"
                                             FontSize="11"
-                                            Text="Article Hint"
-                                            TextColor="#C9D6E5" />
+                                            Text="Article Hint:"
+                                            TextColor="#AEE2FF" />
                                         <Label
-                                            x:Name="RevealedRuleLabel"
+                                            x:Name="RuleApplicationPerLabel"
+                                            Grid.Column="1"
+                                            FontAttributes="Bold"
                                             FontFamily="OpenSansSemibold"
-                                            FontSize="15"
-                                            LineBreakMode="CharacterWrap"
-                                            MaxLines="2"
+                                            FontSize="14"
+                                            HorizontalOptions="End"
                                             Text=""
-                                            TextColor="LightGray"
-                                            VerticalTextAlignment="Center" />
-                                    </VerticalStackLayout>
+                                            TextColor="#B5B9F0"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                    <BoxView BackgroundColor="#758A93" HeightRequest="1" />
                                     <Label
-                                        x:Name="RuleApplicationPerLabel"
-                                        Grid.Column="1"
-                                        FontAttributes="Bold"
+                                        x:Name="RevealedRuleLabel"
                                         FontFamily="OpenSansSemibold"
-                                        FontSize="16"
-                                        HorizontalOptions="End"
-                                        Text=""
-                                        TextColor="#F2C94C"
-                                        VerticalOptions="Center" />
-                                </Grid>
+                                        FontSize="14"
+                                        LineBreakMode="WordWrap"
+                                        MaxLines="2"
+                                        Text="Nouns ending in -auer (not male person)"
+                                        TextColor="#B5B9F0"
+                                        VerticalTextAlignment="Center" />
+                                </VerticalStackLayout>
                             </Border>
                         </Grid>
                     </Grid>

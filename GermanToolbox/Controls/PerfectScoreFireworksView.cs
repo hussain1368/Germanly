@@ -14,6 +14,16 @@ namespace GermanToolbox
             Color.FromArgb("#FFFFFF")
         ];
 
+#if ANDROID
+        private const double ParticleSize = 14;
+        private const double ParticleCornerRadius = 7;
+        private const double ParticleStartScale = 0.55;
+#else
+        private const double ParticleSize = 7;
+        private const double ParticleCornerRadius = 4;
+        private const double ParticleStartScale = 0.35;
+#endif
+
         private bool isPlaying;
 
         public PerfectScoreFireworksView()
@@ -69,16 +79,16 @@ namespace GermanToolbox
                 var particle = new BoxView
                 {
                     BackgroundColor = ParticleColors[index % ParticleColors.Length],
-                    CornerRadius = 4,
-                    HeightRequest = 7,
+                    CornerRadius = ParticleCornerRadius,
+                    HeightRequest = ParticleSize,
                     Opacity = 0,
-                    Scale = 0.35,
-                    WidthRequest = 7
+                    Scale = ParticleStartScale,
+                    WidthRequest = ParticleSize
                 };
 
                 AbsoluteLayout.SetLayoutBounds(
                     (BindableObject)particle,
-                    new Rect(originX, originY, 7, 7));
+                    new Rect(originX, originY, ParticleSize, ParticleSize));
                 AbsoluteLayout.SetLayoutFlags(
                     (BindableObject)particle,
                     AbsoluteLayoutFlags.PositionProportional);
@@ -106,7 +116,11 @@ namespace GermanToolbox
 
             await Task.WhenAll(
                 particle.TranslateTo(translateX, translateY, 820, Easing.CubicOut),
+#if ANDROID
+                particle.ScaleTo(1.35, 280, Easing.CubicOut),
+#else
                 particle.ScaleTo(1, 280, Easing.CubicOut),
+#endif
                 particle.RotateTo(180, 820, Easing.Linear),
                 particle.FadeTo(0, 940, Easing.CubicIn));
         }

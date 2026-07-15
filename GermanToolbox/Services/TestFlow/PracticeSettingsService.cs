@@ -30,8 +30,8 @@ namespace GermanToolbox
 
         public int TestChunkSize
         {
-            get => Preferences.Default.Get(TestChunkSizeKey, 10);
-            set => SetIntSetting(TestChunkSizeKey, value, 10);
+            get => Preferences.Default.Get(TestChunkSizeKey, 20);
+            set => SetIntSetting(TestChunkSizeKey, value, 20);
         }
 
         public bool SoundsEnabled

@@ -1,67 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="GermanToolbox.UserGuidePage"
-    x:DataType="local:UserGuidePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:GermanToolbox"
+    x:DataType="local:UserGuidePage"
     BackgroundColor="#FAFAF8"
     Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="Auto,*,Auto">
-        <Grid
-            Padding="20,18,20,10"
-            ColumnDefinitions="40,*"
-            ColumnSpacing="10">
-            <Border
-                BackgroundColor="#FFFFFF"
-                HeightRequest="40"
-                Stroke="#E8E8E4"
-                StrokeThickness="1"
-                WidthRequest="40">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnCloseTapped" />
-                </Border.GestureRecognizers>
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-                <Path
-                    Aspect="Uniform"
-                    Data="M 19 8 L 11 16 L 19 24"
-                    Fill="Transparent"
-                    HeightRequest="22"
-                    HorizontalOptions="Center"
-                    SemanticProperties.Description="Close user guide"
-                    Stroke="#171717"
-                    StrokeLineCap="Round"
-                    StrokeLineJoin="Round"
-                    StrokeThickness="2.4"
-                    VerticalOptions="Center"
-                    WidthRequest="22" />
-            </Border>
-
-            <VerticalStackLayout
-                Grid.Column="1"
-                Spacing="0"
-                VerticalOptions="Center">
-                <Label
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    FontSize="22"
-                    Text="Benutzerhandbuch"
-                    TextColor="#171717" />
-                <Label
-                    x:Name="ProgressLabel"
-                    FontSize="11"
-                    Text="1 von 5"
-                    TextColor="#777777" />
-            </VerticalStackLayout>
-
-        </Grid>
-
+    <Grid RowDefinitions="*,Auto">
         <CarouselView
             x:Name="GuideCarousel"
-            Grid.Row="1"
+            Grid.Row="0"
             HorizontalScrollBarVisibility="Never"
             IndicatorView="{x:Reference GuideIndicator}"
             ItemsSource="{Binding Slides}"
@@ -75,73 +25,27 @@
             </CarouselView.ItemsLayout>
             <CarouselView.ItemTemplate>
                 <DataTemplate x:DataType="local:UserGuideSlide">
-                    <ScrollView
-                        HorizontalScrollBarVisibility="Never"
-                        VerticalScrollBarVisibility="Never">
-                        <VerticalStackLayout
-                            Padding="20,0,20,14"
-                            Spacing="12"
-                            VerticalOptions="Center">
-                            <Border
-                                BackgroundColor="{Binding IllustrationBackground}"
-                                HeightRequest="500"
-                                HorizontalOptions="Center"
-                                Stroke="{Binding IllustrationStroke}"
-                                StrokeThickness="1"
-                                WidthRequest="250">
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="24" />
-                                </Border.StrokeShape>
-                                <Grid Padding="14">
-                                    <Ellipse
-                                        Fill="{Binding AccentWash}"
-                                        HeightRequest="220"
-                                        HorizontalOptions="Center"
-                                        WidthRequest="220"
-                                        VerticalOptions="Center" />
-                                    <Border
-                                        BackgroundColor="#FFFFFF"
-                                        HeightRequest="122"
-                                        HorizontalOptions="Center"
-                                        Stroke="{Binding IllustrationStroke}"
-                                        StrokeThickness="1"
-                                        VerticalOptions="Center"
-                                        WidthRequest="122">
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="24" />
-                                        </Border.StrokeShape>
-                                        <Label
-                                            FontAttributes="Bold"
-                                            FontFamily="OpenSansSemibold"
-                                            FontSize="48"
-                                            HorizontalTextAlignment="Center"
-                                            Text="{Binding Symbol}"
-                                            TextColor="{Binding AccentColor}"
-                                            VerticalTextAlignment="Center" />
-                                    </Border>
-                                </Grid>
-                            </Border>
-
-                            <VerticalStackLayout
-                                HorizontalOptions="Center"
-                                MaximumWidthRequest="470"
-                                Spacing="0">
-                                <Label
-                                    FontSize="15"
-                                    HorizontalTextAlignment="Center"
-                                    LineBreakMode="WordWrap"
-                                    Text="{Binding Description}"
-                                    TextColor="#666666" />
-                            </VerticalStackLayout>
-
-                        </VerticalStackLayout>
-                    </ScrollView>
+                    <Grid Padding="20,0,20,14" RowDefinitions="*,Auto" RowSpacing="12">
+                        <Image
+                            Aspect="AspectFit"
+                            HorizontalOptions="Fill"
+                            Source="{Binding Image}"
+                            VerticalOptions="Fill" />
+                        <Label
+                            Grid.Row="1"
+                            FontSize="15"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="WordWrap"
+                            MaximumWidthRequest="470"
+                            Text="{Binding Description}"
+                            TextColor="#666666" />
+                    </Grid>
                 </DataTemplate>
             </CarouselView.ItemTemplate>
         </CarouselView>
 
         <VerticalStackLayout
-            Grid.Row="2"
+            Grid.Row="1"
             Padding="20,8,20,22"
             Spacing="16">
             <IndicatorView
@@ -149,7 +53,7 @@
                 HorizontalOptions="Center"
                 IndicatorColor="#CFD6E2"
                 IndicatorSize="8"
-                MaximumVisible="5"
+                MaximumVisible="4"
                 SelectedIndicatorColor="#2563EB" />
 
             <VerticalStackLayout Spacing="10">

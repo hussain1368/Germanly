@@ -171,18 +171,15 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
                         </Border.StrokeShape>
-                        <Path
-                            Aspect="Uniform"
-                            Data="M 6 17 H 26 M 10 11 H 18 C 21 11 23 13 23 16 C 23 19 21 21 18 21 H 10 Z"
-                            Fill="Transparent"
-                            HeightRequest="24"
+                        <Label
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="18"
                             HorizontalOptions="Center"
-                            Stroke="#D43D35"
-                            StrokeLineCap="Round"
-                            StrokeLineJoin="Round"
-                            StrokeThickness="2"
-                            VerticalOptions="Center"
-                            WidthRequest="24" />
+                            SemanticProperties.Description="die"
+                            Text="die"
+                            TextColor="#D43D35"
+                            VerticalOptions="Center" />
                     </Border>
 
                     <VerticalStackLayout Grid.Column="1" Spacing="2">

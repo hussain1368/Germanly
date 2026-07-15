@@ -15,8 +15,9 @@ namespace GermanToolbox
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await answerFeedbackService.PlayResultAsync();
-            if (ApplyResult())
+            var isPerfect = ApplyResult();
+            await answerFeedbackService.PlayResultAsync(isPerfect);
+            if (isPerfect)
             {
                 await Task.Delay(120);
                 await PerfectScoreFireworks.PlayAsync();

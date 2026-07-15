@@ -7,6 +7,7 @@ namespace GermanToolbox
         private const string CorrectSound = "ding.mp3";
         private const string IncorrectSound = "biz.mp3";
         private const string ResultSound = "result.mp3";
+        private const string PerfectSound = "perfect.mp3";
 
         private readonly PracticeSettingsService settingsService;
         private readonly object cacheLock = new();
@@ -35,7 +36,8 @@ namespace GermanToolbox
             return PlaySoundAsync(isCorrect ? CorrectSound : IncorrectSound);
         }
 
-        public Task PlayResultAsync() => PlaySoundAsync(ResultSound);
+        public Task PlayResultAsync(bool isPerfect = false) =>
+            PlaySoundAsync(isPerfect ? PerfectSound : ResultSound);
 
         private async Task PlaySoundAsync(string fileName)
         {
