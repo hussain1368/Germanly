@@ -8,7 +8,10 @@
     Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="*,Auto">
-        <local:HomeTab x:Name="HomeTabContent" IsVisible="True" />
+        <local:HomeTab
+            x:Name="HomeTabContent"
+            GoogleSignInRequested="OnGoogleSignInRequested"
+            IsVisible="True" />
 
         <local:PracticeTab x:Name="PracticeTabContent" IsVisible="False" />
 
@@ -17,6 +20,7 @@
         <local:SettingsTab
             x:Name="SettingsTabContent"
             ClearProgressRequested="OnClearProgressRequested"
+            GoogleSignInRequested="OnGoogleSignInRequested"
             IsVisible="False"
             RestoreRequested="OnRestoreRequested"
             ProgressCriteriaChanged="OnProgressCriteriaChanged" />
@@ -71,12 +75,10 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
                         </Border.StrokeShape>
-                        <ScrollView MaximumHeightRequest="220">
-                            <VerticalStackLayout
-                                x:Name="ClearProgressLevelListContainer"
-                                Padding="8"
-                                Spacing="4" />
-                        </ScrollView>
+                        <VerticalStackLayout
+                            x:Name="ClearProgressLevelListContainer"
+                            Padding="8"
+                            Spacing="4" />
                     </Border>
 
                     <Label
@@ -461,6 +463,40 @@
                     </VerticalStackLayout>
                 </Grid>
             </Border>
+        </Grid>
+
+        <Grid
+            x:Name="GoogleSignInOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#8A111827"
+            InputTransparent="False"
+            IsVisible="False"
+            ZIndex="20">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                Spacing="14"
+                VerticalOptions="Center">
+                <ActivityIndicator
+                    x:Name="GoogleSignInActivityIndicator"
+                    HeightRequest="44"
+                    IsRunning="False"
+                    WidthRequest="44"
+                    Color="#FFFFFF" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="Signing in to Google..."
+                    TextColor="#FFFFFF" />
+                <Button
+                    x:Name="CancelGoogleSignInButton"
+                    BackgroundColor="#FFFFFF"
+                    Clicked="OnCancelGoogleSignInClicked"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    IsVisible="False"
+                    Text="Cancel"
+                    TextColor="#171717" />
+            </VerticalStackLayout>
         </Grid>
 
     </Grid>

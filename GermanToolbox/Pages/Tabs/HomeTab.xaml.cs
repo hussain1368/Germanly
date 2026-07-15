@@ -18,7 +18,7 @@ namespace GermanToolbox
         private PracticeMode reviewMode = PracticeMode.Meaning;
         private WordEntry? wordOfTheDay;
         private IReadOnlyList<LevelMasterySummary> levelMasterySummaries = [];
-        private bool isGoogleSignInBusy;
+        public event EventHandler? GoogleSignInRequested;
 
         public HomeTab()
         {
@@ -520,7 +520,7 @@ namespace GermanToolbox
 
         private async Task HandleProfileTappedAsync()
         {
-            if (googleAuthService.IsSignedIn || isGoogleSignInBusy)
+            if (googleAuthService.IsSignedIn)
             {
                 return;
             }
@@ -535,37 +535,7 @@ namespace GermanToolbox
                 return;
             }
 
-            isGoogleSignInBusy = true;
-            SetGoogleSignInOverlayVisible(true);
-            try
-            {
-                await googleAuthService.SignInAsync();
-                ApplySignedInUser();
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert(
-                    "Google sign-in failed",
-                    ex.Message,
-                    "OK");
-            }
-            finally
-            {
-                isGoogleSignInBusy = false;
-                SetGoogleSignInOverlayVisible(false);
-                ApplySignedInUser();
-            }
-        }
-
-        private void OnCancelGoogleSignInClicked(object sender, EventArgs e) =>
-            googleAuthService.CancelPendingSignIn();
-
-        private void SetGoogleSignInOverlayVisible(bool isVisible)
-        {
-            GoogleSignInOverlay.IsVisible = isVisible;
-            GoogleSignInActivityIndicator.IsRunning = isVisible;
-            CancelGoogleSignInButton.IsVisible =
-                isVisible && DeviceInfo.Current.Platform == DevicePlatform.WinUI;
+            GoogleSignInRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private async Task ShowLevelMasteryPopupAsync()

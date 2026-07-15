@@ -415,6 +415,43 @@
 
                 <Border
                     Padding="16"
+                    BackgroundColor="#FFF7F6"
+                    Stroke="#F2DEDC"
+                    StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                        <VerticalStackLayout Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="17"
+                                Text="Fortschritt löschen"
+                                TextColor="#171717" />
+                            <Label
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                Text="Reset all scores, mistake flags, and learning flags. Your word list stays intact."
+                                TextColor="#777777" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            Grid.Column="1"
+                            BackgroundColor="#D43D35"
+                            Clicked="OnClearProgressClicked"
+                            CornerRadius="8"
+                            FontAttributes="Bold"
+                            FontFamily="OpenSansSemibold"
+                            HeightRequest="44"
+                            Text="Zurücksetzen"
+                            TextColor="#FFFFFF"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <Border
+                    Padding="16"
                     BackgroundColor="#FFFFFF"
                     Stroke="#DDE8F5"
                     StrokeThickness="1">
@@ -466,7 +503,7 @@
                     </Grid>
                 </Border>
 
-                <!-- TEMP: remove after first-run guide testing -->
+                <!--  TEMP: remove after first-run guide testing  -->
                 <Button
                     BackgroundColor="#F59E0B"
                     Clicked="OnResetFirstRunGuideClicked"
@@ -476,79 +513,9 @@
                     HeightRequest="44"
                     Text="TEMP: Reset first-run guide"
                     TextColor="#FFFFFF" />
-
-                <Border
-                    Padding="16"
-                    BackgroundColor="#FFF7F6"
-                    Stroke="#F2DEDC"
-                    StrokeThickness="1">
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="8" />
-                    </Border.StrokeShape>
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
-                        <VerticalStackLayout Spacing="4">
-                            <Label
-                                FontAttributes="Bold"
-                                FontFamily="OpenSansSemibold"
-                                FontSize="17"
-                                Text="Fortschritt löschen"
-                                TextColor="#171717" />
-                            <Label
-                                FontSize="12"
-                                LineBreakMode="WordWrap"
-                                Text="Reset all scores, mistake flags, and learning flags. Your word list stays intact."
-                                TextColor="#777777" />
-                        </VerticalStackLayout>
-
-                        <Button
-                            Grid.Column="1"
-                            BackgroundColor="#D43D35"
-                            Clicked="OnClearProgressClicked"
-                            CornerRadius="8"
-                            FontAttributes="Bold"
-                            FontFamily="OpenSansSemibold"
-                            HeightRequest="44"
-                            Text="Zurücksetzen"
-                            TextColor="#FFFFFF"
-                            VerticalOptions="Center" />
-                    </Grid>
-                </Border>
-
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid
-            x:Name="GoogleSignInOverlay"
-            BackgroundColor="#8A111827"
-            InputTransparent="False"
-            IsVisible="False"
-            ZIndex="10">
-            <VerticalStackLayout
-                HorizontalOptions="Center"
-                Spacing="14"
-                VerticalOptions="Center">
-                <ActivityIndicator
-                    x:Name="GoogleSignInActivityIndicator"
-                    HeightRequest="44"
-                    IsRunning="False"
-                    WidthRequest="44"
-                    Color="#FFFFFF" />
-                <Label
-                    HorizontalTextAlignment="Center"
-                    Text="Loading Google accounts..."
-                    TextColor="#FFFFFF" />
-                <Button
-                    x:Name="CancelGoogleSignInButton"
-                    BackgroundColor="#FFFFFF"
-                    Clicked="OnCancelGoogleSignInClicked"
-                    CornerRadius="8"
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    IsVisible="False"
-                    Text="Cancel"
-                    TextColor="#171717" />
-            </VerticalStackLayout>
-        </Grid>
     </Grid>
 
 </ContentView>

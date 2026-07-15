@@ -3,7 +3,7 @@ using SQLite;
 namespace GermanToolbox
 {
     [Table("Words")]
-    public sealed class WordEntry
+    public class WordEntry
     {
         [PrimaryKey]
         public int Id { get; set; }
@@ -54,5 +54,11 @@ namespace GermanToolbox
         public bool MistakePlural { get; set; }
 
         public bool MistakeIrregular { get; set; }
+
+        /// <summary>
+        /// Populated for article sessions via LEFT JOIN Hints; not persisted.
+        /// </summary>
+        [Ignore]
+        public HintEntry? GenderRule { get; set; }
     }
 }

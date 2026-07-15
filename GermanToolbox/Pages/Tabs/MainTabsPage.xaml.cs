@@ -9,7 +9,9 @@ namespace GermanToolbox
         private readonly TestSessionService testSessionService;
         private readonly DriveBackupService driveBackupService;
         private readonly PracticeSettingsService settingsService;
+        private readonly GoogleAuthService googleAuthService;
         private bool isClearingProgress;
+        private bool isGoogleSignInInProgress;
         private bool isClearProgressConfirmed;
         private bool isClearAllLevelsSelected;
         private List<LevelWithProgress> dirtyClearLevels = [];
@@ -29,6 +31,7 @@ namespace GermanToolbox
             testSessionService = AppServices.GetRequiredService<TestSessionService>();
             driveBackupService = AppServices.GetRequiredService<DriveBackupService>();
             settingsService = AppServices.GetRequiredService<PracticeSettingsService>();
+            googleAuthService = AppServices.GetRequiredService<GoogleAuthService>();
             SelectTab("Home", refreshContent: false);
 
             if (!settingsService.HasSeenUserGuide)
@@ -41,6 +44,11 @@ namespace GermanToolbox
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            if (isGoogleSignInInProgress)
+            {
+                SetGoogleSignInOverlayVisible(true);
+            }
 
             if (!settingsService.HasSeenUserGuide)
             {
@@ -135,6 +143,51 @@ namespace GermanToolbox
             }
         }
 
+        private async void OnGoogleSignInRequested(object? sender, EventArgs e) =>
+            await RunGoogleSignInAsync();
+
+        private async Task RunGoogleSignInAsync()
+        {
+            if (isGoogleSignInInProgress)
+            {
+                return;
+            }
+
+            isGoogleSignInInProgress = true;
+            SetGoogleSignInOverlayVisible(true);
+            SettingsTabContent.SetGoogleSignInBusy(true);
+
+            try
+            {
+                await googleAuthService.SignInAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert(
+                    "Google sign-in failed",
+                    ex.Message,
+                    "OK");
+            }
+            finally
+            {
+                isGoogleSignInInProgress = false;
+                SetGoogleSignInOverlayVisible(false);
+                SettingsTabContent.SetGoogleSignInBusy(false);
+            }
+        }
+
+        private void SetGoogleSignInOverlayVisible(bool isVisible)
+        {
+            GoogleSignInOverlay.IsVisible = isVisible;
+            GoogleSignInActivityIndicator.IsRunning = isVisible;
+            CancelGoogleSignInButton.IsVisible =
+                isVisible && DeviceInfo.Current.Platform == DevicePlatform.WinUI;
+            BottomNav.InputTransparent = isVisible;
+        }
+
+        private void OnCancelGoogleSignInClicked(object sender, EventArgs e) =>
+            googleAuthService.CancelPendingSignIn();
+
         private async void OnClearProgressRequested(object? sender, EventArgs e)
         {
             if (ClearProgressOverlay.IsVisible)
@@ -148,28 +201,29 @@ namespace GermanToolbox
             ClearProgressEmptyLabel.IsVisible = false;
             ClearProgressLevelListContainer.Children.Clear();
 
-            ClearProgressOverlay.Opacity = 0;
-            ClearProgressOverlay.IsVisible = true;
-            await ClearProgressOverlay.FadeTo(1, 120, Easing.CubicOut);
-
             try
             {
                 dirtyClearLevels = (await testSessionService.GetLevelsWithProgressAsync()).ToList();
                 if (dirtyClearLevels.Count == 0)
                 {
                     ClearProgressEmptyLabel.IsVisible = true;
-                    UpdateClearProgressConfirmButtonState();
-                    return;
                 }
-
-                isClearAllLevelsSelected = true;
-                foreach (var level in dirtyClearLevels)
+                else
                 {
-                    selectedClearLevels.Add(level.Level);
+                    isClearAllLevelsSelected = true;
+                    foreach (var level in dirtyClearLevels)
+                    {
+                        selectedClearLevels.Add(level.Level);
+                    }
+
+                    BuildClearProgressLevelList();
                 }
 
-                BuildClearProgressLevelList();
                 UpdateClearProgressConfirmButtonState();
+
+                ClearProgressOverlay.Opacity = 0;
+                ClearProgressOverlay.IsVisible = true;
+                await ClearProgressOverlay.FadeTo(1, 120, Easing.CubicOut);
             }
             catch (Exception ex)
             {
@@ -363,6 +417,11 @@ namespace GermanToolbox
 
         protected override bool OnBackButtonPressed()
         {
+            if (GoogleSignInOverlay.IsVisible)
+            {
+                return true;
+            }
+
             if (RestoreOverlay.IsVisible)
             {
                 if (isRestoringBackup)

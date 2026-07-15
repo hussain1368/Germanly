@@ -4,9 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Grid>
-        <ScrollView>
-            <VerticalStackLayout Padding="24,20,24,22" Spacing="18">
+    <ScrollView>
+        <VerticalStackLayout Padding="24,20,24,22" Spacing="18">
 
             <Grid RowDefinitions="Auto,18,Auto">
                 <Grid ColumnDefinitions="52,*" ColumnSpacing="12">
@@ -712,41 +711,7 @@
                     </Border>
                 </Grid>
             </Border>
-            </VerticalStackLayout>
-        </ScrollView>
-
-        <Grid
-            x:Name="GoogleSignInOverlay"
-            BackgroundColor="#8A111827"
-            InputTransparent="False"
-            IsVisible="False"
-            ZIndex="10">
-            <VerticalStackLayout
-                HorizontalOptions="Center"
-                Spacing="14"
-                VerticalOptions="Center">
-                <ActivityIndicator
-                    x:Name="GoogleSignInActivityIndicator"
-                    HeightRequest="44"
-                    IsRunning="False"
-                    WidthRequest="44"
-                    Color="#FFFFFF" />
-                <Label
-                    HorizontalTextAlignment="Center"
-                    Text="Loading Google accounts..."
-                    TextColor="#FFFFFF" />
-                <Button
-                    x:Name="CancelGoogleSignInButton"
-                    BackgroundColor="#FFFFFF"
-                    Clicked="OnCancelGoogleSignInClicked"
-                    CornerRadius="8"
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    IsVisible="False"
-                    Text="Cancel"
-                    TextColor="#171717" />
-            </VerticalStackLayout>
-        </Grid>
-    </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentView>

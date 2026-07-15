@@ -11,6 +11,7 @@ Visual Studio:
 96:B5:CA:9C:8D:8F:71:FB:C9:9D:9B:5B:18:D2:E1:B4:F2:1D:16:52
 
 * test the db schema check vs backup. 
+* backup fail -> retry
 
 dotnet build GermanToolbox.csproj -c Release -f net9.0-android -t:Run -p:Device=804afa37
 dotnet build GermanToolbox.csproj -c Release -f net9.0-android -p:AndroidPackageFormat=apk

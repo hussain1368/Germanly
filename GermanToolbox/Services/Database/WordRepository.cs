@@ -69,9 +69,7 @@ namespace GermanToolbox
             await InitializeAsync();
 
             var mistakeColumn = GetMistakeColumn(mode);
-            var sql = $$"""
-                SELECT *
-                FROM Words
+            var whereOrderLimit = $$"""
                 WHERE {{GetLevelFilterWhereClause(level)}}
                   AND {{GetEligibilityWhereClause(mode)}}
                   AND {{mistakeColumn}} = 1
@@ -82,6 +80,19 @@ namespace GermanToolbox
             var parameters = new List<object>();
             AddLevelFilterParameter(parameters, level);
             parameters.Add(chunkSize);
+
+            if (mode == PracticeMode.Article)
+            {
+                return await QueryArticleWordsWithHintsAsync(
+                    whereOrderLimit,
+                    parameters.ToArray());
+            }
+
+            var sql = $$"""
+                SELECT *
+                FROM Words
+                {{whereOrderLimit}}
+                """;
 
             return await database.Connection.QueryAsync<WordEntry>(sql, parameters.ToArray());
         }
@@ -821,9 +832,7 @@ namespace GermanToolbox
                   $"THEN {learningPriorityColumn} END DESC"
                 : string.Empty;
 
-            var belowThresholdSql = $$"""
-                SELECT *
-                FROM Words
+            var belowThresholdWhereOrderLimit = $$"""
                 WHERE {{GetLevelFilterWhereClause(level)}}
                   AND {{GetEligibilityWhereClause(mode)}}
                   AND {{scoreColumn}} < ?
@@ -839,18 +848,20 @@ namespace GermanToolbox
             belowThresholdParameters.Add(learnedThreshold);
             belowThresholdParameters.Add(limit);
 
-            var words = await database.Connection.QueryAsync<WordEntry>(
-                belowThresholdSql,
-                belowThresholdParameters.ToArray());
+            var words = mode == PracticeMode.Article
+                ? await QueryArticleWordsWithHintsAsync(
+                    belowThresholdWhereOrderLimit,
+                    belowThresholdParameters.ToArray())
+                : await database.Connection.QueryAsync<WordEntry>(
+                    $"SELECT * FROM Words {belowThresholdWhereOrderLimit}",
+                    belowThresholdParameters.ToArray());
             if (words.Count > 0)
             {
                 return words;
             }
 
             // All eligible rows already reached the threshold — still practice random ones.
-            var fallbackSql = $$"""
-                SELECT *
-                FROM Words
+            var fallbackWhereOrderLimit = $$"""
                 WHERE {{GetLevelFilterWhereClause(level)}}
                   AND {{GetEligibilityWhereClause(mode)}}
                 ORDER BY RANDOM()
@@ -861,9 +872,97 @@ namespace GermanToolbox
             AddLevelFilterParameter(fallbackParameters, level);
             fallbackParameters.Add(limit);
 
+            if (mode == PracticeMode.Article)
+            {
+                return await QueryArticleWordsWithHintsAsync(
+                    fallbackWhereOrderLimit,
+                    fallbackParameters.ToArray());
+            }
+
             return await database.Connection.QueryAsync<WordEntry>(
-                fallbackSql,
+                $"SELECT * FROM Words {fallbackWhereOrderLimit}",
                 fallbackParameters.ToArray());
+        }
+
+        private async Task<List<WordEntry>> QueryArticleWordsWithHintsAsync(
+            string whereOrderLimitSql,
+            object[] parameters)
+        {
+            var sql = $$"""
+                SELECT
+                    Words.*,
+                    Hints.{{nameof(HintEntry.Id)}} AS JoinedHintId,
+                    Hints.{{nameof(HintEntry.Gender)}} AS JoinedHintGender,
+                    Hints.{{nameof(HintEntry.Rule)}} AS JoinedHintRule,
+                    Hints.{{nameof(HintEntry.Suffix)}} AS JoinedHintSuffix,
+                    Hints.{{nameof(HintEntry.Percentage)}} AS JoinedHintPercentage
+                FROM Words
+                LEFT JOIN Hints
+                    ON Words.{{nameof(WordEntry.GenderHint)}} = Hints.{{nameof(HintEntry.Id)}}
+                {{whereOrderLimitSql}}
+                """;
+
+            var rows = await database.Connection.QueryAsync<WordEntryWithHintJoin>(
+                sql,
+                parameters);
+            return rows.Select(MaterializeWordWithHint).ToList();
+        }
+
+        private static WordEntry MaterializeWordWithHint(WordEntryWithHintJoin row)
+        {
+            var word = new WordEntry
+            {
+                Id = row.Id,
+                Word = row.Word,
+                Translation = row.Translation,
+                Type = row.Type,
+                Gender = row.Gender,
+                GenderHint = row.GenderHint,
+                Plural = row.Plural,
+                Level = row.Level,
+                IsStrong = row.IsStrong,
+                Past = row.Past,
+                Perfekt = row.Perfekt,
+                Learning = row.Learning,
+                ScoreMeaning = row.ScoreMeaning,
+                ScoreReverseMeaning = row.ScoreReverseMeaning,
+                ScoreArticle = row.ScoreArticle,
+                ScorePlural = row.ScorePlural,
+                ScoreIrregularPrateritum = row.ScoreIrregularPrateritum,
+                ScoreIrregularPerfect = row.ScoreIrregularPerfect,
+                MistakeMeaning = row.MistakeMeaning,
+                MistakeArticle = row.MistakeArticle,
+                MistakePlural = row.MistakePlural,
+                MistakeIrregular = row.MistakeIrregular
+            };
+
+            if (row.JoinedHintId is int hintId
+                && !string.IsNullOrWhiteSpace(row.JoinedHintRule))
+            {
+                word.GenderRule = new HintEntry
+                {
+                    Id = hintId,
+                    Gender = row.JoinedHintGender,
+                    Rule = row.JoinedHintRule,
+                    Suffix = row.JoinedHintSuffix,
+                    Percentage = row.JoinedHintPercentage ?? 0
+                };
+            }
+
+            return word;
+        }
+
+        private sealed class WordEntryWithHintJoin : WordEntry
+        {
+            public int? JoinedHintId { get; set; }
+
+            public string? JoinedHintGender { get; set; }
+
+            public string? JoinedHintRule { get; set; }
+
+            public string? JoinedHintSuffix { get; set; }
+
+            public int? JoinedHintPercentage { get; set; }
         }
 
         private async Task<List<WordEntry>> GetSessionWordsAsync456(

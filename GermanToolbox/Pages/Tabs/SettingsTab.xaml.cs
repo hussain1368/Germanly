@@ -39,6 +39,14 @@ namespace GermanToolbox
 
         public event EventHandler? RestoreRequested;
 
+        public event EventHandler? GoogleSignInRequested;
+
+        public void SetGoogleSignInBusy(bool isBusy)
+        {
+            isGoogleActionBusy = isBusy;
+            ApplyGoogleAccountState();
+        }
+
         public void RefreshValues()
         {
             isRefreshingValues = true;
@@ -184,33 +192,9 @@ namespace GermanToolbox
                 return;
             }
 
-            SetGoogleSignInOverlayVisible(true);
-            GoogleActionButton.IsEnabled = false;
-            GoogleActionButton.Text = "Connecting...";
-            isGoogleActionBusy = true;
-
-            try
-            {
-                await googleAuthService.SignInAsync();
-                ApplyGoogleAccountState();
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert(
-                    "Google sign-in failed",
-                    ex.Message,
-                    "OK");
-            }
-            finally
-            {
-                isGoogleActionBusy = false;
-                SetGoogleSignInOverlayVisible(false);
-                ApplyGoogleAccountState();
-            }
+            SetGoogleSignInBusy(true);
+            GoogleSignInRequested?.Invoke(this, EventArgs.Empty);
         }
-
-        private void OnCancelGoogleSignInClicked(object sender, EventArgs e) =>
-            googleAuthService.CancelPendingSignIn();
 
         private async void OnBackupClicked(object sender, EventArgs e)
         {
@@ -283,8 +267,14 @@ namespace GermanToolbox
             GoogleAccountStatusLabel.Text = currentUser is null
                 ? "Not connected. Sign in with Google to prepare Drive backup."
                 : $"Connected as {currentUser.Email}";
-            GoogleActionButton.Text = currentUser is null ? "Sign in to Google" : "Sign out";
-            GoogleActionButton.ImageSource = currentUser is null ? "google.png" : "power.png";
+            GoogleActionButton.Text = currentUser is null
+                ? (isGoogleActionBusy ? "Connecting..." : "Sign in to Google")
+                : "Sign out";
+            GoogleActionButton.ImageSource = currentUser is null && !isGoogleActionBusy
+                ? "google.png"
+                : currentUser is null
+                    ? null
+                    : "power.png";
             GoogleActionButton.IsEnabled = !isGoogleActionBusy;
 
             if (currentUser is null && settingsService.AutoBackupEnabled)
@@ -296,14 +286,6 @@ namespace GermanToolbox
 
         private void OnAuthenticationStateChanged(object? sender, EventArgs e) =>
             ApplyGoogleAccountState();
-
-        private void SetGoogleSignInOverlayVisible(bool isVisible)
-        {
-            GoogleSignInOverlay.IsVisible = isVisible;
-            GoogleSignInActivityIndicator.IsRunning = isVisible;
-            CancelGoogleSignInButton.IsVisible =
-                isVisible && DeviceInfo.Current.Platform == DevicePlatform.WinUI;
-        }
 
         private void SetBackupButtonBusyState(bool isBusy)
         {

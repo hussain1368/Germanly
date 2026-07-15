@@ -8,7 +8,6 @@ namespace GermanToolbox
         private static readonly Color NeuterNounColor = Color.FromArgb("#2E7D32");
         private readonly TestSessionService testSessionService;
         private readonly AnswerFeedbackService answerFeedbackService;
-        private readonly WordRepository wordRepository;
         private bool isAnimating;
 
         public ArticlesTestPage()
@@ -16,7 +15,6 @@ namespace GermanToolbox
             InitializeComponent();
             testSessionService = AppServices.GetRequiredService<TestSessionService>();
             answerFeedbackService = AppServices.GetRequiredService<AnswerFeedbackService>();
-            wordRepository = AppServices.GetRequiredService<WordRepository>();
         }
 
         protected override async void OnAppearing()
@@ -86,14 +84,18 @@ namespace GermanToolbox
                 return;
             }
 
-            await answerFeedbackService.PlayAnswerAsync(result.IsCorrect);
-
             if (!result.IsCorrect)
             {
-                await RevealCorrectGenderStyleAsync();
+                RevealCorrectGenderStyle();
+                await answerFeedbackService.PlayAnswerAsync(false);
                 await ShakeWordCardAsync();
                 return;
             }
+
+            // Clear any leftover wrong-answer reveal before advancing.
+            HideArticleRuleReveal();
+            ResetNounStyle();
+            await answerFeedbackService.PlayAnswerAsync(true);
 
             if (result.IsSessionFinished)
             {
@@ -192,22 +194,16 @@ namespace GermanToolbox
             return true;
         }
 
-        private async Task RevealCorrectGenderStyleAsync()
+        private void RevealCorrectGenderStyle()
         {
             var word = testSessionService.CurrentSession?.CurrentWord?.Word;
             NounLabel.TextColor = GetGenderColor(word?.Gender);
             SetNounOutlineVisible(true);
 
-            HideArticleRuleReveal();
-
-            if (word?.GenderHint is not int hintId || hintId <= 0)
-            {
-                return;
-            }
-
-            var hint = await wordRepository.GetHintByIdAsync(hintId);
+            var hint = word?.GenderRule;
             if (hint is null || string.IsNullOrWhiteSpace(hint.Rule))
             {
+                HideArticleRuleReveal();
                 return;
             }
 
