@@ -68,10 +68,11 @@ namespace GermanToolbox
         {
             await InitializeAsync();
 
-            var mistakeColumn = GetMistakeColumn(mode);
+            var tablePrefix = mode == PracticeMode.Article ? "Words" : null;
+            var mistakeColumn = QualifyColumn(tablePrefix, GetMistakeColumn(mode));
             var whereOrderLimit = $$"""
-                WHERE {{GetLevelFilterWhereClause(level)}}
-                  AND {{GetEligibilityWhereClause(mode)}}
+                WHERE {{GetLevelFilterWhereClause(level, tablePrefix)}}
+                  AND {{GetEligibilityWhereClause(mode, tablePrefix)}}
                   AND {{mistakeColumn}} = 1
                 ORDER BY RANDOM()
                 LIMIT ?
@@ -824,20 +825,23 @@ namespace GermanToolbox
             int learnedThreshold,
             string level)
         {
-            var scoreColumn = GetScoreColumn(mode, vocabularyDirection, irregularVerbForm);
-            var learningPriorityColumn =
-                GetLearningPriorityColumn(mode, vocabularyDirection);
+            // Article sessions LEFT JOIN Hints (also has Gender) — qualify Words columns.
+            var tablePrefix = mode == PracticeMode.Article ? "Words" : null;
+            var scoreColumn = QualifyColumn(
+                tablePrefix,
+                GetScoreColumn(mode, vocabularyDirection, irregularVerbForm));
+            var learningPriorityColumn = GetLearningPriorityColumn(mode, vocabularyDirection);
             var learningPriority = learningPriorityColumn is not null
-                ? $", CASE WHEN {nameof(WordEntry.Learning)} = 1 " +
-                  $"THEN {learningPriorityColumn} END DESC"
+                ? $", CASE WHEN {QualifyColumn(tablePrefix, nameof(WordEntry.Learning))} = 1 " +
+                  $"THEN {QualifyColumn(tablePrefix, learningPriorityColumn)} END DESC"
                 : string.Empty;
 
             var belowThresholdWhereOrderLimit = $$"""
-                WHERE {{GetLevelFilterWhereClause(level)}}
-                  AND {{GetEligibilityWhereClause(mode)}}
+                WHERE {{GetLevelFilterWhereClause(level, tablePrefix)}}
+                  AND {{GetEligibilityWhereClause(mode, tablePrefix)}}
                   AND {{scoreColumn}} < ?
                 ORDER BY
-                    {{nameof(WordEntry.Learning)}} DESC
+                    {{QualifyColumn(tablePrefix, nameof(WordEntry.Learning))}} DESC
                     {{learningPriority}},
                     RANDOM()
                 LIMIT ?
@@ -862,8 +866,8 @@ namespace GermanToolbox
 
             // All eligible rows already reached the threshold — still practice random ones.
             var fallbackWhereOrderLimit = $$"""
-                WHERE {{GetLevelFilterWhereClause(level)}}
-                  AND {{GetEligibilityWhereClause(mode)}}
+                WHERE {{GetLevelFilterWhereClause(level, tablePrefix)}}
+                  AND {{GetEligibilityWhereClause(mode, tablePrefix)}}
                 ORDER BY RANDOM()
                 LIMIT ?
                 """;
@@ -1035,20 +1039,28 @@ namespace GermanToolbox
             word.Learning = !IsFullyLearned(word, learnedThreshold);
         }
 
-        private static string GetEligibilityWhereClause(PracticeMode mode) =>
-            mode switch
+        private static string QualifyColumn(string? tablePrefix, string column) =>
+            string.IsNullOrEmpty(tablePrefix) ? column : $"{tablePrefix}.{column}";
+
+        private static string GetEligibilityWhereClause(
+            PracticeMode mode,
+            string? tablePrefix = null)
+        {
+            var t = string.IsNullOrEmpty(tablePrefix) ? string.Empty : $"{tablePrefix}.";
+            return mode switch
             {
-                PracticeMode.Article => "Type = 'noun' AND Gender IN ('m', 'f', 'n')",
+                PracticeMode.Article => $"{t}Type = 'noun' AND {t}Gender IN ('m', 'f', 'n')",
                 PracticeMode.Plural =>
-                    $"Type = 'noun' " +
-                    $"AND {nameof(WordEntry.Plural)} IS NOT NULL " +
-                    $"AND TRIM({nameof(WordEntry.Plural)}) <> ''",
+                    $"{t}Type = 'noun' " +
+                    $"AND {t}{nameof(WordEntry.Plural)} IS NOT NULL " +
+                    $"AND TRIM({t}{nameof(WordEntry.Plural)}) <> ''",
                 PracticeMode.IrregularVerb =>
-                    $"{nameof(WordEntry.IsStrong)} = 1 " +
-                    $"AND {nameof(WordEntry.Past)} IS NOT NULL " +
-                    $"AND {nameof(WordEntry.Perfekt)} IS NOT NULL",
+                    $"{t}{nameof(WordEntry.IsStrong)} = 1 " +
+                    $"AND {t}{nameof(WordEntry.Past)} IS NOT NULL " +
+                    $"AND {t}{nameof(WordEntry.Perfekt)} IS NOT NULL",
                 _ => "1 = 1"
             };
+        }
 
         private static string GetScoreColumn(
             PracticeMode mode,
@@ -1119,10 +1131,12 @@ namespace GermanToolbox
                 _ => 100
             };
 
-        private static string GetLevelFilterWhereClause(string level) =>
+        private static string GetLevelFilterWhereClause(
+            string level,
+            string? tablePrefix = null) =>
             string.IsNullOrWhiteSpace(level)
                 ? "1 = 1"
-                : $"{nameof(WordEntry.Level)} = ?";
+                : $"{QualifyColumn(tablePrefix, nameof(WordEntry.Level))} = ?";
 
         private static void AddLevelFilterParameter(List<object> parameters, string level)
         {
