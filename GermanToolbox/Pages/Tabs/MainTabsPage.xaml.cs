@@ -11,6 +11,10 @@ namespace GermanToolbox
         private readonly PracticeSettingsService settingsService;
         private bool isClearingProgress;
         private bool isClearProgressConfirmed;
+        private bool isClearAllLevelsSelected;
+        private List<LevelWithProgress> dirtyClearLevels = [];
+        private readonly HashSet<string> selectedClearLevels =
+            new(StringComparer.OrdinalIgnoreCase);
         private bool isRestoringBackup;
         private bool isRestoreConfirmed;
         private bool isRestoreSchemaWarningConfirmed;
@@ -139,9 +143,39 @@ namespace GermanToolbox
             }
 
             SetClearProgressConfirmationState(false);
+            selectedClearLevels.Clear();
+            isClearAllLevelsSelected = false;
+            ClearProgressEmptyLabel.IsVisible = false;
+            ClearProgressLevelListContainer.Children.Clear();
+
             ClearProgressOverlay.Opacity = 0;
             ClearProgressOverlay.IsVisible = true;
             await ClearProgressOverlay.FadeTo(1, 120, Easing.CubicOut);
+
+            try
+            {
+                dirtyClearLevels = (await testSessionService.GetLevelsWithProgressAsync()).ToList();
+                if (dirtyClearLevels.Count == 0)
+                {
+                    ClearProgressEmptyLabel.IsVisible = true;
+                    UpdateClearProgressConfirmButtonState();
+                    return;
+                }
+
+                isClearAllLevelsSelected = true;
+                foreach (var level in dirtyClearLevels)
+                {
+                    selectedClearLevels.Add(level.Level);
+                }
+
+                BuildClearProgressLevelList();
+                UpdateClearProgressConfirmButtonState();
+            }
+            catch (Exception ex)
+            {
+                await HideClearProgressOverlayAsync();
+                await DisplayAlert("Reset failed", ex.Message, "OK");
+            }
         }
 
         private async void OnCancelClearProgressTapped(object sender, TappedEventArgs e) =>
@@ -152,7 +186,9 @@ namespace GermanToolbox
 
         private async void OnConfirmClearProgressTapped(object sender, TappedEventArgs e)
         {
-            if (isClearingProgress || !isClearProgressConfirmed)
+            if (isClearingProgress ||
+                !isClearProgressConfirmed ||
+                selectedClearLevels.Count == 0)
             {
                 return;
             }
@@ -160,7 +196,7 @@ namespace GermanToolbox
             isClearingProgress = true;
             try
             {
-                await testSessionService.ResetProgressAsync();
+                await testSessionService.ResetProgressAsync(selectedClearLevels.ToList());
                 await HomeTabContent.RefreshAsync();
                 await PracticeTabContent.RefreshStatsAsync();
                 await HideClearProgressOverlayAsync();
@@ -175,6 +211,154 @@ namespace GermanToolbox
             {
                 isClearingProgress = false;
             }
+        }
+
+        private void BuildClearProgressLevelList()
+        {
+            ClearProgressLevelListContainer.Children.Clear();
+            ClearProgressLevelListContainer.Children.Add(
+                CreateClearLevelRow(
+                    "All Levels",
+                    percentText: $"{GetOverallClearLevelsMasteredPercent()}%",
+                    isChecked: isClearAllLevelsSelected,
+                    () => ToggleClearAllLevels()));
+
+            for (var index = 0; index < dirtyClearLevels.Count; index++)
+            {
+                ClearProgressLevelListContainer.Children.Add(CreateClearLevelSeparator());
+
+                var level = dirtyClearLevels[index];
+                ClearProgressLevelListContainer.Children.Add(
+                    CreateClearLevelRow(
+                        level.Level,
+                        percentText: $"{level.MasteredPercent}%",
+                        isChecked: selectedClearLevels.Contains(level.Level),
+                        () => ToggleClearLevel(level.Level)));
+            }
+        }
+
+        private int GetOverallClearLevelsMasteredPercent()
+        {
+            var totalCount = dirtyClearLevels.Sum(level => level.TotalCount);
+            if (totalCount <= 0)
+            {
+                return 0;
+            }
+
+            var masteredCount = dirtyClearLevels.Sum(level => level.MasteredCount);
+            return (int)Math.Round(100d * masteredCount / totalCount);
+        }
+
+        private static View CreateClearLevelSeparator() =>
+            new BoxView
+            {
+                HeightRequest = 1,
+                Color = Color.FromArgb("#F2DEDC"),
+                Margin = new Thickness(6, 2)
+            };
+
+        private View CreateClearLevelRow(
+            string title,
+            string? percentText,
+            bool isChecked,
+            Action onToggled)
+        {
+            var checkBox = new Border
+            {
+                BackgroundColor = Color.FromArgb(isChecked ? "#D43D35" : "#FFFFFF"),
+                HeightRequest = 20,
+                WidthRequest = 20,
+                Stroke = Color.FromArgb("#D43D35"),
+                StrokeThickness = 1.6,
+                VerticalOptions = LayoutOptions.Center,
+                StrokeShape = new RoundRectangle { CornerRadius = 5 },
+                Content = new Label
+                {
+                    Text = "✓",
+                    FontSize = 12,
+                    FontAttributes = FontAttributes.Bold,
+                    TextColor = Colors.White,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    IsVisible = isChecked
+                }
+            };
+
+            var row = new Grid
+            {
+                ColumnDefinitions = new ColumnDefinitionCollection(
+                    new ColumnDefinition(GridLength.Auto),
+                    new ColumnDefinition(GridLength.Star),
+                    new ColumnDefinition(GridLength.Auto)),
+                ColumnSpacing = 10,
+                Padding = new Thickness(6, 8)
+            };
+            row.Add(checkBox);
+            row.Add(
+                new Label
+                {
+                    Text = title,
+                    FontAttributes = FontAttributes.Bold,
+                    FontFamily = "OpenSansSemibold",
+                    FontSize = 15,
+                    TextColor = Color.FromArgb("#171717"),
+                    VerticalTextAlignment = TextAlignment.Center
+                },
+                1);
+
+            if (!string.IsNullOrWhiteSpace(percentText))
+            {
+                row.Add(
+                    new Label
+                    {
+                        Text = percentText,
+                        FontAttributes = FontAttributes.Bold,
+                        FontFamily = "OpenSansSemibold",
+                        FontSize = 14,
+                        TextColor = Color.FromArgb("#D43D35"),
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HorizontalTextAlignment = TextAlignment.End
+                    },
+                    2);
+            }
+
+            row.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(onToggled)
+            });
+
+            return row;
+        }
+
+        private void ToggleClearAllLevels()
+        {
+            isClearAllLevelsSelected = !isClearAllLevelsSelected;
+            selectedClearLevels.Clear();
+            if (isClearAllLevelsSelected)
+            {
+                foreach (var level in dirtyClearLevels)
+                {
+                    selectedClearLevels.Add(level.Level);
+                }
+            }
+
+            BuildClearProgressLevelList();
+            UpdateClearProgressConfirmButtonState();
+        }
+
+        private void ToggleClearLevel(string level)
+        {
+            if (!selectedClearLevels.Remove(level))
+            {
+                selectedClearLevels.Add(level);
+            }
+
+            isClearAllLevelsSelected =
+                dirtyClearLevels.Count > 0 &&
+                dirtyClearLevels.All(item => selectedClearLevels.Contains(item.Level));
+
+            BuildClearProgressLevelList();
+            UpdateClearProgressConfirmButtonState();
         }
 
         protected override bool OnBackButtonPressed()
@@ -210,6 +394,11 @@ namespace GermanToolbox
             ClearProgressOverlay.IsVisible = false;
             ClearProgressOverlay.Opacity = 1;
             SetClearProgressConfirmationState(false);
+            selectedClearLevels.Clear();
+            dirtyClearLevels = [];
+            isClearAllLevelsSelected = false;
+            ClearProgressLevelListContainer.Children.Clear();
+            ClearProgressEmptyLabel.IsVisible = false;
         }
 
         private void SetClearProgressConfirmationState(bool isConfirmed)
@@ -219,12 +408,21 @@ namespace GermanToolbox
                 isConfirmed ? "#D43D35" : "#FFFFFF");
             ClearProgressConfirmationBox.Stroke = Color.FromArgb("#D43D35");
             ClearProgressConfirmationCheckMark.IsVisible = isConfirmed;
-            ClearProgressConfirmButton.InputTransparent = !isConfirmed;
-            ClearProgressConfirmButton.Opacity = isConfirmed ? 1 : 0.6;
+            UpdateClearProgressConfirmButtonState();
+        }
+
+        private void UpdateClearProgressConfirmButtonState()
+        {
+            var canConfirm =
+                isClearProgressConfirmed &&
+                selectedClearLevels.Count > 0 &&
+                !isClearingProgress;
+            ClearProgressConfirmButton.InputTransparent = !canConfirm;
+            ClearProgressConfirmButton.Opacity = canConfirm ? 1 : 0.6;
             ClearProgressConfirmButton.BackgroundColor = Color.FromArgb(
-                isConfirmed ? "#D43D35" : "#E6A8A4");
+                canConfirm ? "#D43D35" : "#E6A8A4");
             ClearProgressConfirmButton.Stroke = Color.FromArgb(
-                isConfirmed ? "#D43D35" : "#E6A8A4");
+                canConfirm ? "#D43D35" : "#E6A8A4");
         }
 
         private void BuildRestoreBackupList()

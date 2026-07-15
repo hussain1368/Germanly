@@ -121,9 +121,12 @@ namespace GermanToolbox
                 irregularVerbForm,
                 level);
 
-        public async Task ResetProgressAsync()
+        public Task<IReadOnlyList<LevelWithProgress>> GetLevelsWithProgressAsync() =>
+            repository.GetLevelsWithProgressAsync(settings.LearnedThreshold);
+
+        public async Task ResetProgressAsync(IReadOnlyCollection<string> levels)
         {
-            await repository.ResetProgressAsync();
+            await repository.ResetProgressAsync(levels);
             CurrentSession = null;
             lastResults.Clear();
         }

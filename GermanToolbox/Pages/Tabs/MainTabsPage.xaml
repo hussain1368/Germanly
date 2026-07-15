@@ -58,6 +58,35 @@
                         Text="Fortschritt löschen?"
                         TextColor="#171717" />
 
+                    <Label
+                        FontSize="13"
+                        LineBreakMode="WordWrap"
+                        Text="Select the levels whose progress you want to reset."
+                        TextColor="#555555" />
+
+                    <Border
+                        BackgroundColor="#FAFAF8"
+                        Stroke="#F2DEDC"
+                        StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        <ScrollView MaximumHeightRequest="220">
+                            <VerticalStackLayout
+                                x:Name="ClearProgressLevelListContainer"
+                                Padding="8"
+                                Spacing="4" />
+                        </ScrollView>
+                    </Border>
+
+                    <Label
+                        x:Name="ClearProgressEmptyLabel"
+                        FontSize="13"
+                        IsVisible="False"
+                        LineBreakMode="WordWrap"
+                        Text="No levels currently have learning progress to clear."
+                        TextColor="#777777" />
+
                     <Grid ColumnDefinitions="24,*" ColumnSpacing="10">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnClearProgressConfirmationTapped" />
@@ -92,7 +121,7 @@
                             Grid.Column="1"
                             FontSize="13"
                             LineBreakMode="WordWrap"
-                            Text="I understand this will reset all scores, mistake flags, and learning flags."
+                            Text="I understand this will reset scores, mistake flags, and learning flags for the selected levels."
                             TextColor="#555555"
                             VerticalTextAlignment="Center" />
                     </Grid>

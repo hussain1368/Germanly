@@ -18,6 +18,7 @@ namespace GermanToolbox
         private PracticeMode reviewMode = PracticeMode.Meaning;
         private WordEntry? wordOfTheDay;
         private IReadOnlyList<LevelMasterySummary> levelMasterySummaries = [];
+        private bool isGoogleSignInBusy;
 
         public HomeTab()
         {
@@ -512,10 +513,60 @@ namespace GermanToolbox
         }
 
         private async void OnAvatarTapped(object sender, TappedEventArgs e) =>
-            await Shell.Current.GoToAsync(nameof(SignInPage));
+            await HandleProfileTappedAsync();
 
         private async void OnUserNameTapped(object sender, TappedEventArgs e) =>
-            await Shell.Current.GoToAsync(nameof(UserProfilePage));
+            await HandleProfileTappedAsync();
+
+        private async Task HandleProfileTappedAsync()
+        {
+            if (googleAuthService.IsSignedIn || isGoogleSignInBusy)
+            {
+                return;
+            }
+
+            var shouldSetUp = await Shell.Current.DisplayAlert(
+                "Google account",
+                "Google account is not set up. Do you want to set up Google account?",
+                "Set up",
+                "Cancel");
+            if (!shouldSetUp)
+            {
+                return;
+            }
+
+            isGoogleSignInBusy = true;
+            SetGoogleSignInOverlayVisible(true);
+            try
+            {
+                await googleAuthService.SignInAsync();
+                ApplySignedInUser();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert(
+                    "Google sign-in failed",
+                    ex.Message,
+                    "OK");
+            }
+            finally
+            {
+                isGoogleSignInBusy = false;
+                SetGoogleSignInOverlayVisible(false);
+                ApplySignedInUser();
+            }
+        }
+
+        private void OnCancelGoogleSignInClicked(object sender, EventArgs e) =>
+            googleAuthService.CancelPendingSignIn();
+
+        private void SetGoogleSignInOverlayVisible(bool isVisible)
+        {
+            GoogleSignInOverlay.IsVisible = isVisible;
+            GoogleSignInActivityIndicator.IsRunning = isVisible;
+            CancelGoogleSignInButton.IsVisible =
+                isVisible && DeviceInfo.Current.Platform == DevicePlatform.WinUI;
+        }
 
         private async Task ShowLevelMasteryPopupAsync()
         {

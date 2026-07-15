@@ -439,34 +439,107 @@ namespace GermanToolbox
             }
         }
 
-        public async Task ResetProgressAsync()
+        public async Task<IReadOnlyList<LevelWithProgress>> GetLevelsWithProgressAsync(
+            int learnedThreshold)
         {
             await InitializeAsync();
 
-            await ExecuteWriteAsync(async () =>
-            {
-                var words = await database.Connection.Table<WordEntry>().ToListAsync();
-                foreach (var word in words)
-                {
-                    word.ScoreMeaning = 0;
-                    word.ScoreReverseMeaning = 0;
-                    word.ScoreArticle = 0;
-                    word.ScoreIrregularPrateritum = 0;
-                    word.ScoreIrregularPerfect = 0;
-                    word.ScorePlural = 0;
-                    word.MistakeArticle = false;
-                    word.MistakeMeaning = false;
-                    word.MistakeIrregular = false;
-                    word.MistakePlural = false;
-                    word.Learning = false;
-                }
+            var completedWhereClause = GetCompletedWhereClause();
+            var rows = await database.Connection.QueryAsync<LevelProgressCounts>(
+                $$"""
+                SELECT
+                    TRIM({{nameof(WordEntry.Level)}}) AS Level,
+                    COUNT(*) AS TotalCount,
+                    COALESCE(
+                        SUM(CASE WHEN {{completedWhereClause}} THEN 1 ELSE 0 END),
+                        0) AS MasteredCount
+                FROM Words
+                WHERE TRIM({{nameof(WordEntry.Level)}}) <> ''
+                GROUP BY TRIM({{nameof(WordEntry.Level)}})
+                HAVING SUM(
+                    CASE WHEN {{GetProgressDirtyWhereClause()}} THEN 1 ELSE 0 END) > 0
+                """,
+                learnedThreshold,
+                learnedThreshold,
+                learnedThreshold,
+                learnedThreshold,
+                learnedThreshold,
+                learnedThreshold);
 
-                if (words.Count > 0)
-                {
-                    await database.Connection.UpdateAllAsync(words);
-                }
-            });
+            return rows
+                .Where(row => !string.IsNullOrWhiteSpace(row.Level))
+                .Select(row => new LevelWithProgress(
+                    row.Level.Trim().ToUpperInvariant(),
+                    row.MasteredCount,
+                    row.TotalCount))
+                .OrderBy(row => GetLevelSortKey(row.Level))
+                .ThenBy(row => row.Level, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        public async Task ResetProgressAsync(IReadOnlyCollection<string> levels)
+        {
+            await InitializeAsync();
+
+            var selectedLevels = levels
+                .Where(level => !string.IsNullOrWhiteSpace(level))
+                .Select(level => level.Trim().ToUpperInvariant())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            if (selectedLevels.Count == 0)
+            {
+                return;
+            }
+
+            var placeholders = string.Join(", ", selectedLevels.Select(_ => "?"));
+            await ExecuteWriteAsync(() =>
+                database.Connection.ExecuteAsync(
+                    $$"""
+                    UPDATE Words
+                    SET
+                        {{nameof(WordEntry.Learning)}} = 0,
+                        {{nameof(WordEntry.ScoreMeaning)}} = 0,
+                        {{nameof(WordEntry.ScoreReverseMeaning)}} = 0,
+                        {{nameof(WordEntry.ScoreArticle)}} = 0,
+                        {{nameof(WordEntry.ScorePlural)}} = 0,
+                        {{nameof(WordEntry.ScoreIrregularPrateritum)}} = 0,
+                        {{nameof(WordEntry.ScoreIrregularPerfect)}} = 0,
+                        {{nameof(WordEntry.MistakeMeaning)}} = 0,
+                        {{nameof(WordEntry.MistakeArticle)}} = 0,
+                        {{nameof(WordEntry.MistakePlural)}} = 0,
+                        {{nameof(WordEntry.MistakeIrregular)}} = 0
+                    WHERE UPPER(TRIM({{nameof(WordEntry.Level)}})) IN ({{placeholders}})
+                    """,
+                    selectedLevels.Cast<object>().ToArray()));
+
+            synchronizedLearningThreshold = null;
             settingsService.MarkBackupNeeded();
+        }
+
+        private static string GetProgressDirtyWhereClause() =>
+            $$"""
+            (
+                {{nameof(WordEntry.Learning)}} = 1
+                OR {{nameof(WordEntry.ScoreMeaning)}} <> 0
+                OR {{nameof(WordEntry.ScoreReverseMeaning)}} <> 0
+                OR {{nameof(WordEntry.ScoreArticle)}} <> 0
+                OR {{nameof(WordEntry.ScorePlural)}} <> 0
+                OR {{nameof(WordEntry.ScoreIrregularPrateritum)}} <> 0
+                OR {{nameof(WordEntry.ScoreIrregularPerfect)}} <> 0
+                OR {{nameof(WordEntry.MistakeMeaning)}} = 1
+                OR {{nameof(WordEntry.MistakeArticle)}} = 1
+                OR {{nameof(WordEntry.MistakePlural)}} = 1
+                OR {{nameof(WordEntry.MistakeIrregular)}} = 1
+            )
+            """;
+
+        private sealed class LevelProgressCounts
+        {
+            public string Level { get; set; } = string.Empty;
+
+            public int MasteredCount { get; set; }
+
+            public int TotalCount { get; set; }
         }
 
         public sealed class WordProgressRow
@@ -748,7 +821,7 @@ namespace GermanToolbox
                   $"THEN {learningPriorityColumn} END DESC"
                 : string.Empty;
 
-            var sql = $$"""
+            var belowThresholdSql = $$"""
                 SELECT *
                 FROM Words
                 WHERE {{GetLevelFilterWhereClause(level)}}
@@ -761,12 +834,36 @@ namespace GermanToolbox
                 LIMIT ?
                 """;
 
-            var parameters = new List<object>();
-            AddLevelFilterParameter(parameters, level);
-            parameters.Add(learnedThreshold);
-            parameters.Add(limit);
+            var belowThresholdParameters = new List<object>();
+            AddLevelFilterParameter(belowThresholdParameters, level);
+            belowThresholdParameters.Add(learnedThreshold);
+            belowThresholdParameters.Add(limit);
 
-            return await database.Connection.QueryAsync<WordEntry>(sql, parameters.ToArray());
+            var words = await database.Connection.QueryAsync<WordEntry>(
+                belowThresholdSql,
+                belowThresholdParameters.ToArray());
+            if (words.Count > 0)
+            {
+                return words;
+            }
+
+            // All eligible rows already reached the threshold — still practice random ones.
+            var fallbackSql = $$"""
+                SELECT *
+                FROM Words
+                WHERE {{GetLevelFilterWhereClause(level)}}
+                  AND {{GetEligibilityWhereClause(mode)}}
+                ORDER BY RANDOM()
+                LIMIT ?
+                """;
+
+            var fallbackParameters = new List<object>();
+            AddLevelFilterParameter(fallbackParameters, level);
+            fallbackParameters.Add(limit);
+
+            return await database.Connection.QueryAsync<WordEntry>(
+                fallbackSql,
+                fallbackParameters.ToArray());
         }
 
         private async Task<List<WordEntry>> GetSessionWordsAsync456(
