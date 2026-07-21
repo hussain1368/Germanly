@@ -2,21 +2,13 @@ namespace GermanToolbox
 {
     public sealed class RegularVerbFormGenerator
     {
-        private static readonly string[] SeparablePrefixes =
-        [
-            "auseinander", "beiseite", "durcheinander", "gegenüber", "herunter",
-            "hinunter", "zurück", "zusammen", "entgegen", "entlang", "heraus",
-            "hinein", "vorbei", "weiter", "wieder", "ab", "an", "auf", "aus",
-            "bei", "ein", "fest", "fort", "her", "hin", "hoch", "los", "mit",
-            "nach", "statt", "teil", "umher", "vor", "weg", "zu"
-        ];
+        public RegularVerbForms Generate(WordEntry word) =>
+            Generate(word.Word, word.IsSeparable, word.Prefix);
 
-        private static readonly string[] InseparablePrefixes =
-        [
-            "be", "emp", "ent", "er", "ge", "miss", "ver", "zer"
-        ];
-
-        public RegularVerbForms Generate(string infinitivePhrase)
+        public RegularVerbForms Generate(
+            string infinitivePhrase,
+            bool isSeparable,
+            string? prefix)
         {
             var words = infinitivePhrase
                 .Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -27,14 +19,42 @@ namespace GermanToolbox
 
             var infinitive = words[^1];
             var context = words[..^1];
-            var (separablePrefix, root) = SplitSeparablePrefix(infinitive);
+            var separablePrefix = ResolveSeparablePrefix(infinitive, isSeparable, prefix);
+            var root = string.IsNullOrEmpty(separablePrefix)
+                ? infinitive
+                : infinitive[separablePrefix.Length..];
             var stem = GetStem(root);
             var prateritum = stem + GetPastEnding(stem);
-            var perfect = CreateParticiple(infinitive, separablePrefix, stem);
+            var perfect = CreateParticiple(
+                infinitive,
+                separablePrefix,
+                stem,
+                isSeparable,
+                prefix);
 
             return new RegularVerbForms(
                 BuildFinitePhrase(prateritum, separablePrefix, context),
                 perfect);
+        }
+
+        private static string ResolveSeparablePrefix(
+            string infinitive,
+            bool isSeparable,
+            string? prefix)
+        {
+            if (!isSeparable || string.IsNullOrWhiteSpace(prefix))
+            {
+                return string.Empty;
+            }
+
+            var candidate = prefix.Trim();
+            if (!infinitive.StartsWith(candidate, StringComparison.OrdinalIgnoreCase) ||
+                infinitive.Length <= candidate.Length)
+            {
+                return string.Empty;
+            }
+
+            return infinitive[..candidate.Length];
         }
 
         private static string BuildFinitePhrase(
@@ -55,7 +75,9 @@ namespace GermanToolbox
         private static string CreateParticiple(
             string infinitive,
             string separablePrefix,
-            string stem)
+            string stem,
+            bool isSeparable,
+            string? prefix)
         {
             var ending = GetPresentEnding(stem);
             if (!string.IsNullOrEmpty(separablePrefix))
@@ -64,9 +86,7 @@ namespace GermanToolbox
             }
 
             if (infinitive.EndsWith("ieren", StringComparison.OrdinalIgnoreCase) ||
-                InseparablePrefixes.Any(prefix =>
-                    infinitive.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) &&
-                    infinitive.Length > prefix.Length + 2))
+                HasInseparablePrefix(isSeparable, prefix))
             {
                 return stem + ending;
             }
@@ -74,17 +94,8 @@ namespace GermanToolbox
             return "ge" + stem + ending;
         }
 
-        private static (string Prefix, string Root) SplitSeparablePrefix(string infinitive)
-        {
-            var prefix = SeparablePrefixes
-                .Where(item => infinitive.StartsWith(item, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(item => item.Length)
-                .FirstOrDefault(item => infinitive.Length > item.Length + 2);
-
-            return prefix is null
-                ? (string.Empty, infinitive)
-                : (infinitive[..prefix.Length], infinitive[prefix.Length..]);
-        }
+        private static bool HasInseparablePrefix(bool isSeparable, string? prefix) =>
+            !isSeparable && !string.IsNullOrWhiteSpace(prefix);
 
         private static string GetStem(string infinitive)
         {

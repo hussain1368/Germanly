@@ -327,14 +327,6 @@
                                 </Border>
                             </Grid>
                         </Grid>
-
-                        <Label
-                            x:Name="GeneratedFormsNote"
-                            FontSize="11"
-                            IsVisible="False"
-                            LineBreakMode="WordWrap"
-                            Text="These forms were built from regular weak-verb rules."
-                            TextColor="#648067" />
                     </VerticalStackLayout>
                 </Border>
 

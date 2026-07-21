@@ -29,6 +29,10 @@ namespace GermanToolbox
         [Indexed]
         public bool IsStrong { get; set; }
 
+        public bool IsSeparable { get; set; }
+
+        public string? Prefix { get; set; }
+
         public string? Past { get; set; }
 
         public string? Perfekt { get; set; }

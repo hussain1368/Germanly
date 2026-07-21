@@ -105,7 +105,6 @@ namespace GermanToolbox
                 GeneratedFormsBadge.Stroke = visualStyle.StrokeColor;
                 GeneratedFormsBadge.StrokeThickness = 1;
                 GeneratedFormsBadgeLabel.TextColor = visualStyle.AccentColor;
-                GeneratedFormsNote.TextColor = visualStyle.AccentColor;
                 ApplyVerbForms(word);
             }
 
@@ -323,15 +322,13 @@ namespace GermanToolbox
                 PrateritumValueLabel.Text = GetAvailableValue(word.Past);
                 PerfectValueLabel.Text = GetAvailableValue(word.Perfekt);
                 GeneratedFormsBadge.IsVisible = false;
-                GeneratedFormsNote.IsVisible = false;
                 return;
             }
 
-            var forms = regularVerbFormGenerator.Generate(word.Word);
+            var forms = regularVerbFormGenerator.Generate(word);
             PrateritumValueLabel.Text = GetAvailableValue(forms.Prateritum);
             PerfectValueLabel.Text = GetAvailableValue(forms.Perfect);
             GeneratedFormsBadge.IsVisible = true;
-            GeneratedFormsNote.IsVisible = true;
         }
 
         private async Task ShowLoadErrorAsync()

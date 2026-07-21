@@ -1,5 +1,4 @@
 
-user guide design fixes, search page design fixes, start up google sign in, auto backup process logic fixes.
-
-
-
+add trenbar badge in the word details.
+remove generated badge in the word details.
+validate generated perfekt and past.

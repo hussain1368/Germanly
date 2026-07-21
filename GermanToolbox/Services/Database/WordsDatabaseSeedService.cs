@@ -8,7 +8,7 @@ namespace GermanToolbox
         private const string SeedDatabaseFileName = "seeder.db3";
         private const string SeedPayloadAssetName = "seed/seeder.payload";
         private const string SeedCacheDirectoryPrefix = "seeder-";
-        private const string SeedKey = "WordsDatabaseV13";
+        private const string SeedKey = "WordsDatabaseV14";
         private static readonly string[] WordColumnOrder =
         [
             nameof(WordEntry.Id),
@@ -20,6 +20,8 @@ namespace GermanToolbox
             nameof(WordEntry.Plural),
             nameof(WordEntry.Level),
             nameof(WordEntry.IsStrong),
+            nameof(WordEntry.IsSeparable),
+            nameof(WordEntry.Prefix),
             nameof(WordEntry.Past),
             nameof(WordEntry.Perfekt),
             nameof(WordEntry.Learning),
@@ -310,7 +312,8 @@ namespace GermanToolbox
                 nameof(WordEntry.GenderHint) or
                 nameof(WordEntry.Past) or
                 nameof(WordEntry.Perfekt) or
-                nameof(WordEntry.Plural) => "NULL",
+                nameof(WordEntry.Plural) or
+                nameof(WordEntry.Prefix) => "NULL",
                 nameof(WordEntry.Word) or
                 nameof(WordEntry.Translation) or
                 nameof(WordEntry.Type) or
