@@ -23,18 +23,11 @@ namespace GermanToolbox
             if (query.Length < 2)
             {
                 results.Clear();
-                LoadingIndicator.IsRunning = false;
-                LoadingIndicator.IsVisible = false;
-                StatusLabel.Text = "Type at least 2 letters to start searching.";
                 ShowEmptyState(
                     "Wortliste durchsuchen",
                     "Results will appear here as soon as you enter two letters.");
                 return;
             }
-
-            LoadingIndicator.IsRunning = true;
-            LoadingIndicator.IsVisible = true;
-            StatusLabel.Text = "Suche läuft...";
 
             await Task.Delay(180);
             if (version != searchVersion)
@@ -56,13 +49,6 @@ namespace GermanToolbox
                     results.Add(new SearchResultItem(match));
                 }
 
-                StatusLabel.Text = matches.Count switch
-                {
-                    0 => "Keine Treffer",
-                    1 => "1 Treffer",
-                    _ => $"{matches.Count} Treffer"
-                };
-
                 if (matches.Count == 0)
                 {
                     ShowEmptyState(
@@ -79,7 +65,6 @@ namespace GermanToolbox
                 if (version == searchVersion)
                 {
                     results.Clear();
-                    StatusLabel.Text = "Suche nicht verfügbar";
                     ShowEmptyState(
                         "Suche konnte nicht abgeschlossen werden",
                         "Please try again in a moment.");
@@ -87,11 +72,6 @@ namespace GermanToolbox
             }
             finally
             {
-                if (version == searchVersion)
-                {
-                    LoadingIndicator.IsRunning = false;
-                    LoadingIndicator.IsVisible = false;
-                }
             }
         }
 

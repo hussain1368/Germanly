@@ -27,7 +27,7 @@ namespace GermanToolbox
                 .GetInstance(Android.App.Application.Context)
                 .EnqueueUniquePeriodicWork(
                     UniqueWorkName,
-                    ExistingPeriodicWorkPolicy.Update!,
+                    ExistingPeriodicWorkPolicy.Keep!,
                     request);
         }
 

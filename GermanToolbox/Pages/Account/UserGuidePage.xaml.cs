@@ -68,7 +68,22 @@ namespace GermanToolbox
 
         private async Task CloseGuideAsync()
         {
-            AppServices.GetRequiredService<PracticeSettingsService>().HasSeenUserGuide = true;
+            var settingsService = AppServices.GetRequiredService<PracticeSettingsService>();
+            var googleAuthService = AppServices.GetRequiredService<GoogleAuthService>();
+            var isFirstRun = !settingsService.HasSeenUserGuide;
+            settingsService.HasSeenUserGuide = true;
+
+            if (isFirstRun && !googleAuthService.IsSignedIn)
+            {
+                await Shell.Current.GoToAsync($"../{nameof(GoogleSetupPage)}");
+                return;
+            }
+
+            if (isFirstRun)
+            {
+                settingsService.HasSeenGoogleSetupPrompt = true;
+            }
+
             await Shell.Current.GoToAsync("..");
         }
     }

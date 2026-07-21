@@ -8,10 +8,23 @@
     BackgroundColor="#FAFAF8"
     Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="*,Auto">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Label
+            Grid.Row="0"
+            Margin="0,14,20,0"
+            FontSize="14"
+            HorizontalOptions="End"
+            SemanticProperties.Description="Skip user guide"
+            Text="Skip"
+            TextColor="#3874FF">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnSkipClicked" />
+            </Label.GestureRecognizers>
+        </Label>
+
         <CarouselView
             x:Name="GuideCarousel"
-            Grid.Row="0"
+            Grid.Row="1"
             HorizontalScrollBarVisibility="Never"
             IndicatorView="{x:Reference GuideIndicator}"
             ItemsSource="{Binding Slides}"
@@ -25,7 +38,10 @@
             </CarouselView.ItemsLayout>
             <CarouselView.ItemTemplate>
                 <DataTemplate x:DataType="local:UserGuideSlide">
-                    <Grid Padding="20,0,20,14" RowDefinitions="*,Auto" RowSpacing="12">
+                    <Grid
+                        Padding="20,0,20,14"
+                        RowDefinitions="*,Auto"
+                        RowSpacing="12">
                         <Image
                             Aspect="AspectFit"
                             HorizontalOptions="Fill"
@@ -45,7 +61,7 @@
         </CarouselView>
 
         <VerticalStackLayout
-            Grid.Row="1"
+            Grid.Row="2"
             Padding="20,8,20,22"
             Spacing="16">
             <IndicatorView
@@ -56,29 +72,18 @@
                 MaximumVisible="4"
                 SelectedIndicatorColor="#2563EB" />
 
-            <VerticalStackLayout Spacing="10">
-                <Button
-                    x:Name="NextButton"
-                    BackgroundColor="#2563EB"
-                    Clicked="OnNextClicked"
-                    CornerRadius="8"
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    HeightRequest="50"
-                    Text="Weiter"
-                    TextColor="#FFFFFF" />
-                <Button
-                    BackgroundColor="#FFFFFF"
-                    BorderColor="#D8DEE8"
-                    BorderWidth="1"
-                    Clicked="OnSkipClicked"
-                    CornerRadius="8"
-                    FontAttributes="Bold"
-                    FontFamily="OpenSansSemibold"
-                    HeightRequest="50"
-                    Text="Überspringen"
-                    TextColor="#555555" />
-            </VerticalStackLayout>
+            <Button
+                x:Name="NextButton"
+                BackgroundColor="White"
+                BorderColor="#2563EB"
+                BorderWidth="2"
+                Clicked="OnNextClicked"
+                CornerRadius="8"
+                FontAttributes="Bold"
+                FontFamily="OpenSansSemibold"
+                HeightRequest="50"
+                Text="Next"
+                TextColor="#2563EB" />
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

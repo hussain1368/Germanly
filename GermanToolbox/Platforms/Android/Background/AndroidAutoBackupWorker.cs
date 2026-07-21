@@ -29,18 +29,10 @@ namespace GermanToolbox
 
             if (!settingsService.AutoBackupEnabled ||
                 !googleAuthService.IsSignedIn ||
-                Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+                !settingsService.BackupNeeded)
             {
                 return Result.InvokeSuccess()!;
             }
-
-            // Backup-needed flag is intentionally ignored for automatic backups while testing.
-            // To make automatic backups skip identical data later, uncomment this block:
-            //
-            // if (!settingsService.BackupNeeded)
-            // {
-            //     return Result.InvokeSuccess();
-            // }
 
             var driveBackupService = AppServices.GetRequiredService<DriveBackupService>();
             await driveBackupService.CreateAndUploadBackupAsync();

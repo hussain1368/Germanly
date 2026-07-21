@@ -21,6 +21,7 @@ namespace GermanToolbox
         private const string AutoBackupEnabledKey = "Backup.AutoBackupEnabled";
         private const string BackupNeededKey = "Backup.BackupNeeded";
         private const string UserGuideSeenKey = "UserGuide.HasSeen";
+        private const string GoogleSetupPromptSeenKey = "GoogleSetup.HasSeenPrompt";
 
         public int LearnedThreshold
         {
@@ -145,6 +146,20 @@ namespace GermanToolbox
         {
             get => Preferences.Default.Get(UserGuideSeenKey, false);
             set => Preferences.Default.Set(UserGuideSeenKey, value);
+        }
+
+        public bool HasSeenGoogleSetupPrompt
+        {
+            get => Preferences.Default.Get(GoogleSetupPromptSeenKey, false);
+            set => Preferences.Default.Set(GoogleSetupPromptSeenKey, value);
+        }
+
+        public void EnsureFirstRunFlagsMigrated()
+        {
+            if (HasSeenUserGuide && !Preferences.Default.ContainsKey(GoogleSetupPromptSeenKey))
+            {
+                HasSeenGoogleSetupPrompt = true;
+            }
         }
 
         private static string NormalizeLevel(string level)

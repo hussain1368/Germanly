@@ -4,18 +4,19 @@ namespace GermanToolbox
     {
         // Automatic backups run hourly for testing now.
         // To change hourly automatic backups to daily later, replace this active line:
-        //public static readonly TimeSpan BackupInterval = TimeSpan.FromHours(1);
-        //public static readonly TimeSpan InitialDelay = BackupInterval;
+        
+        public static readonly TimeSpan BackupInterval = TimeSpan.FromHours(1);
+        public static readonly TimeSpan InitialDelay = BackupInterval;
 
         // Daily backup code for later:
-        public static readonly TimeSpan BackupInterval = TimeSpan.FromDays(1);
-        public static TimeSpan InitialDelay => GetDelayUntilNextLocalMidnight();
+        // public static readonly TimeSpan BackupInterval = TimeSpan.FromDays(1);
+        // public static TimeSpan InitialDelay => GetDelayUntilNextLocalMidnight();
 
-        private static TimeSpan GetDelayUntilNextLocalMidnight()
-        {
-            var now = DateTime.Now;
-            return now.Date.AddDays(1) - now;
-        }
+        // private static TimeSpan GetDelayUntilNextLocalMidnight()
+        // {
+        //     var now = DateTime.Now;
+        //     return now.Date.AddDays(1) - now;
+        // }
     }
 
     public sealed class AutoBackupService : IDisposable
@@ -110,15 +111,7 @@ namespace GermanToolbox
         {
             if (!settingsService.AutoBackupEnabled ||
                 !googleAuthService.IsSignedIn ||
-                Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-            {
-                return;
-            }
-
-            // Backup-needed flag is intentionally ignored for automatic backups while testing.
-            // To make automatic backups skip identical data later, uncomment this block:
-            //
-            if (!settingsService.BackupNeeded)
+                !settingsService.BackupNeeded)
             {
                 return;
             }

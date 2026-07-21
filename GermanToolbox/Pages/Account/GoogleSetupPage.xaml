@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GermanToolbox.GoogleSetupPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GermanToolbox"
+    BackgroundColor="#FAFAF8"
+    Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <Grid Padding="24,28,24,22" RowDefinitions="*,Auto">
+            <VerticalStackLayout
+                Grid.Row="0"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="420"
+                Spacing="24"
+                VerticalOptions="Center">
+                <Border
+                    BackgroundColor="#EAF1FF"
+                    HeightRequest="88"
+                    HorizontalOptions="Center"
+                    StrokeThickness="0"
+                    WidthRequest="88">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    <Image
+                        HeightRequest="48"
+                        HorizontalOptions="Center"
+                        Source="drive.png"
+                        VerticalOptions="Center"
+                        WidthRequest="48" />
+                </Border>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="28"
+                        HorizontalTextAlignment="Center"
+                        Text="Google Drive sichern"
+                        TextColor="#171717" />
+                    <Label
+                        FontSize="15"
+                        HorizontalTextAlignment="Center"
+                        LineBreakMode="WordWrap"
+                        Text="Connect your Google account to back up your vocabulary progress and restore it on any device."
+                        TextColor="#666666" />
+                </VerticalStackLayout>
+
+                <Button
+                    x:Name="SignInButton"
+                    BackgroundColor="#FFFFFF"
+                    BorderColor="#2563EB"
+                    BorderWidth="1"
+                    Clicked="OnSignInClicked"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    HeightRequest="50"
+                    ImageSource="google.png"
+                    Text="Sign in to Google"
+                    TextColor="#2563EB" />
+            </VerticalStackLayout>
+
+            <Label
+                Grid.Row="1"
+                FontSize="13"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                SemanticProperties.Description="Set up Google account later"
+                Text="Später einrichten"
+                TextColor="#777777">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSetupLaterClicked" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <Grid
+            x:Name="SignInOverlay"
+            BackgroundColor="#8A111827"
+            InputTransparent="False"
+            IsVisible="False"
+            ZIndex="20">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                Spacing="14"
+                VerticalOptions="Center">
+                <ActivityIndicator
+                    x:Name="SignInActivityIndicator"
+                    HeightRequest="44"
+                    IsRunning="False"
+                    WidthRequest="44"
+                    Color="#FFFFFF" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="Signing in to Google..."
+                    TextColor="#FFFFFF" />
+                <Button
+                    x:Name="CancelSignInButton"
+                    BackgroundColor="#FFFFFF"
+                    Clicked="OnCancelSignInClicked"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSansSemibold"
+                    IsVisible="False"
+                    Text="Cancel"
+                    TextColor="#171717" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

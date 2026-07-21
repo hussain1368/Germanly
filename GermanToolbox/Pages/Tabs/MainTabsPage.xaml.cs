@@ -34,9 +34,11 @@ namespace GermanToolbox
             googleAuthService = AppServices.GetRequiredService<GoogleAuthService>();
             SelectTab("Home", refreshContent: false);
 
-            if (!settingsService.HasSeenUserGuide)
+            if (!settingsService.HasSeenUserGuide
+                || (!settingsService.HasSeenGoogleSetupPrompt
+                    && !googleAuthService.IsSignedIn))
             {
-                // Keep the home UI hidden until the first-run guide closes.
+                // Keep the home UI hidden until first-run onboarding completes.
                 Opacity = 0;
             }
         }
@@ -50,9 +52,16 @@ namespace GermanToolbox
                 SetGoogleSignInOverlayVisible(true);
             }
 
-            if (!settingsService.HasSeenUserGuide)
+            if (!settingsService.HasSeenUserGuide
+                || (!settingsService.HasSeenGoogleSetupPrompt
+                    && !googleAuthService.IsSignedIn))
             {
                 return;
+            }
+
+            if (!settingsService.HasSeenGoogleSetupPrompt && googleAuthService.IsSignedIn)
+            {
+                settingsService.HasSeenGoogleSetupPrompt = true;
             }
 
             if (Opacity < 1)

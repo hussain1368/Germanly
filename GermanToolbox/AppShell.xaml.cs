@@ -21,6 +21,7 @@
             Routing.RegisterRoute(nameof(WordDetailsPage), typeof(WordDetailsPage));
             Routing.RegisterRoute(nameof(PracticeRulesPage), typeof(PracticeRulesPage));
             Routing.RegisterRoute(nameof(UserGuidePage), typeof(UserGuidePage));
+            Routing.RegisterRoute(nameof(GoogleSetupPage), typeof(GoogleSetupPage));
             Routing.RegisterRoute(nameof(SignInPage), typeof(SignInPage));
             Routing.RegisterRoute(nameof(VerificationCodePage), typeof(VerificationCodePage));
             Routing.RegisterRoute(nameof(UserProfilePage), typeof(UserProfilePage));
@@ -32,7 +33,10 @@
         {
             Loaded -= OnShellLoaded;
 
-            if (AppServices.GetRequiredService<PracticeSettingsService>().HasSeenUserGuide)
+            var settingsService = AppServices.GetRequiredService<PracticeSettingsService>();
+            settingsService.EnsureFirstRunFlagsMigrated();
+
+            if (settingsService.HasSeenUserGuide)
             {
                 return;
             }

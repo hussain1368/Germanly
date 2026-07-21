@@ -163,9 +163,10 @@ namespace GermanToolbox
         {
             // TEMP: remove after first-run guide testing
             settingsService.HasSeenUserGuide = false;
+            settingsService.HasSeenGoogleSetupPrompt = false;
             await Shell.Current.DisplayAlert(
                 "First-run guide reset",
-                "The first-run user guide flag was cleared. Restart the app to see the guide on startup.",
+                "The first-run onboarding flags were cleared. Restart the app to see the guide on startup.",
                 "OK");
         }
 

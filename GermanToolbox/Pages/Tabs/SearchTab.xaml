@@ -7,7 +7,7 @@
 
     <Grid
         Padding="24,24,24,18"
-        RowDefinitions="Auto,Auto,Auto,*"
+        RowDefinitions="Auto,Auto,*"
         RowSpacing="14">
         <VerticalStackLayout Spacing="3">
             <Label
@@ -57,31 +57,18 @@
                     BackgroundColor="Transparent"
                     ClearButtonVisibility="WhileEditing"
                     FontSize="16"
+                    HeightRequest="54"
                     Placeholder="Type at least 2 letters"
                     PlaceholderColor="#A0A0A0"
                     ReturnType="Search"
                     TextChanged="OnSearchTextChanged"
-                    TextColor="#171717" />
+                    TextColor="#171717"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
             </Grid>
         </Border>
 
-        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
-            <Label
-                x:Name="StatusLabel"
-                FontSize="12"
-                Text="Type at least 2 letters to start searching."
-                TextColor="#777777" />
-            <ActivityIndicator
-                x:Name="LoadingIndicator"
-                Grid.Column="1"
-                HeightRequest="20"
-                IsRunning="False"
-                IsVisible="False"
-                WidthRequest="20"
-                Color="#2563EB" />
-        </Grid>
-
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="2">
             <CollectionView x:Name="ResultsCollection" SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
