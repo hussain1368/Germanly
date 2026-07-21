@@ -1,4 +1,2 @@
 
-add trenbar badge in the word details.
-remove generated badge in the word details.
 validate generated perfekt and past.

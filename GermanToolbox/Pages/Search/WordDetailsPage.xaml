@@ -223,7 +223,7 @@
                                         TextColor="#555555" />
                                 </Border>
                                 <Border
-                                    x:Name="GeneratedFormsBadge"
+                                    x:Name="VerbSeparableBadge"
                                     Padding="8,4"
                                     BackgroundColor="#EAF6EA"
                                     IsVisible="False"
@@ -232,11 +232,11 @@
                                         <RoundRectangle CornerRadius="8" />
                                     </Border.StrokeShape>
                                     <Label
-                                        x:Name="GeneratedFormsBadgeLabel"
+                                        x:Name="VerbSeparableBadgeLabel"
                                         FontAttributes="Bold"
                                         FontFamily="OpenSansSemibold"
                                         FontSize="9"
-                                        Text="ERZEUGT"
+                                        Text="Trennbar"
                                         TextColor="#2E7D32" />
                                 </Border>
                             </HorizontalStackLayout>

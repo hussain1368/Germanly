@@ -99,12 +99,10 @@ namespace GermanToolbox
                 VerbStrengthLabel.Text = word.IsStrong ? "Stark" : "Schwach";
                 VerbStrengthLabel.TextColor = visualStyle.AccentColor;
                 VerbStrengthBadge.Stroke = visualStyle.StrokeColor;
+                VerbSeparableBadge.IsVisible = word.IsSeparable;
                 PrateritumValueLabel.TextColor = visualStyle.AccentColor;
                 PerfectValueLabel.TextColor = visualStyle.AccentColor;
-                GeneratedFormsBadge.BackgroundColor = Colors.White;
-                GeneratedFormsBadge.Stroke = visualStyle.StrokeColor;
-                GeneratedFormsBadge.StrokeThickness = 1;
-                GeneratedFormsBadgeLabel.TextColor = visualStyle.AccentColor;
+
                 ApplyVerbForms(word);
             }
 
@@ -321,14 +319,12 @@ namespace GermanToolbox
             {
                 PrateritumValueLabel.Text = GetAvailableValue(word.Past);
                 PerfectValueLabel.Text = GetAvailableValue(word.Perfekt);
-                GeneratedFormsBadge.IsVisible = false;
                 return;
             }
 
             var forms = regularVerbFormGenerator.Generate(word);
             PrateritumValueLabel.Text = GetAvailableValue(forms.Prateritum);
             PerfectValueLabel.Text = GetAvailableValue(forms.Perfect);
-            GeneratedFormsBadge.IsVisible = true;
         }
 
         private async Task ShowLoadErrorAsync()

@@ -8,7 +8,7 @@ namespace GermanToolbox
         private const string SeedDatabaseFileName = "seeder.db3";
         private const string SeedPayloadAssetName = "seed/seeder.payload";
         private const string SeedCacheDirectoryPrefix = "seeder-";
-        private const string SeedKey = "WordsDatabaseV14";
+        private const string SeedKey = "WordsDatabaseV15";
         private static readonly string[] WordColumnOrder =
         [
             nameof(WordEntry.Id),
@@ -202,8 +202,19 @@ namespace GermanToolbox
 
             if (missingRequiredColumns.Count > 0 || unexpectedColumns.Count > 0)
             {
+                var details = new List<string>();
+                if (missingRequiredColumns.Count > 0)
+                {
+                    details.Add($"missing: {string.Join(", ", missingRequiredColumns)}");
+                }
+
+                if (unexpectedColumns.Count > 0)
+                {
+                    details.Add($"unexpected: {string.Join(", ", unexpectedColumns)}");
+                }
+
                 throw new InvalidDataException(
-                    $"{SeedDatabaseFileName} does not contain the expected {tableName} schema.");
+                    $"{SeedDatabaseFileName} does not contain the expected {tableName} schema ({string.Join("; ", details)}).");
             }
         }
 
