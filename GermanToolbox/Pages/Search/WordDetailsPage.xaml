@@ -13,9 +13,7 @@
                 x:Name="ContentContainer"
                 Padding="20,18"
                 Spacing="14">
-                <Grid
-                    ColumnDefinitions="40,*"
-                    ColumnSpacing="10">
+                <Grid ColumnDefinitions="40,*" ColumnSpacing="10">
                     <Border
                         BackgroundColor="#FFFFFF"
                         HeightRequest="40"
@@ -69,9 +67,9 @@
                     <Border.Shadow>
                         <Shadow
                             Brush="#30000000"
-                            Offset="0,14"
                             Opacity="0.26"
-                            Radius="24" />
+                            Radius="24"
+                            Offset="0,14" />
                     </Border.Shadow>
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -80,12 +78,8 @@
                             <GradientStop Offset="1.0" Color="#52616D" />
                         </LinearGradientBrush>
                     </Border.Background>
-                    <Grid
-                        RowDefinitions="Auto,Auto"
-                        RowSpacing="13">
-                        <HorizontalStackLayout
-                            HorizontalOptions="Start"
-                            Spacing="6">
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="13">
+                        <HorizontalStackLayout HorizontalOptions="Start" Spacing="6">
                             <Border
                                 x:Name="LevelBadgeBorder"
                                 Padding="9,5"
@@ -139,9 +133,7 @@
                                     TextColor="#9A4D00" />
                             </Border>
                         </HorizontalStackLayout>
-                        <VerticalStackLayout
-                            Grid.Row="1"
-                            Spacing="4">
+                        <VerticalStackLayout Grid.Row="1" Spacing="4">
                             <Label
                                 x:Name="WordLabel"
                                 FontAttributes="Bold"
@@ -163,9 +155,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <HorizontalStackLayout
-                                x:Name="PluralHeroPanel"
-                                IsVisible="False">
+                            <HorizontalStackLayout x:Name="PluralHeroPanel" IsVisible="False">
                                 <Label
                                     x:Name="PluralHeroValueLabel"
                                     FontAttributes="Bold"
@@ -202,9 +192,7 @@
                                 FontSize="18"
                                 Text="Verbformen"
                                 TextColor="#171717" />
-                            <HorizontalStackLayout
-                                Grid.Column="1"
-                                Spacing="5">
+                            <HorizontalStackLayout Grid.Column="1" Spacing="5">
                                 <Border
                                     x:Name="VerbStrengthBadge"
                                     Padding="8,4"
@@ -227,7 +215,8 @@
                                     Padding="8,4"
                                     BackgroundColor="#EAF6EA"
                                     IsVisible="False"
-                                    StrokeThickness="0">
+                                    Stroke="#2E7D32"
+                                    StrokeThickness="1">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="8" />
                                     </Border.StrokeShape>
@@ -376,58 +365,66 @@
                             Text="Lernpunkte"
                             TextColor="#171717" />
                         <VerticalStackLayout Spacing="10">
-                            <Grid
-                                ColumnDefinitions="*,*"
-                                ColumnSpacing="10">
-                            <Border
-                                x:Name="MeaningScoreCard"
-                                Padding="12"
-                                BackgroundColor="#F7F7F5"
-                                Stroke="#E4E4DE">
-                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
-                                <Grid RowDefinitions="Auto,Auto">
-                                    <Label FontSize="10" Text="BEDEUTUNG" TextColor="#777777" />
-                                    <Label
-                                        x:Name="MeaningScoreCheck"
-                                        HorizontalOptions="End"
-                                        IsVisible="False"
-                                        Text="✓"
-                                        TextColor="#2E7D32" />
-                                    <Label
-                                        x:Name="MeaningScoreLabel"
-                                        Grid.Row="1"
-                                        FontAttributes="Bold"
-                                        FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        Text="0"
-                                        TextColor="#171717" />
-                                </Grid>
-                            </Border>
-                            <Border
-                                x:Name="ReverseMeaningScoreCard"
-                                Grid.Column="1"
-                                Padding="12"
-                                BackgroundColor="#F7F7F5"
-                                Stroke="#E4E4DE">
-                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
-                                <Grid RowDefinitions="Auto,Auto">
-                                    <Label FontSize="10" Text="UMGEKEHRTE BEDEUTUNG" TextColor="#777777" />
-                                    <Label
-                                        x:Name="ReverseMeaningScoreCheck"
-                                        HorizontalOptions="End"
-                                        IsVisible="False"
-                                        Text="✓"
-                                        TextColor="#2E7D32" />
-                                    <Label
-                                        x:Name="ReverseMeaningScoreLabel"
-                                        Grid.Row="1"
-                                        FontAttributes="Bold"
-                                        FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        Text="0"
-                                        TextColor="#171717" />
-                                </Grid>
-                            </Border>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Border
+                                    x:Name="MeaningScoreCard"
+                                    Padding="12"
+                                    BackgroundColor="#F7F7F5"
+                                    Stroke="#E4E4DE">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid RowDefinitions="Auto,Auto">
+                                        <Label
+                                            FontSize="10"
+                                            Text="BEDEUTUNG"
+                                            TextColor="#777777" />
+                                        <Label
+                                            x:Name="MeaningScoreCheck"
+                                            HorizontalOptions="End"
+                                            IsVisible="False"
+                                            Text="✓"
+                                            TextColor="#2E7D32" />
+                                        <Label
+                                            x:Name="MeaningScoreLabel"
+                                            Grid.Row="1"
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="20"
+                                            Text="0"
+                                            TextColor="#171717" />
+                                    </Grid>
+                                </Border>
+                                <Border
+                                    x:Name="ReverseMeaningScoreCard"
+                                    Grid.Column="1"
+                                    Padding="12"
+                                    BackgroundColor="#F7F7F5"
+                                    Stroke="#E4E4DE">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid RowDefinitions="Auto,Auto">
+                                        <Label
+                                            FontSize="10"
+                                            Text="UMGEKEHRTE BEDEUTUNG"
+                                            TextColor="#777777" />
+                                        <Label
+                                            x:Name="ReverseMeaningScoreCheck"
+                                            HorizontalOptions="End"
+                                            IsVisible="False"
+                                            Text="✓"
+                                            TextColor="#2E7D32" />
+                                        <Label
+                                            x:Name="ReverseMeaningScoreLabel"
+                                            Grid.Row="1"
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="20"
+                                            Text="0"
+                                            TextColor="#171717" />
+                                    </Grid>
+                                </Border>
                             </Grid>
 
                             <Grid
@@ -435,55 +432,65 @@
                                 ColumnDefinitions="*,*"
                                 ColumnSpacing="10"
                                 IsVisible="False">
-                            <Border
-                                x:Name="ArticleScoreCard"
-                                Padding="12"
-                                BackgroundColor="#F7F7F5"
-                                Stroke="#E4E4DE">
-                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
-                                <Grid RowDefinitions="Auto,Auto">
-                                    <Label FontSize="10" Text="ARTIKEL" TextColor="#777777" />
-                                    <Label
-                                        x:Name="ArticleScoreCheck"
-                                        HorizontalOptions="End"
-                                        IsVisible="False"
-                                        Text="✓"
-                                        TextColor="#2E7D32" />
-                                    <Label
-                                        x:Name="ArticleScoreLabel"
-                                        Grid.Row="1"
-                                        FontAttributes="Bold"
-                                        FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        Text="0"
-                                        TextColor="#171717" />
-                                </Grid>
-                            </Border>
-                            <Border
-                                x:Name="PluralScoreCard"
-                                Grid.Column="1"
-                                Padding="12"
-                                BackgroundColor="#F7F7F5"
-                                Stroke="#E4E4DE">
-                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
-                                <Grid RowDefinitions="Auto,Auto">
-                                    <Label FontSize="10" Text="PLURAL" TextColor="#777777" />
-                                    <Label
-                                        x:Name="PluralScoreCheck"
-                                        HorizontalOptions="End"
-                                        IsVisible="False"
-                                        Text="✓"
-                                        TextColor="#2E7D32" />
-                                    <Label
-                                        x:Name="PluralScoreLabel"
-                                        Grid.Row="1"
-                                        FontAttributes="Bold"
-                                        FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        Text="0"
-                                        TextColor="#171717" />
-                                </Grid>
-                            </Border>
+                                <Border
+                                    x:Name="ArticleScoreCard"
+                                    Padding="12"
+                                    BackgroundColor="#F7F7F5"
+                                    Stroke="#E4E4DE">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid RowDefinitions="Auto,Auto">
+                                        <Label
+                                            FontSize="10"
+                                            Text="ARTIKEL"
+                                            TextColor="#777777" />
+                                        <Label
+                                            x:Name="ArticleScoreCheck"
+                                            HorizontalOptions="End"
+                                            IsVisible="False"
+                                            Text="✓"
+                                            TextColor="#2E7D32" />
+                                        <Label
+                                            x:Name="ArticleScoreLabel"
+                                            Grid.Row="1"
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="20"
+                                            Text="0"
+                                            TextColor="#171717" />
+                                    </Grid>
+                                </Border>
+                                <Border
+                                    x:Name="PluralScoreCard"
+                                    Grid.Column="1"
+                                    Padding="12"
+                                    BackgroundColor="#F7F7F5"
+                                    Stroke="#E4E4DE">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid RowDefinitions="Auto,Auto">
+                                        <Label
+                                            FontSize="10"
+                                            Text="PLURAL"
+                                            TextColor="#777777" />
+                                        <Label
+                                            x:Name="PluralScoreCheck"
+                                            HorizontalOptions="End"
+                                            IsVisible="False"
+                                            Text="✓"
+                                            TextColor="#2E7D32" />
+                                        <Label
+                                            x:Name="PluralScoreLabel"
+                                            Grid.Row="1"
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="20"
+                                            Text="0"
+                                            TextColor="#171717" />
+                                    </Grid>
+                                </Border>
                             </Grid>
 
                             <Grid
@@ -491,58 +498,66 @@
                                 ColumnDefinitions="*,*"
                                 ColumnSpacing="10"
                                 IsVisible="False">
-                            <Border
-                                x:Name="PrateritumScoreCard"
-                                Padding="12"
-                                BackgroundColor="#F7F7F5"
-                                Stroke="#E4E4DE">
-                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
-                                <Grid RowDefinitions="Auto,Auto">
-                                    <Label FontSize="10" Text="PRÄTERITUM" TextColor="#777777" />
-                                    <Label
-                                        x:Name="PrateritumScoreCheck"
-                                        HorizontalOptions="End"
-                                        IsVisible="False"
-                                        Text="✓"
-                                        TextColor="#2E7D32" />
-                                    <Label
-                                        x:Name="PrateritumScoreLabel"
-                                        Grid.Row="1"
-                                        FontAttributes="Bold"
-                                        FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        Text="0"
-                                        TextColor="#171717" />
-                                </Grid>
-                            </Border>
-                            <Border
-                                x:Name="PerfectScoreCard"
-                                Grid.Column="1"
-                                Padding="12"
-                                BackgroundColor="#F7F7F5"
-                                Stroke="#E4E4DE">
-                                <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
-                                <Grid
-                                    ColumnDefinitions="*,Auto"
-                                    RowDefinitions="Auto,Auto">
-                                    <Label FontSize="10" Text="PERFEKT" TextColor="#777777" />
-                                    <Label
-                                        x:Name="PerfectScoreCheck"
-                                        Grid.Column="1"
-                                        IsVisible="False"
-                                        Text="✓"
-                                        TextColor="#2E7D32" />
-                                    <Label
-                                        x:Name="PerfectScoreLabel"
-                                        Grid.Row="1"
-                                        Grid.ColumnSpan="2"
-                                        FontAttributes="Bold"
-                                        FontFamily="OpenSansSemibold"
-                                        FontSize="20"
-                                        Text="0"
-                                        TextColor="#171717" />
-                                </Grid>
-                            </Border>
+                                <Border
+                                    x:Name="PrateritumScoreCard"
+                                    Padding="12"
+                                    BackgroundColor="#F7F7F5"
+                                    Stroke="#E4E4DE">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid RowDefinitions="Auto,Auto">
+                                        <Label
+                                            FontSize="10"
+                                            Text="PRÄTERITUM"
+                                            TextColor="#777777" />
+                                        <Label
+                                            x:Name="PrateritumScoreCheck"
+                                            HorizontalOptions="End"
+                                            IsVisible="False"
+                                            Text="✓"
+                                            TextColor="#2E7D32" />
+                                        <Label
+                                            x:Name="PrateritumScoreLabel"
+                                            Grid.Row="1"
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="20"
+                                            Text="0"
+                                            TextColor="#171717" />
+                                    </Grid>
+                                </Border>
+                                <Border
+                                    x:Name="PerfectScoreCard"
+                                    Grid.Column="1"
+                                    Padding="12"
+                                    BackgroundColor="#F7F7F5"
+                                    Stroke="#E4E4DE">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                        <Label
+                                            FontSize="10"
+                                            Text="PERFEKT"
+                                            TextColor="#777777" />
+                                        <Label
+                                            x:Name="PerfectScoreCheck"
+                                            Grid.Column="1"
+                                            IsVisible="False"
+                                            Text="✓"
+                                            TextColor="#2E7D32" />
+                                        <Label
+                                            x:Name="PerfectScoreLabel"
+                                            Grid.Row="1"
+                                            Grid.ColumnSpan="2"
+                                            FontAttributes="Bold"
+                                            FontFamily="OpenSansSemibold"
+                                            FontSize="20"
+                                            Text="0"
+                                            TextColor="#171717" />
+                                    </Grid>
+                                </Border>
                             </Grid>
                         </VerticalStackLayout>
                     </VerticalStackLayout>
@@ -563,9 +578,7 @@
                 HorizontalOptions="Center"
                 Spacing="10"
                 VerticalOptions="Center">
-                <ActivityIndicator
-                    Color="#2563EB"
-                    IsRunning="True" />
+                <ActivityIndicator IsRunning="True" Color="#2563EB" />
                 <Label
                     FontSize="12"
                     Text="Loading word..."

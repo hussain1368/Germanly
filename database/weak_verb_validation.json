@@ -1,0 +1,342 @@
+{
+  "source": "https://de.wiktionary.org",
+  "unique_checked": 253,
+  "row_count": 262,
+  "summary": {
+    "OK": 238,
+    "MISMATCH": 15,
+    "NOT_FOUND": 0,
+    "NO_FORMS": 0,
+    "ERROR": 0,
+    "unchecked_assumed_ok": [
+      "zeichnen"
+    ],
+    "note": "238 includes zeichnen assumed OK (zeichnete/gezeichnet); wenden weak forms also accepted by Duden"
+  },
+  "mismatches": [
+    {
+      "word": "ablehnen",
+      "ids": [
+        957,
+        1468
+      ],
+      "type": "verb",
+      "is_separable": 1,
+      "prefix": "ab",
+      "generated_past": "lehnete ab",
+      "generated_perf": "abgelehnet",
+      "wiki_past": [
+        "lehnte ab"
+      ],
+      "wiki_perf": [
+        "abgelehnt"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='lehnete ab' wiki=['lehnte ab']; perf gen='abgelehnet' wiki=['abgelehnt']"
+    },
+    {
+      "word": "anvertrauen",
+      "ids": [
+        1378
+      ],
+      "type": "verb",
+      "is_separable": 1,
+      "prefix": "an",
+      "generated_past": "vertraute an",
+      "generated_perf": "angevertraut",
+      "wiki_past": [
+        "vertraute an"
+      ],
+      "wiki_perf": [
+        "anvertraut"
+      ],
+      "status": "MISMATCH",
+      "notes": "perf gen='angevertraut' wiki=['anvertraut']"
+    },
+    {
+      "word": "ausprobieren",
+      "ids": [
+        1058
+      ],
+      "type": "verb",
+      "is_separable": 1,
+      "prefix": "aus",
+      "generated_past": "probierte aus",
+      "generated_perf": "ausgeprobiert",
+      "wiki_past": [
+        "probierte aus"
+      ],
+      "wiki_perf": [
+        "ausprobiert"
+      ],
+      "status": "MISMATCH",
+      "notes": "perf gen='ausgeprobiert' wiki=['ausprobiert']"
+    },
+    {
+      "word": "erwähnen",
+      "ids": [
+        1419
+      ],
+      "type": "verb",
+      "is_separable": 0,
+      "prefix": "er",
+      "generated_past": "erwähnete",
+      "generated_perf": "erwähnet",
+      "wiki_past": [
+        "erwähnte"
+      ],
+      "wiki_perf": [
+        "erwähnt"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='erwähnete' wiki=['erwähnte']; perf gen='erwähnet' wiki=['erwähnt']"
+    },
+    {
+      "word": "interviewen",
+      "ids": [
+        791
+      ],
+      "type": "verb",
+      "is_separable": 0,
+      "prefix": null,
+      "generated_past": "interviewte",
+      "generated_perf": "geinterviewt",
+      "wiki_past": [
+        "interviewte"
+      ],
+      "wiki_perf": [
+        "interviewt"
+      ],
+      "status": "MISMATCH",
+      "notes": "perf gen='geinterviewt' wiki=['interviewt']"
+    },
+    {
+      "word": "nacherzählen",
+      "ids": [
+        1719
+      ],
+      "type": "verb",
+      "is_separable": 1,
+      "prefix": "nach",
+      "generated_past": "erzählte nach",
+      "generated_perf": "nachgeerzählt",
+      "wiki_past": [
+        "erzählte nach"
+      ],
+      "wiki_perf": [
+        "nacherzählt"
+      ],
+      "status": "MISMATCH",
+      "notes": "perf gen='nachgeerzählt' wiki=['nacherzählt']"
+    },
+    {
+      "word": "sich anschließen",
+      "ids": [
+        920
+      ],
+      "type": "reflexive verb",
+      "is_separable": 1,
+      "prefix": "an",
+      "generated_past": "schließte sich an",
+      "generated_perf": "angeschließt",
+      "wiki_past": [
+        "schloss an"
+      ],
+      "wiki_perf": [
+        "angeschlossen"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='schließte sich an' wiki=['schloss an']; perf gen='angeschließt' wiki=['angeschlossen']"
+    },
+    {
+      "word": "sich befinden",
+      "ids": [
+        545
+      ],
+      "type": "reflexive verb",
+      "is_separable": 0,
+      "prefix": "be",
+      "generated_past": "befindete sich",
+      "generated_perf": "befindet",
+      "wiki_past": [
+        "befand"
+      ],
+      "wiki_perf": [
+        "befunden"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='befindete sich' wiki=['befand']; perf gen='befindet' wiki=['befunden']"
+    },
+    {
+      "word": "sich beziehen",
+      "ids": [
+        1184
+      ],
+      "type": "reflexive verb",
+      "is_separable": 0,
+      "prefix": "be",
+      "generated_past": "beziehte sich",
+      "generated_perf": "bezieht",
+      "wiki_past": [
+        "bezog"
+      ],
+      "wiki_perf": [
+        "bezogen"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='beziehte sich' wiki=['bezog']; perf gen='bezieht' wiki=['bezogen']"
+    },
+    {
+      "word": "sich eintragen",
+      "ids": [
+        630
+      ],
+      "type": "reflexive verb",
+      "is_separable": 1,
+      "prefix": "ein",
+      "generated_past": "tragte sich ein",
+      "generated_perf": "eingetragt",
+      "wiki_past": [
+        "trug ein"
+      ],
+      "wiki_perf": [
+        "eingetragen"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='tragte sich ein' wiki=['trug ein']; perf gen='eingetragt' wiki=['eingetragen']"
+    },
+    {
+      "word": "sich lohnen",
+      "ids": [
+        28
+      ],
+      "type": "reflexive verb",
+      "is_separable": 0,
+      "prefix": null,
+      "generated_past": "lohnete sich",
+      "generated_perf": "gelohnet",
+      "wiki_past": [
+        "lohnte"
+      ],
+      "wiki_perf": [
+        "gelohnt"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='lohnete sich' wiki=['lohnte']; perf gen='gelohnet' wiki=['gelohnt']"
+    },
+    {
+      "word": "sich unterhalten",
+      "ids": [
+        5
+      ],
+      "type": "reflexive verb",
+      "is_separable": 0,
+      "prefix": "unter",
+      "generated_past": "unterhaltete sich",
+      "generated_perf": "unterhaltet",
+      "wiki_past": [
+        "hielt unter",
+        "unterhielt"
+      ],
+      "wiki_perf": [
+        "untergehalten",
+        "unterhalten"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='unterhaltete sich' wiki=['hielt unter', 'unterhielt']; perf gen='unterhaltet' wiki=['untergehalten', 'unterhalten']"
+    },
+    {
+      "word": "verwöhnen",
+      "ids": [
+        1455
+      ],
+      "type": "verb",
+      "is_separable": 0,
+      "prefix": "ver",
+      "generated_past": "verwöhnete",
+      "generated_perf": "verwöhnet",
+      "wiki_past": [
+        "verwöhnte"
+      ],
+      "wiki_perf": [
+        "verwöhnt"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='verwöhnete' wiki=['verwöhnte']; perf gen='verwöhnet' wiki=['verwöhnt']"
+    },
+    {
+      "word": "wenden",
+      "ids": [
+        1557
+      ],
+      "type": "verb",
+      "is_separable": 0,
+      "prefix": null,
+      "generated_past": "wendete",
+      "generated_perf": "gewendet",
+      "wiki_past": [
+        "wandte"
+      ],
+      "wiki_perf": [
+        "gewandt"
+      ],
+      "status": "MISMATCH",
+      "notes": "past gen='wendete' wiki=['wandte']; perf gen='gewendet' wiki=['gewandt']"
+    },
+    {
+      "word": "zubereiten",
+      "ids": [
+        507
+      ],
+      "type": "verb",
+      "is_separable": 1,
+      "prefix": "zu",
+      "generated_past": "bereitete zu",
+      "generated_perf": "zugebereitet",
+      "wiki_past": [
+        "bereitete zu"
+      ],
+      "wiki_perf": [
+        "zubereitet"
+      ],
+      "status": "MISMATCH",
+      "notes": "perf gen='zugebereitet' wiki=['zubereitet']"
+    }
+  ],
+  "not_found": [],
+  "no_forms": [],
+  "still_errors_sample": [],
+  "retry": {
+    "retried": 184,
+    "ok_extra": 164,
+    "mismatch_extra": 8,
+    "still_error": 12
+  },
+  "categories": {
+    "generator_dehnungs_h": [
+      "ablehnen",
+      "erwähnen",
+      "sich lohnen",
+      "verwöhnen"
+    ],
+    "generator_separable_no_ge": [
+      "anvertrauen",
+      "nacherzählen",
+      "zubereiten",
+      "ausprobieren"
+    ],
+    "generator_foreign_no_ge": [
+      "interviewen"
+    ],
+    "db_should_be_strong": [
+      "sich anschließen",
+      "sich beziehen",
+      "sich eintragen",
+      "sich unterhalten",
+      "sich befinden"
+    ],
+    "ambiguous_dual_forms": [
+      "wenden"
+    ]
+  }
+}

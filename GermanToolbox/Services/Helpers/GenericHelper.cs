@@ -8,7 +8,8 @@ namespace GermanToolbox
             var longestWordLength = words.Max(w => w.Length);
 
             if (text.Length < 7) return 56;
-            if (text.Length < 12) return 46;
+            if (text.Length < 10) return 46;
+            if (text.Length < 12) return 38;
 
             else if (text.Length < 18)
             {
